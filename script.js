@@ -360,6 +360,7 @@ async function initHallasan() {
 
         if (trailsGrid) {
             let html = '';
+            let statusCounts = { 정상: 0, 부분: 0, 통제: 0 };
 
             // HTML에서 dl.main-visit-list 요소들을 찾아서 파싱
             const dlElements = doc.querySelectorAll('dl.main-visit-list');
@@ -389,6 +390,9 @@ async function initHallasan() {
                     }
                 });
 
+                // 상태 집계
+                statusCounts[st]++;
+
                 const info = getStatusCN(st);
 
                 // 상태 텍스트 간결화
@@ -416,6 +420,44 @@ async function initHallasan() {
                     </div>`;
             });
             trailsGrid.innerHTML = html;
+
+            // 전체 상태 요약 업데이트
+            const statusCard = document.querySelector('.status-card');
+            if (statusCard) {
+                const now = new Date();
+                const timeStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+
+                let statusIcon, statusTitle, statusDesc, statusClass;
+
+                if (statusCounts.통제 === trails.length) {
+                    // 모두 통제
+                    statusIcon = '🔴';
+                    statusTitle = '当前状态：全面管制';
+                    statusDesc = '所有登山路线暂时关闭';
+                    statusClass = 'status-closed';
+                } else if (statusCounts.통제 > 0) {
+                    // 일부 통제
+                    statusIcon = '⚠️';
+                    statusTitle = '当前状态：部分管制';
+                    statusDesc = `${statusCounts.통제}条路线关闭，${statusCounts.정상}条路线开放`;
+                    statusClass = 'status-partial';
+                } else {
+                    // 모두 정상
+                    statusIcon = '✅';
+                    statusTitle = '当前状态：开放';
+                    statusDesc = '所有登山路线正常开放';
+                    statusClass = 'status-open';
+                }
+
+                statusCard.className = `status-card ${statusClass}`;
+                statusCard.innerHTML = `
+                    <div class="status-icon">${statusIcon}</div>
+                    <div class="status-content">
+                        <h3>${statusTitle}</h3>
+                        <p>${statusDesc}</p>
+                        <div class="status-time">更新时间：${timeStr}</div>
+                    </div>`;
+            }
         }
 
         log('한라산 정보 로드 완료');
@@ -489,13 +531,22 @@ async function initFlightData() {
 
             const rmk = item.querySelector("rmk")?.textContent || '';
             const airline = item.querySelector("airlineKorean")?.textContent || item.querySelector("airline")?.textContent || '';
+            const scheduledatetime = item.querySelector("scheduledatetime")?.textContent || '';
+
+            // 날짜 필터링: 당일 항공편만 표시
+            if (scheduledatetime && scheduledatetime.length >= 8) {
+                const flightDate = scheduledatetime.substring(0, 8); // YYYYMMDD
+                if (flightDate !== todayStr) {
+                    return; // 당일이 아니면 스킵
+                }
+            }
 
             allFlights.push({
                 airline: airline,
                 flightId: item.querySelector("flightid")?.textContent || '',
                 depAirport: item.querySelector("depAirport")?.textContent || '',
                 arrAirport: item.querySelector("arrAirport")?.textContent || '',
-                scheduledatetime: item.querySelector("scheduledatetime")?.textContent || '',
+                scheduledatetime: scheduledatetime,
                 estimatedatetime: item.querySelector("estimatedatetime")?.textContent || '',  // 실제 시간
                 rmk: rmk
             });
