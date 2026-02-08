@@ -602,13 +602,23 @@ async function initFlightData() {
 
             const rmk = item.querySelector("rmk")?.textContent || '';
             const airline = item.querySelector("airlineKorean")?.textContent || item.querySelector("airline")?.textContent || '';
+            const scheduledatetime = item.querySelector("scheduledatetime")?.textContent || '';
+
+            // 날짜 필터링: 당일 항공편만 표시
+            if (scheduledatetime && scheduledatetime.length >= 8) {
+                const flightDate = scheduledatetime.substring(0, 8); // YYYYMMDD
+                if (flightDate !== todayStr) {
+                    return; // 당일이 아니면 스킵
+                }
+            }
 
             allFlights.push({
                 airline: airline,
                 flightId: item.querySelector("flightid")?.textContent || '',
                 depAirport: item.querySelector("depAirport")?.textContent || '',
                 arrAirport: item.querySelector("arrAirport")?.textContent || '',
-                scheduledatetime: item.querySelector("scheduledatetime")?.textContent || '',
+                scheduledatetime: scheduledatetime,
+                estimatedatetime: item.querySelector("estimatedatetime")?.textContent || '',  // 실제 시간
                 rmk: rmk
             });
         });
