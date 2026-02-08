@@ -330,12 +330,15 @@ async function initFlightData() {
         let statusClass = 'status-ontime';
         let statusText = '准点';
 
-        if (rmk.includes('지연')) {
-            statusClass = 'status-delayed';
-            statusText = '延误';
-        } else if (rmk.includes('결항')) {
+        // 결항 감지 (다양한 표현 포함)
+        if (rmk.includes('결항') || rmk.includes('취소') || rmk.includes('CANCELLED') || rmk.includes('CANCELED')) {
             statusClass = 'status-cancelled';
             statusText = '取消';
+        }
+        // 지연 감지
+        else if (rmk.includes('지연') || rmk.includes('DELAYED') || rmk.includes('DELAY')) {
+            statusClass = 'status-delayed';
+            statusText = '延误';
         }
 
         const route = type === 'dep' ? flight.arrAirport : flight.depAirport;
@@ -361,26 +364,28 @@ async function initFlightData() {
         const xmlDoc = parser.parseFromString(text, "text/xml");
 
         const items = xmlDoc.querySelectorAll("item");
-        let relevantFlights = [];
+        let allFlights = [];
 
-        items.forEach(item => {
+        items.forEach((item, index) => {
+            if (index >= 20) return; // 최대 20개만 표시
+
             const rmk = item.querySelector("rmk")?.textContent || '';
-            if (rmk.includes('지연') || rmk.includes('결항')) {
-                relevantFlights.push({
-                    airline: item.querySelector("airline")?.textContent || '',
-                    flightId: item.querySelector("flightid")?.textContent || '',
-                    depAirport: item.querySelector("depAirport")?.textContent || '',
-                    arrAirport: item.querySelector("arrAirport")?.textContent || '',
-                    scheduledatetime: item.querySelector("scheduledatetime")?.textContent || '',
-                    rmk: rmk
-                });
-            }
+            const airline = item.querySelector("airlineKorean")?.textContent || item.querySelector("airline")?.textContent || '';
+
+            allFlights.push({
+                airline: airline,
+                flightId: item.querySelector("flightid")?.textContent || '',
+                depAirport: item.querySelector("depAirport")?.textContent || '',
+                arrAirport: item.querySelector("arrAirport")?.textContent || '',
+                scheduledatetime: item.querySelector("scheduledatetime")?.textContent || '',
+                rmk: rmk
+            });
         });
 
         const arrivalsContent = document.getElementById('arrivals');
         if (arrivalsContent) {
             const flightTable = arrivalsContent.querySelector('.flight-table');
-            if (flightTable && relevantFlights.length > 0) {
+            if (flightTable && allFlights.length > 0) {
                 let html = `
                     <div class="flight-row flight-header">
                         <div class="flight-col">航班号</div>
@@ -388,9 +393,9 @@ async function initFlightData() {
                         <div class="flight-col">计划时间</div>
                         <div class="flight-col">状态</div>
                     </div>`;
-                relevantFlights.forEach(f => html += createFlightHTML(f, 'arr'));
+                allFlights.forEach(f => html += createFlightHTML(f, 'arr'));
                 flightTable.innerHTML = html;
-            } else if (flightTable && relevantFlights.length === 0) {
+            } else if (flightTable && allFlights.length === 0) {
                 flightTable.innerHTML = `
                     <div class="flight-row flight-header">
                         <div class="flight-col">航班号</div>
@@ -398,7 +403,7 @@ async function initFlightData() {
                         <div class="flight-col">计划时间</div>
                         <div class="flight-col">状态</div>
                     </div>
-                    <div style="padding:40px; text-align:center; color:#999;">目前没有延误或取消的到达航班</div>`;
+                    <div style="padding:40px; text-align:center; color:#999;">暂无到达航班信息</div>`;
             }
         }
 
@@ -418,26 +423,28 @@ async function initFlightData() {
         const xmlDoc = parser.parseFromString(text, "text/xml");
 
         const items = xmlDoc.querySelectorAll("item");
-        let relevantFlights = [];
+        let allFlights = [];
 
-        items.forEach(item => {
+        items.forEach((item, index) => {
+            if (index >= 20) return; // 최대 20개만 표시
+
             const rmk = item.querySelector("rmk")?.textContent || '';
-            if (rmk.includes('지연') || rmk.includes('결항')) {
-                relevantFlights.push({
-                    airline: item.querySelector("airline")?.textContent || '',
-                    flightId: item.querySelector("flightid")?.textContent || '',
-                    depAirport: item.querySelector("depAirport")?.textContent || '',
-                    arrAirport: item.querySelector("arrAirport")?.textContent || '',
-                    scheduledatetime: item.querySelector("scheduledatetime")?.textContent || '',
-                    rmk: rmk
-                });
-            }
+            const airline = item.querySelector("airlineKorean")?.textContent || item.querySelector("airline")?.textContent || '';
+
+            allFlights.push({
+                airline: airline,
+                flightId: item.querySelector("flightid")?.textContent || '',
+                depAirport: item.querySelector("depAirport")?.textContent || '',
+                arrAirport: item.querySelector("arrAirport")?.textContent || '',
+                scheduledatetime: item.querySelector("scheduledatetime")?.textContent || '',
+                rmk: rmk
+            });
         });
 
         const departuresContent = document.getElementById('departures');
         if (departuresContent) {
             const flightTable = departuresContent.querySelector('.flight-table');
-            if (flightTable && relevantFlights.length > 0) {
+            if (flightTable && allFlights.length > 0) {
                 let html = `
                     <div class="flight-row flight-header">
                         <div class="flight-col">航班号</div>
@@ -445,9 +452,9 @@ async function initFlightData() {
                         <div class="flight-col">计划时间</div>
                         <div class="flight-col">状态</div>
                     </div>`;
-                relevantFlights.forEach(f => html += createFlightHTML(f, 'dep'));
+                allFlights.forEach(f => html += createFlightHTML(f, 'dep'));
                 flightTable.innerHTML = html;
-            } else if (flightTable && relevantFlights.length === 0) {
+            } else if (flightTable && allFlights.length === 0) {
                 flightTable.innerHTML = `
                     <div class="flight-row flight-header">
                         <div class="flight-col">航班号</div>
@@ -455,7 +462,7 @@ async function initFlightData() {
                         <div class="flight-col">计划时间</div>
                         <div class="flight-col">状态</div>
                     </div>
-                    <div style="padding:40px; text-align:center; color:#999;">目前没有延误或取消的出发航班</div>`;
+                    <div style="padding:40px; text-align:center; color:#999;">暂无出发航班信息</div>`;
             }
         }
 
