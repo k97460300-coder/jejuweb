@@ -248,6 +248,9 @@ async function initHallasan() {
         const trails = [
             { id: '어리목', name: '御里牧路线', sub: 'Eorimok' },
             { id: '영실', name: '灵室路线', sub: 'Yeongsil' },
+            { id: '어승생악', name: '御乘生岳路线', sub: 'Eoseungsaengak' },
+            { id: '돈내코', name: '敦乃克路线', sub: 'Donnaeko' },
+            { id: '석굴암', name: '石窟庵路线', sub: 'Seokgulam' },
             { id: '관음사', name: '观音寺路线', sub: 'Gwaneumsa' },
             { id: '성판악', name: '城板岳路线', sub: 'Seongpanak' }
         ];
@@ -259,31 +262,38 @@ async function initHallasan() {
             return { t: '⚪ 信息未知', c: '#999' };
         };
 
-        // 모든 텍스트 확인을 위해 전체 HTML 검색
-        const allText = text.toLowerCase();
         const trailsGrid = document.querySelector('.trails-grid');
 
         if (trailsGrid) {
             let html = '';
+
+            // HTML에서 dl.main-visit-list 요소들을 찾아서 파싱
+            const dlElements = doc.querySelectorAll('dl.main-visit-list');
+
             trails.forEach(t => {
-                let st = '정상';  // 기본값을 정상으로 설정
+                let st = '정상';  // 기본값
+                let statusText = '';
 
-                // 텍스트에서 등산로 이름 찾기
-                const searchText = text;
-                const trailIndex = searchText.indexOf(t.id);
+                // 각 dl 요소에서 해당 등산로 찾기
+                dlElements.forEach(dl => {
+                    const dtElement = dl.querySelector('dt');
+                    if (dtElement && dtElement.textContent.includes(t.id)) {
+                        // dd.situation 요소에서 상태 확인
+                        const situationElement = dl.querySelector('dd.situation');
+                        if (situationElement) {
+                            statusText = situationElement.textContent.trim();
 
-                if (trailIndex !== -1) {
-                    // 등산로 이름 이후 200자 내에서 상태 확인
-                    const contextText = searchText.substring(trailIndex, trailIndex + 200);
-
-                    if (contextText.includes('통제') || contextText.includes('폐쇄')) {
-                        st = '통제';
-                    } else if (contextText.includes('부분')) {
-                        st = '부분';
-                    } else if (contextText.includes('정상') || contextText.includes('개방')) {
-                        st = '정상';
+                            // 상태 판단
+                            if (statusText.includes('전면통제') || statusText.includes('통제') || statusText.includes('폐쇄')) {
+                                st = '통제';
+                            } else if (statusText.includes('부분통제') || statusText.includes('부분관제') || statusText.includes('부분')) {
+                                st = '부분';
+                            } else if (statusText.includes('정상') || statusText.includes('개방')) {
+                                st = '정상';
+                            }
+                        }
                     }
-                }
+                });
 
                 const info = getStatusCN(st);
 
@@ -296,7 +306,7 @@ async function initHallasan() {
                         <div class="trail-info">
                             <div class="trail-detail">
                                 <span class="trail-label">状态：</span>
-                                <span class="trail-value">${st === '정상' ? '正常开放' : st === '통제' ? '禁止通行' : st === '부분' ? '部分限制' : '确认中'}</span>
+                                <span class="trail-value">${statusText || (st === '정상' ? '正常开放' : st === '통제' ? '禁止通行' : st === '부분' ? '部分限制' : '确认中')}</span>
                             </div>
                         </div>
                     </div>`;
