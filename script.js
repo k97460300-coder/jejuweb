@@ -159,77 +159,171 @@ function updateHourlyWeather(locationKey, hourly) {
 }
 
 // 주간 날씨 업데이트
-function updateWeeklyWeather(locationKey, tempDays, now) {
+async function updateWeeklyWeather(locationKey, tempDays, now) {
     const weeklyGrid = document.querySelector(`#weekly-${locationKey}`);
     if (!weeklyGrid) return;
 
     const yyyy = now.getFullYear();
-    let html = '';
     const dayNames = ['今天', '周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+
+    // 중기예보 데이터 가져오기 (3~9일)
+    const midTermData = await fetchMidTermForecast(locationKey);
+
+    let html = '';
 
     for (let i = 0; i <= 9; i++) {
         const d = new Date(yyyy, now.getMonth(), now.getDate() + i);
         const dStr = getFormatDate(d);
-        const t = tempDays[dStr];
+        const dayName = i === 0 ? dayNames[0] : dayNames[d.getDay()];
 
-        if (t) {
-            if (t.min === 100 && t.temps.length > 0) t.min = Math.min(...t.temps);
-            if (t.max === -100 && t.temps.length > 0) t.max = Math.max(...t.temps);
+        let icon = '☀️';
+        let minT = '-';
+        let maxT = '-';
+        let maxPop = 0;
 
-            let maxPop = 0;
-            let weatherCounts = {};
+        if (i <= 2) {
+            // 단기예보 데이터 사용 (0~2일)
+            const t = tempDays[dStr];
+            if (t) {
+                if (t.min === 100 && t.temps.length > 0) t.min = Math.min(...t.temps);
+                if (t.max === -100 && t.temps.length > 0) t.max = Math.max(...t.temps);
 
-            for (let h = 9; h <= 22; h++) {
-                const hourData = t.hourlyData[h] || {};
-                const pty = parseInt(hourData.PTY || 0);
-                const sky = parseInt(hourData.SKY || 1);
-                const pop = parseInt(hourData.POP || 0);
-                if (pop > maxPop) maxPop = pop;
+                let weatherCounts = {};
+                for (let h = 9; h <= 22; h++) {
+                    const hourData = t.hourlyData[h] || {};
+                    const pty = parseInt(hourData.PTY || 0);
+                    const sky = parseInt(hourData.SKY || 1);
+                    const pop = parseInt(hourData.POP || 0);
+                    if (pop > maxPop) maxPop = pop;
 
-                let weatherKey = '맑음';
-                if (pty > 0) {
-                    weatherKey = (pty === 3) ? '눈' : '비';
-                } else {
-                    if (sky === 4) weatherKey = '흐림';
-                    else if (sky === 3) weatherKey = '구름많음';
+                    let weatherKey = '맑음';
+                    if (pty > 0) {
+                        weatherKey = (pty === 3) ? '눈' : '비';
+                    } else {
+                        if (sky === 4) weatherKey = '흐림';
+                        else if (sky === 3) weatherKey = '구름많음';
+                    }
+                    weatherCounts[weatherKey] = (weatherCounts[weatherKey] || 0) + 1;
                 }
-                weatherCounts[weatherKey] = (weatherCounts[weatherKey] || 0) + 1;
-            }
 
-            let dominantWeather = '맑음';
-            let maxCount = 0;
-            for (const weather in weatherCounts) {
-                if (weatherCounts[weather] > maxCount) {
-                    maxCount = weatherCounts[weather];
-                    dominantWeather = weather;
+                let dominantWeather = '맑음';
+                let maxCount = 0;
+                for (const weather in weatherCounts) {
+                    if (weatherCounts[weather] > maxCount) {
+                        maxCount = weatherCounts[weather];
+                        dominantWeather = weather;
+                    }
                 }
+
+                if (dominantWeather.includes('흐림')) icon = '☁️';
+                else if (dominantWeather.includes('구름') || dominantWeather.includes('많음')) icon = '⛅';
+                else if (dominantWeather.includes('비')) icon = '🌧️';
+                else if (dominantWeather.includes('눈')) icon = '❄️';
+
+                minT = (t.min !== undefined && t.min !== 100) ? Math.round(t.min) : '-';
+                maxT = (t.max !== undefined && t.max !== -100) ? Math.round(t.max) : '-';
             }
-
-            let icon = '☀️';
-            if (dominantWeather.includes('흐림')) icon = '☁️';
-            else if (dominantWeather.includes('구름') || dominantWeather.includes('많음')) icon = '⛅';
-            else if (dominantWeather.includes('비')) icon = '🌧️';
-            else if (dominantWeather.includes('눈')) icon = '❄️';
-
-            const minT = (t.min !== undefined && t.min !== 100) ? Math.round(t.min) : '-';
-            const maxT = (t.max !== undefined && t.max !== -100) ? Math.round(t.max) : '-';
-            const precipClass = maxPop > 50 ? 'precip-blue' : '';
-
-            const dayName = i === 0 ? dayNames[0] : dayNames[d.getDay()];
-
-            html += `
-                <div class="weekly-item">
-                    <div class="weekly-day">${dayName}<br><span style="font-size:9px; color:#aaa;">+${i}D</span></div>
-                    <div class="weekly-icon">${icon}</div>
-                    <div class="weekly-temps">
-                        <span class="temp-high">${maxT}°</span>
-                        <span class="temp-low">${minT}°</span>
-                    </div>
-                    <div class="weekly-precip ${precipClass}">${maxPop}%</div>
-                </div>`;
+        } else {
+            // 중기예보 데이터 사용 (3~9일)
+            const midDay = midTermData[i - 3];
+            if (midDay) {
+                icon = midDay.icon;
+                minT = midDay.minTemp;
+                maxT = midDay.maxTemp;
+                maxPop = midDay.rainProb;
+            }
         }
+
+        const precipClass = maxPop > 50 ? 'precip-blue' : '';
+
+        html += `
+            <div class="weekly-item">
+                <div class="weekly-day">${dayName}<br><span style="font-size:9px; color:#aaa;">+${i}D</span></div>
+                <div class="weekly-icon">${icon}</div>
+                <div class="weekly-temps">
+                    <span class="temp-high">${maxT}°</span>
+                    <span class="temp-low">${minT}°</span>
+                </div>
+                <div class="weekly-precip ${precipClass}">${maxPop}%</div>
+            </div>`;
     }
     weeklyGrid.innerHTML = html;
+}
+
+// 중기예보 API 호출 (3~10일)
+async function fetchMidTermForecast(locationKey) {
+    const now = new Date();
+    const baseDate = getFormatDate(now);
+    const baseTime = now.getHours() < 18 ? '0600' : '1800';
+
+    // 제주도 지역 코드
+    const regId = '11G00201';
+
+    try {
+        // 중기기온예보
+        const tempUrl = `https://apis.data.go.kr/1360000/MidFcstInfoService/getMidTa?serviceKey=${API_KEY}&numOfRows=10&pageNo=1&dataType=JSON&regId=${regId}&tmFc=${baseDate}${baseTime}`;
+        const tempRes = await fetch(tempUrl);
+        const tempJson = await tempRes.json();
+
+        // 중기육상예보
+        const landUrl = `https://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst?serviceKey=${API_KEY}&numOfRows=10&pageNo=1&dataType=JSON&regId=11G00000&tmFc=${baseDate}${baseTime}`;
+        const landRes = await fetch(landUrl);
+        const landJson = await landRes.json();
+
+        const result = [];
+
+        if (tempJson.response?.body?.items?.item?.[0] && landJson.response?.body?.items?.item?.[0]) {
+            const tempItem = tempJson.response.body.items.item[0];
+            const landItem = landJson.response.body.items.item[0];
+
+            // 3~9일 데이터 (총 7일)
+            for (let day = 3; day <= 9; day++) {
+                const minTemp = tempItem[`taMin${day}`] || '-';
+                const maxTemp = tempItem[`taMax${day}`] || '-';
+
+                // 날씨 상태
+                let wf = landItem[`wf${day}Am`] || landItem[`wf${day}`] || '';
+
+                // 강수확률
+                let rainProb = parseInt(landItem[`rnSt${day}Am`] || landItem[`rnSt${day}`] || 0);
+
+                // 아이콘 결정
+                let icon = '☀️';
+                if (wf.includes('비') || wf.includes('소나기')) icon = '🌧️';
+                else if (wf.includes('눈')) icon = '❄️';
+                else if (wf.includes('흐림')) icon = '☁️';
+                else if (wf.includes('구름')) icon = '⛅';
+
+                result.push({
+                    minTemp: minTemp,
+                    maxTemp: maxTemp,
+                    icon: icon,
+                    rainProb: rainProb
+                });
+            }
+        }
+
+        // API 실패 시 기본값
+        while (result.length < 7) {
+            result.push({
+                minTemp: '-',
+                maxTemp: '-',
+                icon: '☀️',
+                rainProb: 0
+            });
+        }
+
+        return result;
+    } catch (e) {
+        log('중기예보 API 오류: ' + e.message);
+        // 오류 시 기본값 반환
+        return Array(7).fill().map(() => ({
+            minTemp: '-',
+            maxTemp: '-',
+            icon: '☀️',
+            rainProb: 0
+        }));
+    }
 }
 
 // 한라산 통제 정보 크롤링
