@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>济州岛旅游信息 - 实时旅游助手</title>
+    <meta name="description" content="为中国游客提供济州岛实时旅游信息，包括CCTV监控、天气预报、汉拿山管制状态和机场航班信息">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Poppins:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">🏝️</div>
+                    <h1>济州岛旅游助手</h1>
+                </div>
+                <nav class="nav">
+                    <a href="#cctv" class="nav-link">实时监控</a>
+                    <a href="#weather" class="nav-link">天气预报</a>
+                    <a href="#hallasan" class="nav-link">汉拿山</a>
+                    <a href="#airport" class="nav-link">机场信息</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-overlay"></div>
+        <div class="container hero-content">
+            <h2 class="hero-title">探索美丽的济州岛</h2>
+            <p class="hero-subtitle">实时信息 · 智能规划 · 完美旅程</p>
+            <div class="hero-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">📹</div>
+                    <div class="stat-text">
+                        <div class="stat-number">15+</div>
+                        <div class="stat-label">实时监控点</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🌤️</div>
+                    <div class="stat-text">
+                        <div class="stat-number">24/7</div>
+                        <div class="stat-label">天气更新</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">✈️</div>
+                    <div class="stat-text">
+                        <div class="stat-number">实时</div>
+                        <div class="stat-label">航班信息</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CCTV Section -->
+    <section id="cctv" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">📹 实时监控 <span class="status-badge-header status-live">LIVE</span></h2>
+                <p class="section-subtitle">查看济州岛主要景点的实时画面</p>
+            </div>
+            <div class="cctv-grid">
+                <div class="cctv-card">
+                    <div class="cctv-video">
+                        <img src="https://via.placeholder.com/400x250/1a1a2e/16c79a?text=城山日出峰" alt="城山日出峰">
+                        <div class="live-badge">🔴 直播中</div>
+                    </div>
+                    <div class="cctv-info">
+                        <h3>城山日出峰</h3>
+                        <p>世界自然遗产，最佳日出观赏点</p>
+                    </div>
+                </div>
+                <div class="cctv-card">
+                    <div class="cctv-video">
+                        <img src="https://via.placeholder.com/400x250/1a1a2e/16c79a?text=汉拿山" alt="汉拿山">
+                        <div class="live-badge">🔴 直播中</div>
+                    </div>
+                    <div class="cctv-info">
+                        <h3>汉拿山</h3>
+                        <p>韩国最高峰，四季景色各异</p>
+                    </div>
+                </div>
+                <div class="cctv-card">
+                    <div class="cctv-video">
+                        <img src="https://via.placeholder.com/400x250/1a1a2e/16c79a?text=中文海水浴场" alt="中文海水浴场">
+                        <div class="live-badge">🔴 直播中</div>
+                    </div>
+                    <div class="cctv-info">
+                        <h3>中文海水浴场</h3>
+                        <p>济州岛最美海滩之一</p>
+                    </div>
+                </div>
+                <div class="cctv-card">
+                    <div class="cctv-video">
+                        <img src="https://via.placeholder.com/400x250/1a1a2e/16c79a?text=涯月海岸路" alt="涯月海岸路">
+                        <div class="live-badge">🔴 直播中</div>
+                    </div>
+                    <div class="cctv-info">
+                        <h3>涯月海岸路</h3>
+                        <p>绝美海岸线，咖啡街聚集地</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Weather Section -->
+    <section id="weather" class="section section-alt">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">🌤️ 天气预报 <span class="status-badge-header status-updated">已更新</span></h2>
+                <p class="section-subtitle">实时天气与未来10天预报</p>
+            </div>
+
+            <!-- Current Weather -->
+            <div class="current-weather">
+                <div class="weather-main">
+                    <div class="weather-icon">☀️</div>
+                    <div class="weather-temp">
+                        <span class="temp-value">18</span>
+                        <span class="temp-unit">°C</span>
+                    </div>
+                    <div class="weather-desc">晴朗</div>
+                </div>
+                <div class="weather-details">
+                    <div class="weather-detail-item">
+                        <span class="detail-icon">💧</span>
+                        <span class="detail-label">湿度</span>
+                        <span class="detail-value">65%</span>
+                    </div>
+                    <div class="weather-detail-item">
+                        <span class="detail-icon">💨</span>
+                        <span class="detail-label">风速</span>
+                        <span class="detail-value">12 km/h</span>
+                    </div>
+                    <div class="weather-detail-item">
+                        <span class="detail-icon">🌡️</span>
+                        <span class="detail-label">体感温度</span>
+                        <span class="detail-value">17°C</span>
+                    </div>
+                    <div class="weather-detail-item">
+                        <span class="detail-icon">👁️</span>
+                        <span class="detail-label">可见度</span>
+                        <span class="detail-value">10 km</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hourly Weather -->
+            <div class="hourly-weather">
+                <h3 class="subsection-title">今日逐时预报 <span class="loc-sub">济州市 (莲洞)</span></h3>
+                <div class="hourly-scroll">
+                    <div class="hourly-item">
+                        <div class="hourly-time">9h</div>
+                        <div class="hourly-icon">☀️</div>
+                        <div class="hourly-temp">15°</div>
+                        <div class="hourly-wind">3.2m/s</div>
+                        <div class="hourly-precip">0mm</div>
+                    </div>
+                    <div class="hourly-item">
+                        <div class="hourly-time">10h</div>
+                        <div class="hourly-icon">☀️</div>
+                        <div class="hourly-temp">16°</div>
+                        <div class="hourly-wind">3.5m/s</div>
+                        <div class="hourly-precip">0mm</div>
+                    </div>
+                    <div class="hourly-item">
+                        <div class="hourly-time">11h</div>
+                        <div class="hourly-icon">☀️</div>
+                        <div class="hourly-temp">17°</div>
+                        <div class="hourly-wind">4.1m/s</div>
+                        <div class="hourly-precip">0mm</div>
+                    </div>
+                    <div class="hourly-item">
+                        <div class="hourly-time">12h</div>
+                        <div class="hourly-icon">☀️</div>
+                        <div class="hourly-temp">18°</div>
+                        <div class="hourly-wind">4.3m/s</div>
+                        <div class="hourly-precip">0mm</div>
+                    </div>
+                    <div class="hourly-item">
+                        <div class="hourly-time">13h</div>
+                        <div class="hourly-icon">🌤️</div>
+                        <div class="hourly-temp">18°</div>
+                        <div class="hourly-wind">4.5m/s</div>
+                        <div class="hourly-precip">0mm</div>
+                    </div>
+                    <div class="hourly-item">
+                        <div class="hourly-time">14h</div>
+                        <div class="hourly-icon">🌤️</div>
+                        <div class="hourly-temp">18°</div>
+                        <div class="hourly-wind">4.2m/s</div>
+                        <div class="hourly-precip">0mm</div>
+                    </div>
+                    <div class="hourly-item">
+                        <div class="hourly-time">15h</div>
+                        <div class="hourly-icon">⛅</div>
+                        <div class="hourly-temp">17°</div>
+                        <div class="hourly-wind">3.8m/s</div>
+                        <div class="hourly-precip">0mm</div>
+                    </div>
+                    <div class="hourly-item">
+                        <div class="hourly-time">16h</div>
+                        <div class="hourly-icon">⛅</div>
+                        <div class="hourly-temp">17°</div>
+                        <div class="hourly-wind">3.5m/s</div>
+                        <div class="hourly-precip">0mm</div>
+                    </div>
+                    <div class="hourly-item">
+                        <div class="hourly-time">17h</div>
+                        <div class="hourly-icon">⛅</div>
+                        <div class="hourly-temp">16°</div>
+                        <div class="hourly-wind">3.2m/s</div>
+                        <div class="hourly-precip">0mm</div>
+                    </div>
+                    <div class="hourly-item">
+                        <div class="hourly-time">18h</div>
+                        <div class="hourly-icon">☁️</div>
+                        <div class="hourly-temp">15°</div>
+                        <div class="hourly-wind">2.8m/s</div>
+                        <div class="hourly-precip">0mm</div>
+                    </div>
+                    <div class="hourly-item">
+                        <div class="hourly-time">19h</div>
+                        <div class="hourly-icon">🌙</div>
+                        <div class="hourly-temp">14°</div>
+                        <div class="hourly-wind">2.5m/s</div>
+                        <div class="hourly-precip">0mm</div>
+                    </div>
+                    <div class="hourly-item">
+                        <div class="hourly-time">20h</div>
+                        <div class="hourly-icon">🌙</div>
+                        <div class="hourly-temp">13°</div>
+                        <div class="hourly-wind">2.3m/s</div>
+                        <div class="hourly-precip">0mm</div>
+                    </div>
+                    <div class="hourly-item">
+                        <div class="hourly-time">21h</div>
+                        <div class="hourly-icon">🌙</div>
+                        <div class="hourly-temp">13°</div>
+                        <div class="hourly-wind">2.1m/s</div>
+                        <div class="hourly-precip">0mm</div>
+                    </div>
+                    <div class="hourly-item">
+                        <div class="hourly-time">22h</div>
+                        <div class="hourly-icon">🌙</div>
+                        <div class="hourly-temp">12°</div>
+                        <div class="hourly-wind">2.0m/s</div>
+                        <div class="hourly-precip">0mm</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weekly Weather -->
+            <div class="weekly-weather">
+                <h3 class="subsection-title">未来10天长期预报 <span class="loc-sub">济州市</span></h3>
+                <div class="weekly-grid">
+                    <div class="weekly-item">
+                        <div class="weekly-day">今天<br><span style="font-size:9px; color:#aaa;">+0D</span></div>
+                        <div class="weekly-icon">☀️</div>
+                        <div class="weekly-temps">
+                            <span class="temp-high">18°</span>
+                            <span class="temp-low">12°</span>
+                        </div>
+                        <div class="weekly-precip">0%</div>
+                    </div>
+                    <div class="weekly-item">
+                        <div class="weekly-day">周日<br><span style="font-size:9px; color:#aaa;">+1D</span></div>
+                        <div class="weekly-icon">🌤️</div>
+                        <div class="weekly-temps">
+                            <span class="temp-high">19°</span>
+                            <span class="temp-low">13°</span>
+                        </div>
+                        <div class="weekly-precip">10%</div>
+                    </div>
+                    <div class="weekly-item">
+                        <div class="weekly-day">周一<br><span style="font-size:9px; color:#aaa;">+2D</span></div>
+                        <div class="weekly-icon">⛅</div>
+                        <div class="weekly-temps">
+                            <span class="temp-high">17°</span>
+                            <span class="temp-low">11°</span>
+                        </div>
+                        <div class="weekly-precip">20%</div>
+                    </div>
+                    <div class="weekly-item">
+                        <div class="weekly-day">周二<br><span style="font-size:9px; color:#aaa;">+3D</span></div>
+                        <div class="weekly-icon">🌧️</div>
+                        <div class="weekly-temps">
+                            <span class="temp-high">15°</span>
+                            <span class="temp-low">10°</span>
+                        </div>
+                        <div class="weekly-precip precip-blue">80%</div>
+                    </div>
+                    <div class="weekly-item">
+                        <div class="weekly-day">周三<br><span style="font-size:9px; color:#aaa;">+4D</span></div>
+                        <div class="weekly-icon">🌦️</div>
+                        <div class="weekly-temps">
+                            <span class="temp-high">16°</span>
+                            <span class="temp-low">11°</span>
+                        </div>
+                        <div class="weekly-precip precip-blue">60%</div>
+                    </div>
+                    <div class="weekly-item">
+                        <div class="weekly-day">周四<br><span style="font-size:9px; color:#aaa;">+5D</span></div>
+                        <div class="weekly-icon">☀️</div>
+                        <div class="weekly-temps">
+                            <span class="temp-high">20°</span>
+                            <span class="temp-low">14°</span>
+                        </div>
+                        <div class="weekly-precip">5%</div>
+                    </div>
+                    <div class="weekly-item">
+                        <div class="weekly-day">周五<br><span style="font-size:9px; color:#aaa;">+6D</span></div>
+                        <div class="weekly-icon">☀️</div>
+                        <div class="weekly-temps">
+                            <span class="temp-high">21°</span>
+                            <span class="temp-low">15°</span>
+                        </div>
+                        <div class="weekly-precip">0%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hallasan Section -->
+    <section id="hallasan" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">⛰️ 汉拿山登山信息 <span class="status-badge-header status-updated">已更新</span></h2>
+                <p class="section-subtitle">实时管制状态与登山指南</p>
+            </div>
+            <div class="hallasan-status">
+                <div class="status-card status-open">
+                    <div class="status-icon">✅</div>
+                    <div class="status-content">
+                        <h3>当前状态：开放</h3>
+                        <p>所有登山路线正常开放</p>
+                        <div class="status-time">更新时间：2026-02-08 16:00</div>
+                    </div>
+                </div>
+                <div class="trails-grid">
+                    <div class="trail-card">
+                        <div class="trail-header">
+                            <h4>城板岳路线 <span class="trail-subtitle">Seongpanak</span></h4>
+                            <span class="trail-status open">🟢 正常通行</span>
+                        </div>
+                        <div class="trail-info">
+                            <div class="trail-detail">
+                                <span class="trail-label">距离：</span>
+                                <span class="trail-value">9.6 km</span>
+                            </div>
+                            <div class="trail-detail">
+                                <span class="trail-label">所需时间：</span>
+                                <span class="trail-value">4-5小时</span>
+                            </div>
+                            <div class="trail-detail">
+                                <span class="trail-label">难度：</span>
+                                <span class="trail-value">中等</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="trail-card">
+                        <div class="trail-header">
+                            <h4>观音寺路线 <span class="trail-subtitle">Gwaneumsa</span></h4>
+                            <span class="trail-status open">🟢 正常通行</span>
+                        </div>
+                        <div class="trail-info">
+                            <div class="trail-detail">
+                                <span class="trail-label">距离：</span>
+                                <span class="trail-value">8.7 km</span>
+                            </div>
+                            <div class="trail-detail">
+                                <span class="trail-label">所需时间：</span>
+                                <span class="trail-value">4-5小时</span>
+                            </div>
+                            <div class="trail-detail">
+                                <span class="trail-label">难度：</span>
+                                <span class="trail-value">中等</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="trail-card">
+                        <div class="trail-header">
+                            <h4>灵室路线 <span class="trail-subtitle">Yeongsil</span></h4>
+                            <span class="trail-status open">🟢 正常通行</span>
+                        </div>
+                        <div class="trail-info">
+                            <div class="trail-detail">
+                                <span class="trail-label">距离：</span>
+                                <span class="trail-value">5.8 km</span>
+                            </div>
+                            <div class="trail-detail">
+                                <span class="trail-label">所需时间：</span>
+                                <span class="trail-value">3-4小时</span>
+                            </div>
+                            <div class="trail-detail">
+                                <span class="trail-label">难度：</span>
+                                <span class="trail-value">较易</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="trail-card">
+                        <div class="trail-header">
+                            <h4>御里牧路线 <span class="trail-subtitle">Eorimok</span></h4>
+                            <span class="trail-status open">🟢 正常通行</span>
+                        </div>
+                        <div class="trail-info">
+                            <div class="trail-detail">
+                                <span class="trail-label">距离：</span>
+                                <span class="trail-value">4.7 km</span>
+                            </div>
+                            <div class="trail-detail">
+                                <span class="trail-label">所需时间：</span>
+                                <span class="trail-value">2-3小时</span>
+                            </div>
+                            <div class="trail-detail">
+                                <span class="trail-label">难度：</span>
+                                <span class="trail-value">较易</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Airport Section -->
+    <section id="airport" class="section section-alt">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">✈️ 济州国际机场 <span class="status-badge-header status-updated">已更新</span></h2>
+                <p class="section-subtitle">国际航班实时信息 · 重点显示延误和取消航班</p>
+            </div>
+
+            <!-- Flight Tabs -->
+            <div class="flight-tabs">
+                <button class="flight-tab active" data-tab="arrivals">到达航班</button>
+                <button class="flight-tab" data-tab="departures">出发航班</button>
+            </div>
+
+            <!-- Arrivals -->
+            <div class="flight-content active" id="arrivals">
+                <div class="flight-table">
+                    <div class="flight-row flight-header">
+                        <div class="flight-col">航班号</div>
+                        <div class="flight-col">出发地</div>
+                        <div class="flight-col">计划时间</div>
+                        <div class="flight-col">状态</div>
+                    </div>
+                    <div class="flight-row">
+                        <div class="flight-col"><strong>CA123</strong></div>
+                        <div class="flight-col">北京首都</div>
+                        <div class="flight-col">14:30</div>
+                        <div class="flight-col"><span class="status-badge status-landed">已降落</span></div>
+                    </div>
+                    <div class="flight-row">
+                        <div class="flight-col"><strong>MU567</strong></div>
+                        <div class="flight-col">上海浦东</div>
+                        <div class="flight-col">15:45</div>
+                        <div class="flight-col"><span class="status-badge status-ontime">准点</span></div>
+                    </div>
+                    <div class="flight-row">
+                        <div class="flight-col"><strong>CZ890</strong></div>
+                        <div class="flight-col">广州白云</div>
+                        <div class="flight-col">16:20</div>
+                        <div class="flight-col"><span class="status-badge status-delayed">延误 30分钟</span></div>
+                    </div>
+                    <div class="flight-row">
+                        <div class="flight-col"><strong>HU234</strong></div>
+                        <div class="flight-col">深圳宝安</div>
+                        <div class="flight-col">17:10</div>
+                        <div class="flight-col"><span class="status-badge status-ontime">准点</span></div>
+                    </div>
+                    <div class="flight-row">
+                        <div class="flight-col"><strong>3U456</strong></div>
+                        <div class="flight-col">成都双流</div>
+                        <div class="flight-col">18:00</div>
+                        <div class="flight-col"><span class="status-badge status-cancelled">取消</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Departures -->
+            <div class="flight-content" id="departures">
+                <div class="flight-table">
+                    <div class="flight-row flight-header">
+                        <div class="flight-col">航班号</div>
+                        <div class="flight-col">目的地</div>
+                        <div class="flight-col">计划时间</div>
+                        <div class="flight-col">状态</div>
+                    </div>
+                    <div class="flight-row">
+                        <div class="flight-col"><strong>CA124</strong></div>
+                        <div class="flight-col">北京首都</div>
+                        <div class="flight-col">16:00</div>
+                        <div class="flight-col"><span class="status-badge status-boarding">登机中</span></div>
+                    </div>
+                    <div class="flight-row">
+                        <div class="flight-col"><strong>MU568</strong></div>
+                        <div class="flight-col">上海浦东</div>
+                        <div class="flight-col">17:15</div>
+                        <div class="flight-col"><span class="status-badge status-ontime">准点</span></div>
+                    </div>
+                    <div class="flight-row">
+                        <div class="flight-col"><strong>CZ891</strong></div>
+                        <div class="flight-col">广州白云</div>
+                        <div class="flight-col">18:30</div>
+                        <div class="flight-col"><span class="status-badge status-delayed">延误 45分钟</span></div>
+                    </div>
+                    <div class="flight-row">
+                        <div class="flight-col"><strong>HU235</strong></div>
+                        <div class="flight-col">深圳宝安</div>
+                        <div class="flight-col">19:20</div>
+                        <div class="flight-col"><span class="status-badge status-ontime">准点</span></div>
+                    </div>
+                    <div class="flight-row">
+                        <div class="flight-col"><strong>CA789</strong></div>
+                        <div class="flight-col">杭州萧山</div>
+                        <div class="flight-col">20:00</div>
+                        <div class="flight-col"><span class="status-badge status-ontime">准点</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>济州岛旅游助手</h3>
+                    <p>为中国游客提供最准确、最及时的济州岛旅游信息</p>
+                </div>
+                <div class="footer-section">
+                    <h4>快速链接</h4>
+                    <ul class="footer-links">
+                        <li><a href="#cctv">实时监控</a></li>
+                        <li><a href="#weather">天气预报</a></li>
+                        <li><a href="#hallasan">汉拿山</a></li>
+                        <li><a href="#airport">机场信息</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>联系我们</h4>
+                    <p>📧 info@jejutravel.com</p>
+                    <p>📱 +82-64-123-4567</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 济州岛旅游助手. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

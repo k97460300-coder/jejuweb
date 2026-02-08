@@ -1,0 +1,10 @@
+script_old.js
+script_backup.js
+midterm_forecast.js
+weekly_update.js
+test_api.html
+.DS_Store
+node_modules/
+.firebase/
+.firebaserc
+firebase-debug.log
