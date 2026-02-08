@@ -391,17 +391,27 @@ async function initHallasan() {
 
                 const info = getStatusCN(st);
 
+                // 상태 텍스트 간결화
+                let displayStatus = '';
+                if (statusText.includes('전면통제') || statusText.includes('통제')) {
+                    displayStatus = '全面管制';
+                } else if (statusText.includes('부분')) {
+                    displayStatus = '部分管制';
+                } else if (st === '정상') {
+                    displayStatus = '正常开放';
+                } else {
+                    displayStatus = '确认中';
+                }
+
                 html += `
                     <div class="trail-card">
                         <div class="trail-header">
-                            <h4>${t.name} <span class="trail-subtitle">${t.sub}</span></h4>
-                            <span class="trail-status open" style="background: ${info.c}; color: white;">${info.t}</span>
+                            <h4 style="font-size: 1rem; margin: 0;">${t.name}</h4>
+                            <span class="trail-status open" style="background: ${info.c}; color: white; font-size: 0.75rem; padding: 4px 8px; border-radius: 4px; white-space: nowrap;">${info.t}</span>
                         </div>
                         <div class="trail-info">
-                            <div class="trail-detail">
-                                <span class="trail-label">状态：</span>
-                                <span class="trail-value">${statusText || (st === '정상' ? '正常开放' : st === '통제' ? '禁止通行' : st === '부분' ? '部分限制' : '确认中')}</span>
-                            </div>
+                            <div style="font-size: 0.85rem; color: #aaa;">${t.sub}</div>
+                            <div style="font-size: 0.9rem; margin-top: 8px; color: ${st === '통제' ? '#f44336' : '#4caf50'};">${displayStatus}</div>
                         </div>
                     </div>`;
             });

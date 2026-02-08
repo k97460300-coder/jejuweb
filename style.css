@@ -1,4 +1,4 @@
-/* ==================== Reset & Base Styles ==================== */
+ï»¿/* ==================== Reset & Base Styles ==================== */
 * {
     margin: 0;
     padding: 0;
@@ -279,7 +279,7 @@ body {
 /* CCTV Grid */
 .cctv-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: var(--spacing-lg);
 }
 
@@ -930,56 +930,56 @@ body {
 
 /* ==================== Icon Size Adjustments ==================== */
 
-/* ÇöÀç ³¯¾¾ ¾ÆÀÌÄÜ Å©±â Ãà¼Ò */
+/* ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å©ï¿½ï¿½ ï¿½ï¿½ï¿½ */
 .weather-icon {
     font-size: 3.5rem !important;
 }
 
-/* ½Ã°£´ëº° ³¯¾¾ ¾ÆÀÌÄÜ Å©±â Ãà¼Ò */
+/* ï¿½Ã°ï¿½ï¿½ëº° ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å©ï¿½ï¿½ ï¿½ï¿½ï¿½ */
 .hourly-icon {
     font-size: 1.5rem !important;
     margin: 6px 0 !important;
 }
 
-/* ÁÖ°£ ³¯¾¾ ¾ÆÀÌÄÜ Å©±â Ãà¼Ò */
+/* ï¿½Ö°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å©ï¿½ï¿½ ï¿½ï¿½ï¿½ */
 .weekly-icon {
     font-size: 2rem !important;
     margin: 8px 0 !important;
 }
 
-/* Áö¿ª ÅÇ ¾ÆÀÌÄÜ Å©±â Ãà¼Ò */
+/* ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å©ï¿½ï¿½ ï¿½ï¿½ï¿½ */
 .tab-icon {
     font-size: 1.5rem !important;
 }
 
-/* »ó¼¼ Á¤º¸ ¾ÆÀÌÄÜ Å©±â Ãà¼Ò */
+/* ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å©ï¿½ï¿½ ï¿½ï¿½ï¿½ */
 .detail-icon {
     font-size: 1.2rem !important;
 }
 
-/* ½Ã°£´ëº° ³¯¾¾ Ä«µå Å©±â Á¶Á¤ */
+/* ï¿½Ã°ï¿½ï¿½ëº° ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½ï¿½ Å©ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
 .hourly-item {
     min-width: 80px !important;
     padding: 12px 8px !important;
 }
 
-/* ÁÖ°£ ³¯¾¾ Ä«µå °£°Ý Á¶Á¤ */
+/* ï¿½Ö°ï¿½ ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
 .weekly-item {
     padding: 12px !important;
 }
 
-/* ¿Âµµ Ç¥½Ã Å©±â Á¶Á¤ */
+/* ï¿½Âµï¿½ Ç¥ï¿½ï¿½ Å©ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
 .temp-value {
     font-size: 3rem !important;
 }
 
-/* ½Ã°£´ëº° ¿Âµµ Å©±â Á¶Á¤ */
+/* ï¿½Ã°ï¿½ï¿½ëº° ï¿½Âµï¿½ Å©ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
 .hourly-temp {
     font-size: 1rem !important;
     font-weight: 600;
 }
 
-/* ÁÖ°£ ¿Âµµ Å©±â Á¶Á¤ */
+/* ï¿½Ö°ï¿½ ï¿½Âµï¿½ Å©ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
 .temp-high {
     font-size: 1.1rem !important;
 }
@@ -987,3 +987,4 @@ body {
 .temp-low {
     font-size: 1.1rem !important;
 }
+
