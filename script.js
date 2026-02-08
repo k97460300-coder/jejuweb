@@ -470,8 +470,10 @@ async function initFlightData() {
         const items = xmlDoc.querySelectorAll("item");
         let allFlights = [];
 
+        log(`도착 항공편 API 응답: 총 ${items.length}개`);
+
         items.forEach((item, index) => {
-            if (index >= 20) return; // 최대 20개만 표시
+            if (index >= 50) return; // 최대 50개만 표시
 
             const rmk = item.querySelector("rmk")?.textContent || '';
             const airline = item.querySelector("airlineKorean")?.textContent || item.querySelector("airline")?.textContent || '';
@@ -529,8 +531,10 @@ async function initFlightData() {
         const items = xmlDoc.querySelectorAll("item");
         let allFlights = [];
 
+        log(`출발 항공편 API 응답: 총 ${items.length}개`);
+
         items.forEach((item, index) => {
-            if (index >= 20) return; // 최대 20개만 표시
+            if (index >= 50) return; // 최대 50개만 표시
 
             const rmk = item.querySelector("rmk")?.textContent || '';
             const airline = item.querySelector("airlineKorean")?.textContent || item.querySelector("airline")?.textContent || '';
