@@ -472,6 +472,18 @@ async function initFlightData() {
 
         log(`도착 항공편 API 응답: 총 ${items.length}개`);
 
+        // 첫 번째 항공편의 모든 필드 출력 (디버깅용)
+        if (items.length > 0) {
+            const firstItem = items[0];
+            const allFields = {};
+            firstItem.querySelectorAll('*').forEach(el => {
+                if (el.children.length === 0) {
+                    allFields[el.tagName] = el.textContent;
+                }
+            });
+            log('첫 번째 도착 항공편 전체 필드:', allFields);
+        }
+
         items.forEach((item, index) => {
             if (index >= 50) return; // 최대 50개만 표시
 
@@ -484,6 +496,7 @@ async function initFlightData() {
                 depAirport: item.querySelector("depAirport")?.textContent || '',
                 arrAirport: item.querySelector("arrAirport")?.textContent || '',
                 scheduledatetime: item.querySelector("scheduledatetime")?.textContent || '',
+                estimatedatetime: item.querySelector("estimatedatetime")?.textContent || '',  // 실제 시간
                 rmk: rmk
             });
         });
