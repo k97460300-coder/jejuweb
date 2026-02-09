@@ -814,10 +814,8 @@ document.addEventListener('DOMContentLoaded', function () {
     setTimeout(() => loadWeatherForLocation('udo'), 2000);
 
     // 한라산 및 공항 정보
-    setTimeout(initHallasan, 2500);
+    setTimeout(loadHallasanInfo, 2500);
     setTimeout(initFlightData, 3000);
 
     log('济州岛旅游网站初始化完成！');
 });
-
-
