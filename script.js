@@ -4,34 +4,35 @@ const API_KEY = '05988a053767a7a6cc5553d077ce7ea541c60806a0160d5ac2e9119ebe5a61c
 // Cloudflare Worker CORS 프록시
 const WORKER_URL = 'https://jejuweb.k97460300.workers.dev';
 
-// 중국 본토 주요 도시 목록
+// 중국 본토 주요 도시 목록 (한글, 중문, 영문 모두 포함)
 const CHINA_CITIES = [
-    '상하이', '푸동', '浦东', 'SHANGHAI', 'PUDONG',
-    '베이징', '北京', 'BEIJING', '서우두', '다싱',
-    '청도', '칭다오', '青岛', 'QINGDAO',
-    '항저우', '항조우', '杭州', 'HANGZHOU',
-    '난징', '남경', '南京', 'NANJING',
-    '심양', '선양', '沈阳', 'SHENYANG',
-    '우시', '무석', '无锡', 'WUXI',
-    '닝보', '宁波', 'NINGBO',
-    '선전', '심천', '深圳', 'SHENZHEN',
-    '광저우', '广州', 'GUANGZHOU',
-    '청두', '成都', 'CHENGDU',
-    '충칭', '重庆', 'CHONGQING',
-    '시안', '西安', "XI'AN",
-    '우한', '武汉', 'WUHAN',
-    '톈진', '天津', 'TIANJIN',
-    '다롄', '大连', 'DALIAN',
-    '옌타이', '烟台', 'YANTAI',
-    '웨이하이', '威海', 'WEIHAI'
+    '상하이', '푸동', '浦东', 'shanghai', 'pudong',
+    '베이징', '北京', 'beijing', '서우두', '다싱', 'daxing',
+    '청도', '칭다오', '青岛', 'qingdao',
+    '항저우', '항조우', '杭州', 'hangzhou',
+    '난징', '남경', '南京', 'nanjing',
+    '심양', '선양', '沈阳', 'shenyang',
+    '우시', '무석', '无锡', 'wuxi',
+    '닝보', '宁波', 'ningbo',
+    '선전', '심천', '深圳', 'shenzhen',
+    '광저우', '广州', 'guangzhou',
+    '청두', '成都', 'chengdu',
+    '충칭', '重庆', 'chongqing',
+    '시안', '西安', "xi'an", 'xian',
+    '우한', '武汉', 'wuhan',
+    '톈진', '天津', 'tianjin',
+    '다롄', '大连', 'dalian',
+    '옌타이', '烟台', 'yantai',
+    '웨이하이', '威海', 'weihai',
+    '카오슝', '가오슝', '高雄', 'kaohsiung'  // 대만이지만 포함
 ];
 
-// 중국 도시인지 확인하는 함수
+// 중국 도시인지 확인하는 함수 (대소문자 무시)
 function isChinaCity(cityName) {
     if (!cityName) return false;
-    const upperCity = cityName.toUpperCase();
+    const lowerCity = cityName.toLowerCase();
     return CHINA_CITIES.some(city =>
-        upperCity.includes(city.toUpperCase()) ||
+        lowerCity.includes(city.toLowerCase()) ||
         cityName.includes(city)
     );
 }
