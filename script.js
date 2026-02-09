@@ -4,10 +4,11 @@ const API_KEY = '05988a053767a7a6cc5553d077ce7ea541c60806a0160d5ac2e9119ebe5a61c
 // Cloudflare Worker CORS 프록시
 const WORKER_URL = 'https://jejuweb.k97460300.workers.dev';
 
-// 중국 본토 주요 도시 목록 (한글, 중문, 영문 모두 포함)
-const CHINA_CITIES = [
+// 중국 본토 + 대만 + 홍콩 도시 목록
+const CHINA_TAIWAN_HK_CITIES = [
+    // 중국 본토
     '상하이', '푸동', '浦东', 'shanghai', 'pudong',
-    '베이징', '北京', 'beijing', '서우두', '다싱', 'daxing',
+    '베이징', '北京', 'beijing', '서우두', '다싱', 'daxing', 'shoudu',
     '청도', '칭다오', '青岛', 'qingdao',
     '항저우', '항조우', '杭州', 'hangzhou',
     '난징', '남경', '南京', 'nanjing',
@@ -24,14 +25,18 @@ const CHINA_CITIES = [
     '다롄', '大连', 'dalian',
     '옌타이', '烟台', 'yantai',
     '웨이하이', '威海', 'weihai',
-    '카오슝', '가오슝', '高雄', 'kaohsiung'  // 대만이지만 포함
+    // 대만
+    '타이페이', '타오위안', '台北', '桃园', 'taipei', 'taoyuan',
+    '카오슝', '가오슝', '高雄', 'kaohsiung',
+    // 홍콩
+    '홍콩', '香港', 'hong kong', 'hongkong'
 ];
 
-// 중국 도시인지 확인하는 함수 (대소문자 무시)
-function isChinaCity(cityName) {
+// 중국+대만+홍콩 도시인지 확인하는 함수
+function isChinaTaiwanHK(cityName) {
     if (!cityName) return false;
     const lowerCity = cityName.toLowerCase();
-    return CHINA_CITIES.some(city =>
+    return CHINA_TAIWAN_HK_CITIES.some(city =>
         lowerCity.includes(city.toLowerCase()) ||
         cityName.includes(city)
     );
@@ -574,6 +579,11 @@ async function initFlightData() {
                 return; // 제주가 아니면 스킵
             }
 
+            // 중국+대만+홍콩 노선만 필터링
+            if (!isChinaTaiwanHK(depAirport)) {
+                return; // 중국/대만/홍콩이 아니면 스킵
+            }
+
             // 날짜 필터링: 당일 항공편만 표시
             if (scheduledatetime && scheduledatetime.length >= 8) {
                 const flightDate = scheduledatetime.substring(0, 8); // YYYYMMDD
@@ -650,6 +660,11 @@ async function initFlightData() {
             // 제주 공항 출발 항공편만 필터링
             if (depAirportCode !== 'CJU') {
                 return; // 제주가 아니면 스킵
+            }
+
+            // 중국+대만+홍콩 노선만 필터링
+            if (!isChinaTaiwanHK(arrAirport)) {
+                return; // 중국/대만/홍콩이 아니면 스킵
             }
 
             if (scheduledatetime && scheduledatetime.length >= 8) {
