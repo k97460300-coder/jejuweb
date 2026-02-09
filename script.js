@@ -362,7 +362,8 @@ async function fetchMidTermForecast(locationKey) {
 async function loadHallasanInfo() {
     try {
         const url = 'https://jeju.go.kr/tool/hallasan/road-body.jsp';
-        const res = await fetch(url);
+        const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(url)}`;
+        const res = await fetch(proxyUrl);
         const html = await res.text();
 
         const parser = new DOMParser();
@@ -531,8 +532,9 @@ async function initFlightData() {
     // 도착 항공편
     try {
         const arrUrl = `http://openapi.airport.co.kr/service/rest/StatusOfFlights/getArrFlightStatusList?serviceKey=${API_KEY}&arr_airport_code=CJU&line=I&searchday=${todayStr}&from_time=0000&to_time=2359&pageNo=1&numOfRows=100`;
+        const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(arrUrl)}`;
 
-        const res = await fetch(arrUrl);
+        const res = await fetch(proxyUrl);
         const text = await res.text();
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(text, "text/xml");
@@ -629,8 +631,9 @@ async function initFlightData() {
     // 출발 항공편
     try {
         const depUrl = `http://openapi.airport.co.kr/service/rest/StatusOfFlights/getDepFlightStatusList?serviceKey=${API_KEY}&airport_code=CJU&line=I&searchday=${todayStr}&from_time=0000&to_time=2359&pageNo=1&numOfRows=100`;
+        const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(depUrl)}`;
 
-        const res = await fetch(depUrl);
+        const res = await fetch(proxyUrl);
         const text = await res.text();
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(text, "text/xml");
