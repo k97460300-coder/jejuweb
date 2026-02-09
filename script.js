@@ -531,7 +531,15 @@ async function initFlightData() {
 
             const rmk = item.querySelector("rmk")?.textContent || '';
             const airline = item.querySelector("airlineKorean")?.textContent || item.querySelector("airline")?.textContent || '';
-            const scheduledatetime = item.querySelector("scheduledatetime")?.textContent || '';`r`n            const arrAirportCode = item.querySelector("arrAirportCode")?.textContent || '';`r`n            `r`n            // 제주 공항 도착 항공편만 필터링`r`n            if (arrAirportCode !== 'CJU') {`r`n                return; // 제주가 아니면 스킵`r`n            }`r`n            `r`n            // 날짜 필터링: 당일 항공편만 표시
+            const scheduledatetime = item.querySelector("scheduledatetime")?.textContent || '';
+            const arrAirportCode = item.querySelector("arrAirportCode")?.textContent || '';
+
+            // 제주 공항 도착 항공편만 필터링
+            if (arrAirportCode !== 'CJU') {
+                return; // 제주가 아니면 스킵
+            }
+
+            // 날짜 필터링: 당일 항공편만 표시
             if (scheduledatetime && scheduledatetime.length >= 8) {
                 const flightDate = scheduledatetime.substring(0, 8); // YYYYMMDD
                 if (flightDate !== todayStr) {
@@ -600,9 +608,9 @@ async function initFlightData() {
 
             const rmk = item.querySelector("rmk")?.textContent || '';
             const airline = item.querySelector("airlineKorean")?.textContent || item.querySelector("airline")?.textContent || '';
-            const scheduledatetime = item.querySelector("scheduledatetime")?.textContent || '';`r`n            const arrAirportCode = item.querySelector("arrAirportCode")?.textContent || '';`r`n            `r`n            // 제주 공항 도착 항공편만 필터링`r`n            if (arrAirportCode !== 'CJU') {`r`n                return; // 제주가 아니면 스킵`r`n            }`r`n            `r`n            // 날짜 필터링: 당일 항공편만 표시
+            const scheduledatetime = item.querySelector("scheduledatetime")?.textContent || ''; `r`n            const arrAirportCode = item.querySelector("arrAirportCode")?.textContent || ''; `r`n            `r`n            // 제주 공항 도착 항공편만 필터링`r`n            if (arrAirportCode !== 'CJU') {`r`n                return; // 제주가 아니면 스킵`r`n            }`r`n            `r`n            // 날짜 필터링: 당일 항공편만 표시
             const depAirportCode = item.querySelector("depAirportCode")?.textContent || item.querySelector("airport_code")?.textContent || '';
-            
+
             // 제주 공항 출발 항공편만 필터링
             if (depAirportCode !== 'CJU') {
                 return; // 제주가 아니면 스킵
