@@ -540,7 +540,7 @@ async function initFlightData() {
 
     // 도착 항공편
     try {
-        const arrUrl = `http://openapi.airport.co.kr/service/rest/StatusOfFlights/getArrFlightStatusList?serviceKey=${API_KEY}&arr_airport_code=CJU&line=I&searchday=${todayStr}&from_time=0000&to_time=2359&pageNo=1&numOfRows=100`;
+        const arrUrl = `http://openapi.airport.co.kr/service/rest/StatusOfFlights/getArrFlightStatusList?serviceKey=${API_KEY}&arr_airport_code=CJU&line=I&searchday=${todayStr}&from_time=0000&to_time=2359&pageNo=1&numOfRows=500`;
         const proxyUrl = `${WORKER_URL}?url=${encodeURIComponent(arrUrl)}`;
 
         const res = await fetch(proxyUrl);
