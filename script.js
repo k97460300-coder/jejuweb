@@ -553,12 +553,15 @@ async function initFlightData() {
             </div>`;
     };
 
-    // 도착 항공편
+    // 도착 항공편 - 상세 API 테스트
     try {
-        const arrUrl = `http://openapi.airport.co.kr/service/rest/StatusOfFlights/getArrFlightStatusList?serviceKey=${API_KEY}&arr_airport_code=CJU&line=I&searchday=${todayStr}&from_time=0000&to_time=2359&pageNo=1&numOfRows=500`;
-        const proxyUrl = `${WORKER_URL}?url=${encodeURIComponent(arrUrl)}`;
+        // 먼저 상세 API 시도
+        const arrUrlDetail = `http://openapi.airport.co.kr/service/rest/StatusOfFlights/getFlightStatusListDetail?serviceKey=${API_KEY}&airport_code=CJU&flight_type=A&searchday=${todayStr}&from_time=0000&to_time=2359&pageNo=1&numOfRows=500`;
+        const proxyUrlDetail = `${WORKER_URL}?url=${encodeURIComponent(arrUrlDetail)}`;
 
-        const res = await fetch(proxyUrl);
+        log('상세 API 테스트 중:', arrUrlDetail);
+
+        const res = await fetch(proxyUrlDetail);
         const text = await res.text();
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(text, "text/xml");
