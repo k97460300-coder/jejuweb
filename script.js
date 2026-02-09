@@ -1,4 +1,4 @@
-// API 키
+﻿// API 키
 const API_KEY = '05988a053767a7a6cc5553d077ce7ea541c60806a0160d5ac2e9119ebe5a61ce';
 
 // 4개 주요 관광지 좌표
@@ -531,9 +531,7 @@ async function initFlightData() {
 
             const rmk = item.querySelector("rmk")?.textContent || '';
             const airline = item.querySelector("airlineKorean")?.textContent || item.querySelector("airline")?.textContent || '';
-            const scheduledatetime = item.querySelector("scheduledatetime")?.textContent || '';
-
-            // 날짜 필터링: 당일 항공편만 표시
+            const scheduledatetime = item.querySelector("scheduledatetime")?.textContent || '';`r`n            const arrAirportCode = item.querySelector("arrAirportCode")?.textContent || '';`r`n            `r`n            // 제주 공항 도착 항공편만 필터링`r`n            if (arrAirportCode !== 'CJU') {`r`n                return; // 제주가 아니면 스킵`r`n            }`r`n            `r`n            // 날짜 필터링: 당일 항공편만 표시
             if (scheduledatetime && scheduledatetime.length >= 8) {
                 const flightDate = scheduledatetime.substring(0, 8); // YYYYMMDD
                 if (flightDate !== todayStr) {
@@ -602,9 +600,13 @@ async function initFlightData() {
 
             const rmk = item.querySelector("rmk")?.textContent || '';
             const airline = item.querySelector("airlineKorean")?.textContent || item.querySelector("airline")?.textContent || '';
-            const scheduledatetime = item.querySelector("scheduledatetime")?.textContent || '';
-
-            // 날짜 필터링: 당일 항공편만 표시
+            const scheduledatetime = item.querySelector("scheduledatetime")?.textContent || '';`r`n            const arrAirportCode = item.querySelector("arrAirportCode")?.textContent || '';`r`n            `r`n            // 제주 공항 도착 항공편만 필터링`r`n            if (arrAirportCode !== 'CJU') {`r`n                return; // 제주가 아니면 스킵`r`n            }`r`n            `r`n            // 날짜 필터링: 당일 항공편만 표시
+            const depAirportCode = item.querySelector("depAirportCode")?.textContent || item.querySelector("airport_code")?.textContent || '';
+            
+            // 제주 공항 출발 항공편만 필터링
+            if (depAirportCode !== 'CJU') {
+                return; // 제주가 아니면 스킵
+            }
             if (scheduledatetime && scheduledatetime.length >= 8) {
                 const flightDate = scheduledatetime.substring(0, 8); // YYYYMMDD
                 if (flightDate !== todayStr) {
@@ -765,3 +767,5 @@ document.addEventListener('DOMContentLoaded', function () {
 
     log('济州岛旅游网站初始化完成！');
 });
+
+
