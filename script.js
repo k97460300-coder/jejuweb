@@ -577,6 +577,7 @@ async function initFlightData() {
                 allFields[child.tagName] = child.textContent;
             }
             log('첫 번째 도착 항공편 전체 필드:', allFields);
+            log('estimatedatetime 필드:', firstItem.querySelector("estimatedatetime")?.textContent || 'NONE');
         }
 
         let cjuCount = 0;
