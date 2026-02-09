@@ -1,6 +1,9 @@
 ﻿// API 키
 const API_KEY = '05988a053767a7a6cc5553d077ce7ea541c60806a0160d5ac2e9119ebe5a61ce';
 
+// Cloudflare Worker CORS 프록시
+const WORKER_URL = 'https://jejuweb.k97460300.workers.dev';
+
 // 중국 본토 주요 도시 목록
 const CHINA_CITIES = [
     '상하이', '푸동', '浦东', 'SHANGHAI', 'PUDONG',
@@ -362,7 +365,7 @@ async function fetchMidTermForecast(locationKey) {
 async function loadHallasanInfo() {
     try {
         const url = 'https://jeju.go.kr/tool/hallasan/road-body.jsp';
-        const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(url)}`;
+        const proxyUrl = `${WORKER_URL}?url=${encodeURIComponent(url)}`;
         const res = await fetch(proxyUrl);
         const html = await res.text();
 
@@ -532,7 +535,7 @@ async function initFlightData() {
     // 도착 항공편
     try {
         const arrUrl = `http://openapi.airport.co.kr/service/rest/StatusOfFlights/getArrFlightStatusList?serviceKey=${API_KEY}&arr_airport_code=CJU&line=I&searchday=${todayStr}&from_time=0000&to_time=2359&pageNo=1&numOfRows=100`;
-        const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(arrUrl)}`;
+        const proxyUrl = `${WORKER_URL}?url=${encodeURIComponent(arrUrl)}`;
 
         const res = await fetch(proxyUrl);
         const text = await res.text();
@@ -631,7 +634,7 @@ async function initFlightData() {
     // 출발 항공편
     try {
         const depUrl = `http://openapi.airport.co.kr/service/rest/StatusOfFlights/getDepFlightStatusList?serviceKey=${API_KEY}&airport_code=CJU&line=I&searchday=${todayStr}&from_time=0000&to_time=2359&pageNo=1&numOfRows=100`;
-        const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(depUrl)}`;
+        const proxyUrl = `${WORKER_URL}?url=${encodeURIComponent(depUrl)}`;
 
         const res = await fetch(proxyUrl);
         const text = await res.text();

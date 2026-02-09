@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공항 API 테스트</title>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #00ff00;
+        }
+
+        pre {
+            background: #000;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px 5px;
+            cursor: pointer;
+        }
+
+        .info {
+            background: #333;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>제주공항 API 응답 테스트</h1>
+
+    <div class="info">
+        <strong>테스트 날짜:</strong> <span id="testDate"></span><br>
+        <strong>API 엔드포인트:</strong> 한국공항공사 - 도착 항공편
+    </div>
+
+    <button onclick="testArrivalAPI()">도착 항공편 API 테스트</button>
+    <button onclick="testDepartureAPI()">출발 항공편 API 테스트</button>
+
+    <h2>API 응답:</h2>
+    <pre id="output">버튼을 클릭하여 API를 테스트하세요...</pre>
+
+    <script>
+        const API_KEY = '05988a053767a7a6cc5553d077ce7ea541c60806a0160d5ac2e9119ebe5a61ce';
+
+        function getFormatDate(date) {
+            const y = date.getFullYear();
+            const m = ('0' + (date.getMonth() + 1)).slice(-2);
+            const d = ('0' + date.getDate()).slice(-2);
+            return y + '' + m + '' + d;
+        }
+
+        const now = new Date();
+        const todayStr = getFormatDate(now);
+        document.getElementById('testDate').textContent = todayStr;
+
+        async function testArrivalAPI() {
+            const output = document.getElementById('output');
+            output.textContent = 'API 호출 중...';
+
+            try {
+                const arrUrl = `http://openapi.airport.co.kr/service/rest/StatusOfFlights/getArrFlightStatusList?serviceKey=${API_KEY}&arr_airport_code=CJU&line=I&searchday=${todayStr}&from_time=0000&to_time=2359&pageNo=1&numOfRows=100`;
+                const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(arrUrl);
+
+                const res = await fetch(proxyUrl);
+                const text = await res.text();
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(text, "text/xml");
+
+                const items = xmlDoc.querySelectorAll("item");
+
+                let result = `총 항공편 수: ${items.length}\n\n`;
+                result += `=== 처음 10개 항공편 상세 정보 ===\n\n`;
+
+                for (let i = 0; i < Math.min(10, items.length); i++) {
+                    const item = items[i];
+                    result += `--- 항공편 ${i + 1} ---\n`;
+
+                    // 모든 필드 출력
+                    const children = item.children;
+                    for (let j = 0; j < children.length; j++) {
+                        const field = children[j];
+                        result += `${field.tagName}: ${field.textContent}\n`;
+                    }
+                    result += '\n';
+                }
+
+                output.textContent = result;
+            } catch (e) {
+                output.textContent = 'API 오류: ' + e.message;
+            }
+        }
+
+        async function testDepartureAPI() {
+            const output = document.getElementById('output');
+            output.textContent = 'API 호출 중...';
+
+            try {
+                const depUrl = `http://openapi.airport.co.kr/service/rest/StatusOfFlights/getDepFlightStatusList?serviceKey=${API_KEY}&airport_code=CJU&line=I&searchday=${todayStr}&from_time=0000&to_time=2359&pageNo=1&numOfRows=100`;
+                const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(depUrl);
+
+                const res = await fetch(proxyUrl);
+                const text = await res.text();
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(text, "text/xml");
+
+                const items = xmlDoc.querySelectorAll("item");
+
+                let result = `총 항공편 수: ${items.length}\n\n`;
+                result += `=== 처음 10개 항공편 상세 정보 ===\n\n`;
+
+                for (let i = 0; i < Math.min(10, items.length); i++) {
+                    const item = items[i];
+                    result += `--- 항공편 ${i + 1} ---\n`;
+
+                    // 모든 필드 출력
+                    const children = item.children;
+                    for (let j = 0; j < children.length; j++) {
+                        const field = children[j];
+                        result += `${field.tagName}: ${field.textContent}\n`;
+                    }
+                    result += '\n';
+                }
+
+                output.textContent = result;
+            } catch (e) {
+                output.textContent = 'API 오류: ' + e.message;
+            }
+        }
+    </script>
+</body>
+
+</html>
