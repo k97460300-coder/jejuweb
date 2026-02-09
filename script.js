@@ -527,13 +527,28 @@ async function initFlightData() {
         }
 
         const route = type === 'dep' ? flight.arrAirport : flight.depAirport;
-        const time = flight.scheduledatetime.slice(-4, -2) + ':' + flight.scheduledatetime.slice(-2);
+
+        // 예정 시간
+        const scheduledTime = flight.scheduledatetime.slice(-4, -2) + ':' + flight.scheduledatetime.slice(-2);
+
+        // 실제 시간 (estimatedatetime)
+        const estimatedTime = flight.estimatedatetime ?
+            flight.estimatedatetime.slice(-4, -2) + ':' + flight.estimatedatetime.slice(-2) : '';
+
+        // 표시할 시간 (실제 시간이 있으면 실제 시간, 없으면 예정 시간)
+        const displayTime = estimatedTime || scheduledTime;
+
+        // 시간 변경 여부
+        const timeChanged = estimatedTime && estimatedTime !== scheduledTime;
+        const timeInfo = timeChanged ?
+            `${displayTime}<br><small style="color: #888;">${scheduledTime} 시간변경</small>` :
+            displayTime;
 
         return `
             <div class="flight-row">
                 <div class="flight-col"><strong>${flight.flightId}</strong></div>
                 <div class="flight-col">${route}</div>
-                <div class="flight-col">${time}</div>
+                <div class="flight-col">${timeInfo}</div>
                 <div class="flight-col"><span class="status-badge ${statusClass}">${statusText}</span></div>
             </div>`;
     };
