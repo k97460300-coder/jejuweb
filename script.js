@@ -553,17 +553,19 @@ async function initFlightData() {
 
         log(`도착 항공편 API 응답: 총 ${items.length}개`);
 
-        // 첫 번째 항공편의 모든 필드 출력 (디버깅용)
+        // 첫 번째 항공편의 모든 필드 출력
         if (items.length > 0) {
             const firstItem = items[0];
             const allFields = {};
-            firstItem.querySelectorAll('*').forEach(el => {
-                if (el.children.length === 0) {
-                    allFields[el.tagName] = el.textContent;
-                }
-            });
+            for (let i = 0; i < firstItem.children.length; i++) {
+                const child = firstItem.children[i];
+                allFields[child.tagName] = child.textContent;
+            }
             log('첫 번째 도착 항공편 전체 필드:', allFields);
         }
+
+        let cjuCount = 0;
+        let totalCount = 0;
 
         items.forEach((item, index) => {
             if (index >= 50) return; // 최대 50개만 표시
@@ -572,12 +574,19 @@ async function initFlightData() {
             const airline = item.querySelector("airlineKorean")?.textContent || item.querySelector("airline")?.textContent || '';
             const scheduledatetime = item.querySelector("scheduledatetime")?.textContent || '';
             const arrAirportCode = item.querySelector("arrAirportCode")?.textContent || '';
+            const arrAirport = item.querySelector("arrAirport")?.textContent || '';
             const depAirport = item.querySelector("depAirport")?.textContent || '';
+
+            totalCount++;
 
             // 제주 공항 도착 항공편만 필터링 (CJU)
             if (arrAirportCode !== 'CJU') {
+                if (index < 20) log(`도착 ${index + 1}: arrAirportCode=${arrAirportCode}, arrAirport=${arrAirport}, depAirport=${depAirport}`);
                 return; // 제주가 아니면 스킵
             }
+
+            cjuCount++;
+            if (index < 20) log(`도착 ${index + 1}: CJU 확인! depAirport=${depAirport}`);
 
             // 중국+대만+홍콩 노선만 필터링
             const isTargetRoute = isChinaTaiwanHK(depAirport);
