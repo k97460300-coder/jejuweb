@@ -574,8 +574,8 @@ async function initFlightData() {
             const arrAirportCode = item.querySelector("arrAirportCode")?.textContent || '';
             const depAirport = item.querySelector("depAirport")?.textContent || '';
 
-            // 제주 공항 도착 항공편만 필터링
-            if (arrAirportCode !== 'CJU') {
+            // 제주 공항 도착 항공편만 필터링 (CJU 또는 CJJ)
+            if (arrAirportCode !== 'CJU' && arrAirportCode !== 'CJJ') {
                 if (index < 3) log(`도착 항공편 ${index + 1}: 제주가 아님 (${arrAirportCode})`);
                 return; // 제주가 아니면 스킵
             }
@@ -662,8 +662,8 @@ async function initFlightData() {
             const depAirportCode = item.querySelector("depAirportCode")?.textContent || item.querySelector("airport_code")?.textContent || '';
             const arrAirport = item.querySelector("arrAirport")?.textContent || '';
 
-            // 제주 공항 출발 항공편만 필터링
-            if (depAirportCode !== 'CJU') {
+            // 제주 공항 출발 항공편만 필터링 (CJU 또는 CJJ)
+            if (depAirportCode !== 'CJU' && depAirportCode !== 'CJJ') {
                 return; // 제주가 아니면 스킵
             }
 
