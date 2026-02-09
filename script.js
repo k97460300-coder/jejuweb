@@ -573,7 +573,11 @@ async function initFlightData() {
             }
 
             // 중국 노선만 필터링
-            if (!isChinaCity(depAirport)) {
+            const isChinaRoute = isChinaCity(depAirport);
+            if (index < 5) {
+                log(`도착 항공편 ${index + 1}: ${depAirport} → 중국 노선: ${isChinaRoute}`);
+            }
+            if (!isChinaRoute) {
                 return; // 중국이 아니면 스킵
             }
 
