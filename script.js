@@ -574,15 +574,6 @@ async function initFlightData() {
                 return; // 제주가 아니면 스킵
             }
 
-            // 중국 노선만 필터링
-            const isChinaRoute = isChinaCity(depAirport);
-            if (index < 5) {
-                log(`도착 항공편 ${index + 1}: ${depAirport} → 중국 노선: ${isChinaRoute}`);
-            }
-            if (!isChinaRoute) {
-                return; // 중국이 아니면 스킵
-            }
-
             // 날짜 필터링: 당일 항공편만 표시
             if (scheduledatetime && scheduledatetime.length >= 8) {
                 const flightDate = scheduledatetime.substring(0, 8); // YYYYMMDD
@@ -659,11 +650,6 @@ async function initFlightData() {
             // 제주 공항 출발 항공편만 필터링
             if (depAirportCode !== 'CJU') {
                 return; // 제주가 아니면 스킵
-            }
-
-            // 중국 노선만 필터링
-            if (!isChinaCity(arrAirport)) {
-                return; // 중국이 아니면 스킵
             }
 
             if (scheduledatetime && scheduledatetime.length >= 8) {
