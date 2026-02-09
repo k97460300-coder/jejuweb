@@ -1,6 +1,38 @@
 ﻿// API 키
 const API_KEY = '05988a053767a7a6cc5553d077ce7ea541c60806a0160d5ac2e9119ebe5a61ce';
 
+// 중국 본토 주요 도시 목록
+const CHINA_CITIES = [
+    '상하이', '푸동', '浦东', 'SHANGHAI', 'PUDONG',
+    '베이징', '北京', 'BEIJING', '서우두', '다싱',
+    '청도', '칭다오', '青岛', 'QINGDAO',
+    '항저우', '항조우', '杭州', 'HANGZHOU',
+    '난징', '남경', '南京', 'NANJING',
+    '심양', '선양', '沈阳', 'SHENYANG',
+    '우시', '무석', '无锡', 'WUXI',
+    '닝보', '宁波', 'NINGBO',
+    '선전', '심천', '深圳', 'SHENZHEN',
+    '광저우', '广州', 'GUANGZHOU',
+    '청두', '成都', 'CHENGDU',
+    '충칭', '重庆', 'CHONGQING',
+    '시안', '西安', "XI'AN",
+    '우한', '武汉', 'WUHAN',
+    '톈진', '天津', 'TIANJIN',
+    '다롄', '大连', 'DALIAN',
+    '옌타이', '烟台', 'YANTAI',
+    '웨이하이', '威海', 'WEIHAI'
+];
+
+// 중국 도시인지 확인하는 함수
+function isChinaCity(cityName) {
+    if (!cityName) return false;
+    const upperCity = cityName.toUpperCase();
+    return CHINA_CITIES.some(city =>
+        upperCity.includes(city.toUpperCase()) ||
+        cityName.includes(city)
+    );
+}
+
 // 4개 주요 관광지 좌표
 const LOCATIONS = {
     jeju: { name: '济州市', nx: 52, ny: 38 },
@@ -533,10 +565,16 @@ async function initFlightData() {
             const airline = item.querySelector("airlineKorean")?.textContent || item.querySelector("airline")?.textContent || '';
             const scheduledatetime = item.querySelector("scheduledatetime")?.textContent || '';
             const arrAirportCode = item.querySelector("arrAirportCode")?.textContent || '';
+            const depAirport = item.querySelector("depAirport")?.textContent || '';
 
             // 제주 공항 도착 항공편만 필터링
             if (arrAirportCode !== 'CJU') {
                 return; // 제주가 아니면 스킵
+            }
+
+            // 중국 노선만 필터링
+            if (!isChinaCity(depAirport)) {
+                return; // 중국이 아니면 스킵
             }
 
             // 날짜 필터링: 당일 항공편만 표시
@@ -608,13 +646,20 @@ async function initFlightData() {
 
             const rmk = item.querySelector("rmk")?.textContent || '';
             const airline = item.querySelector("airlineKorean")?.textContent || item.querySelector("airline")?.textContent || '';
-            const scheduledatetime = item.querySelector("scheduledatetime")?.textContent || ''; `r`n            const arrAirportCode = item.querySelector("arrAirportCode")?.textContent || ''; `r`n            `r`n            // 제주 공항 도착 항공편만 필터링`r`n            if (arrAirportCode !== 'CJU') {`r`n                return; // 제주가 아니면 스킵`r`n            }`r`n            `r`n            // 날짜 필터링: 당일 항공편만 표시
+            const scheduledatetime = item.querySelector("scheduledatetime")?.textContent || '';
             const depAirportCode = item.querySelector("depAirportCode")?.textContent || item.querySelector("airport_code")?.textContent || '';
+            const arrAirport = item.querySelector("arrAirport")?.textContent || '';
 
             // 제주 공항 출발 항공편만 필터링
             if (depAirportCode !== 'CJU') {
                 return; // 제주가 아니면 스킵
             }
+
+            // 중국 노선만 필터링
+            if (!isChinaCity(arrAirport)) {
+                return; // 중국이 아니면 스킵
+            }
+
             if (scheduledatetime && scheduledatetime.length >= 8) {
                 const flightDate = scheduledatetime.substring(0, 8); // YYYYMMDD
                 if (flightDate !== todayStr) {
