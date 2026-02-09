@@ -568,7 +568,6 @@ async function initFlightData() {
         let totalCount = 0;
 
         items.forEach((item, index) => {
-            if (index >= 50) return; // 최대 50개만 표시
 
             const rmk = item.querySelector("rmk")?.textContent || '';
             const airline = item.querySelector("airlineKorean")?.textContent || item.querySelector("airline")?.textContent || '';
