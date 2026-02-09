@@ -581,12 +581,12 @@ async function initFlightData() {
 
             // 제주 공항 도착 항공편만 필터링 (CJU)
             if (arrAirportCode !== 'CJU') {
-                if (index < 20) log(`도착 ${index + 1}: arrAirportCode=${arrAirportCode}, arrAirport=${arrAirport}, depAirport=${depAirport}`);
+                if (index < 50) log(`도착 ${index + 1}: arrAirportCode=${arrAirportCode}, arrAirport=${arrAirport}, depAirport=${depAirport}`);
                 return; // 제주가 아니면 스킵
             }
 
             cjuCount++;
-            if (index < 20) log(`도착 ${index + 1}: CJU 확인! depAirport=${depAirport}`);
+            if (index < 50) log(`도착 ${index + 1}: CJU 확인! depAirport=${depAirport}`);
 
             // 중국+대만+홍콩 노선만 필터링
             const isTargetRoute = isChinaTaiwanHK(depAirport);
