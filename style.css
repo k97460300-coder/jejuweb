@@ -1514,12 +1514,11 @@ body {
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
-    /* Section Headers */
     .section-header {
         margin-bottom: 10px;
-        text-align: left;
+        text-align: center;
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         align-items: center;
     }
 
@@ -1667,12 +1666,11 @@ body {
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
-    /* Section Headers */
     .section-header {
         margin-bottom: 10px;
-        text-align: left;
+        text-align: center;
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         align-items: center;
     }
 

@@ -132,8 +132,8 @@ async function loadWeatherForLocation(locationKey) {
                 tempDays[date].hourlyData[h][i.category] = i.fcstValue;
             });
 
-            // 현재 날씨 업데이트
-            updateCurrentWeather(locationKey, hourly, now.getHours());
+            // 현재 날씨 업데이트 (tempDays, todayStr 전달)
+            updateCurrentWeather(locationKey, hourly, now.getHours(), tempDays, todayStr);
 
             // 시간대별 날씨 업데이트
             updateHourlyWeather(locationKey, hourly);
@@ -149,24 +149,53 @@ async function loadWeatherForLocation(locationKey) {
 }
 
 // 현재 날씨 업데이트
-function updateCurrentWeather(locationKey, hourly, currentHour) {
+function updateCurrentWeather(locationKey, hourly, currentHour, tempDays, todayStr) {
     const currentData = hourly[currentHour] || hourly[currentHour - 1] || {};
     const weatherDiv = document.querySelector(`#weather-${locationKey}`);
+    const todayData = tempDays && todayStr ? tempDays[todayStr] : null;
 
     if (weatherDiv && currentData.TMP) {
-        const tempValue = weatherDiv.querySelector('.temp-value');
-        const weatherIcon = weatherDiv.querySelector('.weather-icon');
-        const weatherDesc = weatherDiv.querySelector('.weather-desc');
-        const detailValues = weatherDiv.querySelectorAll('.detail-value');
+        const currentWeatherDiv = weatherDiv.querySelector('.current-weather');
+        if (!currentWeatherDiv) return;
 
-        if (tempValue) tempValue.textContent = currentData.TMP;
-        if (weatherIcon) weatherIcon.textContent = getWeatherIcon(parseInt(currentData.PTY || 0), parseInt(currentData.SKY || 1), currentHour);
-        if (weatherDesc) weatherDesc.textContent = getWeatherDesc(parseInt(currentData.PTY || 0), parseInt(currentData.SKY || 1));
+        const icon = getWeatherIcon(parseInt(currentData.PTY || 0), parseInt(currentData.SKY || 1), currentHour);
+        const desc = getWeatherDesc(parseInt(currentData.PTY || 0), parseInt(currentData.SKY || 1));
+        const temp = currentData.TMP;
+        const wind = currentData.WSD || '-';
+        const pcp = currentData.PCP || '降水없음';
+        const pcpDisplay = (pcp === '강수없음' || pcp === '降水없음') ? '0 mm' : pcp;
 
-        if (detailValues.length >= 2) {
-            if (currentData.REH) detailValues[0].textContent = currentData.REH + '%';
-            if (currentData.WSD) detailValues[1].textContent = currentData.WSD + ' m/s';
+        // 최저/최고 온도
+        let minTemp = '-';
+        let maxTemp = '-';
+        if (todayData) {
+            if (todayData.min < 100) minTemp = Math.round(todayData.min);
+            if (todayData.max > -100) maxTemp = Math.round(todayData.max);
+            // TMN/TMX가 없으면 temps에서 추출
+            if (minTemp === '-' && todayData.temps.length > 0) minTemp = Math.round(Math.min(...todayData.temps));
+            if (maxTemp === '-' && todayData.temps.length > 0) maxTemp = Math.round(Math.max(...todayData.temps));
         }
+
+        // 오늘 날짜 포맷
+        const now = new Date();
+        const month = now.getMonth() + 1;
+        const day = now.getDate();
+        const weekDays = ['日', '一', '二', '三', '四', '五', '六'];
+        const weekDay = weekDays[now.getDay()];
+        const dateStr = `${month}月${day}日 周${weekDay}`;
+
+        currentWeatherDiv.innerHTML = `
+            <div class="weather-main">
+                <div class="weather-icon">${icon}</div>
+                <div class="weather-temp"><span class="temp-value">${temp}</span><span class="temp-unit">°C</span></div>
+                <div class="weather-desc">${desc}</div>
+            </div>
+            <div class="weather-details">
+                <div class="weather-detail-item"><span class="detail-icon">📅</span><span class="detail-label">日期</span><span class="detail-value">${dateStr}</span></div>
+                <div class="weather-detail-item"><span class="detail-icon">🌡️</span><span class="detail-label">最低/最高</span><span class="detail-value">${minTemp}° / ${maxTemp}°</span></div>
+                <div class="weather-detail-item"><span class="detail-icon">💨</span><span class="detail-label">风速</span><span class="detail-value">${wind} m/s</span></div>
+                <div class="weather-detail-item"><span class="detail-icon">🌧️</span><span class="detail-label">降水量</span><span class="detail-value">${pcpDisplay}</span></div>
+            </div>`;
     }
 }
 
