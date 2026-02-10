@@ -118,8 +118,8 @@ async function loadWeatherForLocation(locationKey) {
                 const date = i.fcstDate;
                 const h = parseInt(i.fcstTime.slice(0, 2));
 
-                // 시간대별 데이터
-                if (date === todayStr && h >= 9 && h <= 22) {
+                // 시간대별 데이터 (모든 시간 저장)
+                if (date === todayStr) {
                     if (!hourly[h]) hourly[h] = {};
                     hourly[h][i.category] = i.fcstValue;
                 }
@@ -150,11 +150,24 @@ async function loadWeatherForLocation(locationKey) {
 
 // 현재 날씨 업데이트
 function updateCurrentWeather(locationKey, hourly, currentHour, tempDays, todayStr) {
-    const currentData = hourly[currentHour] || hourly[currentHour - 1] || {};
+    // 현재 시간 또는 가장 가까운 시간 데이터 찾기
+    let currentData = hourly[currentHour] || hourly[currentHour - 1] || hourly[currentHour + 1] || null;
+    if (!currentData) {
+        // 가장 가까운 시간 데이터 찾기
+        const availableHours = Object.keys(hourly).map(Number).sort((a, b) => a - b);
+        if (availableHours.length > 0) {
+            const closest = availableHours.reduce((prev, curr) =>
+                Math.abs(curr - currentHour) < Math.abs(prev - currentHour) ? curr : prev
+            );
+            currentData = hourly[closest];
+        } else {
+            currentData = {};
+        }
+    }
     const weatherDiv = document.querySelector(`#weather-${locationKey}`);
     const todayData = tempDays && todayStr ? tempDays[todayStr] : null;
 
-    if (weatherDiv && currentData.TMP) {
+    if (weatherDiv && (currentData.TMP || todayData)) {
         const currentWeatherDiv = weatherDiv.querySelector('.current-weather');
         if (!currentWeatherDiv) return;
 
