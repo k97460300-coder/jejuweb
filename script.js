@@ -176,26 +176,40 @@ function updateHourlyWeather(locationKey, hourly) {
     if (!hourlyScroll) return;
 
     let html = '';
-    for (let h = 9; h <= 22; h++) {
+    // 5개씩 3줄 = 15개 아이템
+    // 현재 시간부터 15시간 표시 (또는 데이터가 있는 범위 내)
+    const startHour = new Date().getHours();
+
+    // 데이터가 있는 시간대만 필터링 (9~22시는 예시였음, 실제론 API 데이터에 따라 다름)
+    // 여기서는 기존 로직(9~22)을 15개로 확장하거나 조정
+
+    // 사용자의 요청: 5개씩 3줄 = 15개
+    // API 데이터는 보통 3시간 단위 혹은 1시간 단위이나, 여기서는 hourly 객체에 있는 것 중 
+    // 현재 시간 이후 15개를 가져오도록 수정
+
+    const availableHours = Object.keys(hourly).map(Number).sort((a, b) => a - b);
+    const displayHours = availableHours.slice(0, 15); // 최대 15개
+
+    displayHours.forEach(h => {
         const d = hourly[h] || {};
         const icon = getWeatherIcon(parseInt(d.PTY || 0), parseInt(d.SKY || 1), h);
 
-        let pcp = d.PCP || '0';
-        if (pcp === "강수없음") pcp = "0mm";
+        let pcp = d.PCP || ''; // 강수량
+        if (pcp === "강수없음") pcp = ""; // 모바일 공간 절약
         else if (pcp.includes("미만")) pcp = "~1mm";
         else if (!pcp.endsWith("mm")) pcp += "mm";
 
-        const precipClass = pcp !== '0mm' ? 'precip-blue' : '';
+        const precipClass = (pcp !== '' && pcp !== '0mm') ? 'precip-blue' : '';
+        const precipDisplay = pcp ? `<div class="hourly-precip ${precipClass}">${pcp}</div>` : '';
 
         html += `
             <div class="hourly-item">
-                <div class="hourly-time">${h}h</div>
+                <div class="hourly-time">${h}时</div>
                 <div class="hourly-icon">${icon}</div>
                 <div class="hourly-temp">${d.TMP || '-'}°</div>
-                <div class="hourly-wind">${d.WSD || '-'}m/s</div>
-                <div class="hourly-precip ${precipClass}">${pcp}</div>
+                ${precipDisplay}
             </div>`;
-    }
+    });
     hourlyScroll.innerHTML = html;
 }
 
