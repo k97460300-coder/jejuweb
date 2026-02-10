@@ -1818,10 +1818,10 @@ body {
     }
 }
 
-/* Status Badge Colors - Updated to Black Text for Visibility */
+/* Status Badge Colors - White Text for Visibility */
 .status-live {
     background-color: #ff4444;
-    color: #000000;
+    color: #ffffff;
     padding: 2px 6px;
     border-radius: 4px;
     font-size: 0.8rem;
@@ -1830,7 +1830,7 @@ body {
 
 .status-updated {
     background-color: #4CAF50;
-    color: #000000;
+    color: #ffffff;
     padding: 2px 6px;
     border-radius: 4px;
     font-size: 0.8rem;
@@ -1838,7 +1838,7 @@ body {
 }
 
 .status-badge-header {
-    color: #000000 !important;
+    color: #ffffff !important;
 }
 
 /* Ensure header badges are black */
