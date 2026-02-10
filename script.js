@@ -567,7 +567,7 @@ async function initFlightData() {
             </div>`;
     };
 
-    // 도착 항공편 - 표준 API 사용 (복구)
+    // 도착 항공편 - 출발 항공편과 동일한 필터링 방식 적용
     try {
         const arrUrl = `http://openapi.airport.co.kr/service/rest/StatusOfFlights/getArrFlightStatusList?serviceKey=${API_KEY}&airport_code=CJU&searchday=${todayStr}&numOfRows=500`;
         const proxyUrl = `${WORKER_URL}?url=${encodeURIComponent(arrUrl)}`;
@@ -579,44 +579,66 @@ async function initFlightData() {
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(text, "text/xml");
         const items = xmlDoc.querySelectorAll("item");
+        let allFlights = [];
 
-        let cjuCount = 0;
-
-        // 도착 항공편 컨테이너 초기화
-        const arrContainer = document.getElementById('arrival-flights');
-        if (arrContainer) arrContainer.innerHTML = '';
+        log(`도착 항공편 API 응답: 총 ${items.length}개`);
 
         items.forEach((item, index) => {
             const rmk = item.querySelector("rmk")?.textContent || '';
+            const airline = item.querySelector("airlineKorean")?.textContent || item.querySelector("airline")?.textContent || '';
             const scheduledatetime = item.querySelector("scheduledatetime")?.textContent || '';
-            const estimatedatetime = item.querySelector("estimatedatetime")?.textContent || '';
-            const arrAirportCode = item.querySelector("arrAirportCode")?.textContent || '';
-            const arrAirport = item.querySelector("arrAirport")?.textContent || '';
             const depAirport = item.querySelector("depAirport")?.textContent || '';
-            const flightId = item.querySelector("flightId")?.textContent || '';
 
-            // 제주 공항 도착 항공편만 필터링 (api가 출발/도착 섞여서 올 경우 대비, 보통 endpoint가 분리되어 있음)
-            // getArrFlightStatusList는 도착편만 줌.
-
-            cjuCount++;
-
-            // 항공편 표시 함수 호출
-            const flightInfo = {
-                flightId: flightId,
-                rmk: rmk,
-                scheduledatetime: scheduledatetime,
-                estimatedatetime: estimatedatetime,
-                arrAirport: arrAirport,
-                depAirport: depAirport
-            };
-
-            // 처음 50개 항목만 렌더링 (나머지는 스크롤 시 로드 - 현재는 전부 렌더링하도록 돔)
-            if (index < 100) { // 100개까지 표시
-                const html = createFlightHTML(flightInfo, 'arr');
-                if (arrContainer) arrContainer.insertAdjacentHTML('beforeend', html);
+            // 중국+대만+홍콩 노선만 필터링
+            if (!isChinaTaiwanHK(depAirport)) {
+                return;
             }
+
+            // 날짜 필터링: 당일 항공편만 표시
+            if (scheduledatetime && scheduledatetime.length >= 8) {
+                const flightDate = scheduledatetime.substring(0, 8);
+                if (flightDate !== todayStr) {
+                    return;
+                }
+            }
+
+            allFlights.push({
+                airline: airline,
+                flightId: item.querySelector("flightId")?.textContent || '',
+                depAirport: depAirport,
+                arrAirport: item.querySelector("arrAirport")?.textContent || '',
+                scheduledatetime: scheduledatetime,
+                estimatedatetime: item.querySelector("estimatedatetime")?.textContent || '',
+                rmk: rmk
+            });
         });
-        log(`도착 항공편 로드 완료: ${cjuCount}개`);
+
+        const arrivalsContent = document.getElementById('arrivals');
+        if (arrivalsContent) {
+            const flightTable = arrivalsContent.querySelector('.flight-table');
+            if (flightTable && allFlights.length > 0) {
+                let html = `
+                    <div class="flight-row flight-header">
+                        <div class="flight-col">航班号</div>
+                        <div class="flight-col">出发地</div>
+                        <div class="flight-col">计划时间</div>
+                        <div class="flight-col">状态</div>
+                    </div>`;
+                allFlights.forEach(f => html += createFlightHTML(f, 'arr'));
+                flightTable.innerHTML = html;
+            } else if (flightTable && allFlights.length === 0) {
+                flightTable.innerHTML = `
+                    <div class="flight-row flight-header">
+                        <div class="flight-col">航班号</div>
+                        <div class="flight-col">出发地</div>
+                        <div class="flight-col">计划时间</div>
+                        <div class="flight-col">状态</div>
+                    </div>
+                    <div style="padding:40px; text-align:center; color:#999;">暂无到达航班信息</div>`;
+            }
+        }
+
+        log(`도착 항공편 로드 완료: ${allFlights.length}개 (중국/대만/홍콩 노선)`);
     } catch (error) {
         log('도착 항공편 오류:', error);
     }
