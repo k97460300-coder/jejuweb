@@ -118,7 +118,7 @@
         </div>
     </section>
 
-        <!-- Weather Section -->
+    <!-- Weather Section -->
     <section id="weather" class="section section-alt">
         <div class="container">
             <div class="section-header">
@@ -126,36 +126,116 @@
                 <p class="section-subtitle">4大主要旅游区实时天气与未来10天预报</p>
             </div>
             <div class="location-tabs">
-                <button class="location-tab active" data-location="jeju"><span class="tab-icon"></span><span class="tab-name">济州市</span><span class="tab-sub">莲洞</span></button>
-                <button class="location-tab" data-location="seogwipo"><span class="tab-icon"></span><span class="tab-name">西归浦市</span><span class="tab-sub">中文</span></button>
-                <button class="location-tab" data-location="hallasan"><span class="tab-icon"></span><span class="tab-name">汉拿山</span><span class="tab-sub">1100高地</span></button>
-                <button class="location-tab" data-location="udo"><span class="tab-icon"></span><span class="tab-name">牛岛</span><span class="tab-sub">天津港</span></button>
+                <button class="location-tab active" data-location="jeju"><span class="tab-icon"></span><span
+                        class="tab-name">济州市</span><span class="tab-sub">莲洞</span></button>
+                <button class="location-tab" data-location="seogwipo"><span class="tab-icon"></span><span
+                        class="tab-name">西归浦市</span><span class="tab-sub">中文</span></button>
+                <button class="location-tab" data-location="hallasan"><span class="tab-icon"></span><span
+                        class="tab-name">汉拿山</span><span class="tab-sub">1100高地</span></button>
+                <button class="location-tab" data-location="udo"><span class="tab-icon"></span><span
+                        class="tab-name">牛岛</span><span class="tab-sub">天津港</span></button>
             </div>
             <div class="location-weather-content">
                 <div class="location-weather active" id="weather-jeju">
-                    <div class="current-weather"><div class="weather-main"><div class="weather-icon"></div><div class="weather-temp"><span class="temp-value">18</span><span class="temp-unit">C</span></div><div class="weather-desc">晴朗</div></div><div class="weather-details"><div class="weather-detail-item"><span class="detail-icon"></span><span class="detail-label">湿度</span><span class="detail-value">65%</span></div><div class="weather-detail-item"><span class="detail-icon"></span><span class="detail-label">风速</span><span class="detail-value">3.2 m/s</span></div></div></div>
-                    <div class="hourly-weather"><h3 class="subsection-title">今日逐时预报</h3><div class="hourly-scroll" id="hourly-jeju"></div></div>
-                    <div class="weekly-weather"><h3 class="subsection-title">未来10天长期预报</h3><div class="weekly-grid" id="weekly-jeju"></div></div>
+                    <div class="current-weather">
+                        <div class="weather-main">
+                            <div class="weather-icon"></div>
+                            <div class="weather-temp"><span class="temp-value">18</span><span class="temp-unit">C</span>
+                            </div>
+                            <div class="weather-desc">晴朗</div>
+                        </div>
+                        <div class="weather-details">
+                            <div class="weather-detail-item"><span class="detail-icon"></span><span
+                                    class="detail-label">湿度</span><span class="detail-value">65%</span></div>
+                            <div class="weather-detail-item"><span class="detail-icon"></span><span
+                                    class="detail-label">风速</span><span class="detail-value">3.2 m/s</span></div>
+                        </div>
+                    </div>
+                    <div class="hourly-weather">
+                        <h3 class="subsection-title">今日逐时预报</h3>
+                        <div class="hourly-scroll" id="hourly-jeju"></div>
+                    </div>
+                    <div class="weekly-weather">
+                        <h3 class="subsection-title">未来10天长期预报</h3>
+                        <div class="weekly-grid" id="weekly-jeju"></div>
+                    </div>
                 </div>
                 <div class="location-weather" id="weather-seogwipo">
-                    <div class="current-weather"><div class="weather-main"><div class="weather-icon"></div><div class="weather-temp"><span class="temp-value">19</span><span class="temp-unit">C</span></div><div class="weather-desc">晴朗</div></div><div class="weather-details"><div class="weather-detail-item"><span class="detail-icon"></span><span class="detail-label">湿度</span><span class="detail-value">68%</span></div><div class="weather-detail-item"><span class="detail-icon"></span><span class="detail-label">风速</span><span class="detail-value">4.1 m/s</span></div></div></div>
-                    <div class="hourly-weather"><h3 class="subsection-title">今日逐时预报</h3><div class="hourly-scroll" id="hourly-seogwipo"></div></div>
-                    <div class="weekly-weather"><h3 class="subsection-title">未来10天长期预报</h3><div class="weekly-grid" id="weekly-seogwipo"></div></div>
+                    <div class="current-weather">
+                        <div class="weather-main">
+                            <div class="weather-icon"></div>
+                            <div class="weather-temp"><span class="temp-value">19</span><span class="temp-unit">C</span>
+                            </div>
+                            <div class="weather-desc">晴朗</div>
+                        </div>
+                        <div class="weather-details">
+                            <div class="weather-detail-item"><span class="detail-icon"></span><span
+                                    class="detail-label">湿度</span><span class="detail-value">68%</span></div>
+                            <div class="weather-detail-item"><span class="detail-icon"></span><span
+                                    class="detail-label">风速</span><span class="detail-value">4.1 m/s</span></div>
+                        </div>
+                    </div>
+                    <div class="hourly-weather">
+                        <h3 class="subsection-title">今日逐时预报</h3>
+                        <div class="hourly-scroll" id="hourly-seogwipo"></div>
+                    </div>
+                    <div class="weekly-weather">
+                        <h3 class="subsection-title">未来10天长期预报</h3>
+                        <div class="weekly-grid" id="weekly-seogwipo"></div>
+                    </div>
                 </div>
                 <div class="location-weather" id="weather-hallasan">
-                    <div class="current-weather"><div class="weather-main"><div class="weather-icon"></div><div class="weather-temp"><span class="temp-value">12</span><span class="temp-unit">C</span></div><div class="weather-desc">多云</div></div><div class="weather-details"><div class="weather-detail-item"><span class="detail-icon"></span><span class="detail-label">湿度</span><span class="detail-value">75%</span></div><div class="weather-detail-item"><span class="detail-icon"></span><span class="detail-label">风速</span><span class="detail-value">5.8 m/s</span></div></div></div>
-                    <div class="hourly-weather"><h3 class="subsection-title">今日逐时预报</h3><div class="hourly-scroll" id="hourly-hallasan"></div></div>
-                    <div class="weekly-weather"><h3 class="subsection-title">未来10天长期预报</h3><div class="weekly-grid" id="weekly-hallasan"></div></div>
+                    <div class="current-weather">
+                        <div class="weather-main">
+                            <div class="weather-icon"></div>
+                            <div class="weather-temp"><span class="temp-value">12</span><span class="temp-unit">C</span>
+                            </div>
+                            <div class="weather-desc">多云</div>
+                        </div>
+                        <div class="weather-details">
+                            <div class="weather-detail-item"><span class="detail-icon"></span><span
+                                    class="detail-label">湿度</span><span class="detail-value">75%</span></div>
+                            <div class="weather-detail-item"><span class="detail-icon"></span><span
+                                    class="detail-label">风速</span><span class="detail-value">5.8 m/s</span></div>
+                        </div>
+                    </div>
+                    <div class="hourly-weather">
+                        <h3 class="subsection-title">今日逐时预报</h3>
+                        <div class="hourly-scroll" id="hourly-hallasan"></div>
+                    </div>
+                    <div class="weekly-weather">
+                        <h3 class="subsection-title">未来10天长期预报</h3>
+                        <div class="weekly-grid" id="weekly-hallasan"></div>
+                    </div>
                 </div>
                 <div class="location-weather" id="weather-udo">
-                    <div class="current-weather"><div class="weather-main"><div class="weather-icon"></div><div class="weather-temp"><span class="temp-value">17</span><span class="temp-unit">C</span></div><div class="weather-desc">晴朗</div></div><div class="weather-details"><div class="weather-detail-item"><span class="detail-icon"></span><span class="detail-label">湿度</span><span class="detail-value">70%</span></div><div class="weather-detail-item"><span class="detail-icon"></span><span class="detail-label">风速</span><span class="detail-value">6.2 m/s</span></div></div></div>
-                    <div class="hourly-weather"><h3 class="subsection-title">今日逐时预报</h3><div class="hourly-scroll" id="hourly-udo"></div></div>
-                    <div class="weekly-weather"><h3 class="subsection-title">未来10天长期预报</h3><div class="weekly-grid" id="weekly-udo"></div></div>
+                    <div class="current-weather">
+                        <div class="weather-main">
+                            <div class="weather-icon"></div>
+                            <div class="weather-temp"><span class="temp-value">17</span><span class="temp-unit">C</span>
+                            </div>
+                            <div class="weather-desc">晴朗</div>
+                        </div>
+                        <div class="weather-details">
+                            <div class="weather-detail-item"><span class="detail-icon"></span><span
+                                    class="detail-label">湿度</span><span class="detail-value">70%</span></div>
+                            <div class="weather-detail-item"><span class="detail-icon"></span><span
+                                    class="detail-label">风速</span><span class="detail-value">6.2 m/s</span></div>
+                        </div>
+                    </div>
+                    <div class="hourly-weather">
+                        <h3 class="subsection-title">今日逐时预报</h3>
+                        <div class="hourly-scroll" id="hourly-udo"></div>
+                    </div>
+                    <div class="weekly-weather">
+                        <h3 class="subsection-title">未来10天长期预报</h3>
+                        <div class="weekly-grid" id="weekly-udo"></div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
-<!-- Hallasan Section -->
+    <!-- Hallasan Section -->
     <section id="hallasan" class="section">
         <div class="container">
             <div class="section-header">
@@ -273,42 +353,17 @@
 
             <!-- Arrivals -->
             <div class="flight-content active" id="arrivals">
-                <div class="flight-table">
+                <div class="flight-table" id="arrival-flights">
+                    <!-- JS Updated -->
                     <div class="flight-row flight-header">
                         <div class="flight-col">航班号</div>
                         <div class="flight-col">出发地</div>
                         <div class="flight-col">计划时间</div>
                         <div class="flight-col">状态</div>
                     </div>
-                    <div class="flight-row">
-                        <div class="flight-col"><strong>CA123</strong></div>
-                        <div class="flight-col">北京首都</div>
-                        <div class="flight-col">14:30</div>
-                        <div class="flight-col"><span class="status-badge status-landed">已降落</span></div>
-                    </div>
-                    <div class="flight-row">
-                        <div class="flight-col"><strong>MU567</strong></div>
-                        <div class="flight-col">上海浦东</div>
-                        <div class="flight-col">15:45</div>
-                        <div class="flight-col"><span class="status-badge status-ontime">准点</span></div>
-                    </div>
-                    <div class="flight-row">
-                        <div class="flight-col"><strong>CZ890</strong></div>
-                        <div class="flight-col">广州白云</div>
-                        <div class="flight-col">16:20</div>
-                        <div class="flight-col"><span class="status-badge status-delayed">延误 30分钟</span></div>
-                    </div>
-                    <div class="flight-row">
-                        <div class="flight-col"><strong>HU234</strong></div>
-                        <div class="flight-col">深圳宝安</div>
-                        <div class="flight-col">17:10</div>
-                        <div class="flight-col"><span class="status-badge status-ontime">准点</span></div>
-                    </div>
-                    <div class="flight-row">
-                        <div class="flight-col"><strong>3U456</strong></div>
-                        <div class="flight-col">成都双流</div>
-                        <div class="flight-col">18:00</div>
-                        <div class="flight-col"><span class="status-badge status-cancelled">取消</span></div>
+                    <!-- Loading placeholder -->
+                    <div class="flight-row" style="justify-content: center; color: #888;">
+                        数据加载中...
                     </div>
                 </div>
             </div>
@@ -376,8 +431,8 @@
                 </div>
                 <div class="footer-section">
                     <h4>联系我们</h4>
-                    <p>📧 info@jejutravel.com</p>
-                    <p>📱 +82-64-123-4567</p>
+                    <p>🧑 济州本地人_正敬</p>
+                    <p>📕 小红书号：jeju_jk</p>
                 </div>
             </div>
             <div class="footer-bottom">
