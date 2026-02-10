@@ -1629,3 +1629,182 @@ body {
     /* Bottom Navigation Bar (Optional - strictly for app-like feel) */
     /* We can implement a sticky bottom nav if desired, but user asked for "cards layout" first */
 }
+/* Mobile Card Grid Layout */
+@media screen and (max-width: 768px) {
+
+    /* Main Container for Grid */
+    body {
+        background-color: #0f0f23;
+        /* Ensure dark background */
+    }
+
+    /* Hide Hero Section on Mobile to save space */
+    .hero {
+        display: none;
+    }
+
+    /* Adjust container for grid */
+    .container {
+        padding: 10px;
+        max-width: 100%;
+    }
+
+    /* Create a grid layout for main sections */
+    section {
+        background: #1a1a2e;
+        border-radius: 16px;
+        padding: 15px !important;
+        margin-bottom: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Section Headers */
+    .section-header {
+        margin-bottom: 10px;
+        text-align: left;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .section-title {
+        font-size: 1.2rem;
+        margin-bottom: 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .section-subtitle {
+        display: none;
+        /* Hide subtitle to save space */
+    }
+
+    /* CCTV Section - Horizontal Scroll */
+    .cctv-grid {
+        display: flex;
+        overflow-x: auto;
+        gap: 10px;
+        padding-bottom: 5px;
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x mandatory;
+    }
+
+    .cctv-card {
+        min-width: 280px;
+        /* Fixed width for horizontal scroll */
+        scroll-snap-align: start;
+        background: rgba(255, 255, 255, 0.03);
+        margin-bottom: 0;
+    }
+
+    /* Weather Section - Compact */
+    .location-tabs {
+        overflow-x: auto;
+        justify-content: flex-start;
+        padding-bottom: 5px;
+        margin-bottom: 10px;
+    }
+
+    .location-tab {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+        white-space: nowrap;
+    }
+
+    .current-weather {
+        padding: 12px;
+        flex-direction: row;
+        /* Side by side */
+        align-items: center;
+    }
+
+    .weather-main {
+        gap: 10px;
+    }
+
+    .weather-icon {
+        font-size: 2.5rem;
+    }
+
+    .temp-value {
+        font-size: 2rem;
+    }
+
+    .weather-desc {
+        font-size: 1rem;
+    }
+
+    /* Hourly Forecast - Grid Layout (5x3) */
+    .hourly-scroll {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 8px;
+        overflow-x: visible;
+        /* Disable horizontal scroll */
+        padding: 0;
+    }
+
+    .hourly-item {
+        min-width: auto;
+        padding: 8px 4px;
+        border: none;
+        background: rgba(255, 255, 255, 0.03);
+    }
+
+    .hourly-time {
+        font-size: 0.8rem;
+    }
+
+    .hourly-icon {
+        font-size: 1.5rem;
+        margin: 4px 0;
+    }
+
+    .hourly-temp {
+        font-size: 0.9rem;
+    }
+
+    /* Limit to 15 items via JS or CSS logic if possible, otherwise it just grids all */
+    /* JS limits to 24 usually, so it will be 5 columns x 5 rows approx */
+
+    /* Hallasan Section */
+    .hallasan-status {
+        display: grid;
+        gap: 10px;
+    }
+
+    .status-card {
+        padding: 12px;
+        margin-bottom: 0;
+    }
+
+    .trails-grid {
+        grid-template-columns: 1fr;
+        /* Stack vertically for legibility or 2 col if space permits */
+        gap: 8px;
+    }
+
+    .trail-card {
+        padding: 10px;
+        margin-bottom: 0;
+    }
+
+    /* Airport Section */
+    .flight-tabs {
+        margin-bottom: 10px;
+    }
+
+    .flight-table {
+        max-height: 300px;
+        /* Limit height */
+        overflow-y: auto;
+    }
+
+    /* Footer */
+    .footer {
+        padding-bottom: 80px;
+        /* Extra space at bottom */
+    }
+}
