@@ -462,13 +462,9 @@ async function loadHallasanInfo() {
 
                 html += `
                     <div class="trail-card">
-                        <div class="trail-header">
-                            <h4 style="font-size: 1rem; margin: 0;">${t.name}</h4>
-                            <span class="trail-status open" style="background: ${info.c}; color: white; font-size: 0.75rem; padding: 4px 8px; border-radius: 4px; white-space: nowrap;">${info.t}</span>
-                        </div>
-                        <div class="trail-info">
-                            <div style="font-size: 0.85rem; color: #aaa;">${t.sub}</div>
-                            <div style="font-size: 0.9rem; margin-top: 8px; color: ${st === '통제' ? '#f44336' : '#4caf50'};">${displayStatus}</div>
+                        <div class="trail-header" style="justify-content: flex-start; gap: 8px;">
+                            <h4 style="font-size: 1rem; margin: 0;">${t.name} <span style="font-size: 0.8rem; color: #aaa; font-weight: normal;">${t.sub}</span></h4>
+                            <span class="trail-status open" style="margin-left: auto; background: ${info.c}; color: white; font-size: 0.75rem; padding: 4px 8px; border-radius: 4px; white-space: nowrap;">${info.t}</span>
                         </div>
                     </div>`;
             });

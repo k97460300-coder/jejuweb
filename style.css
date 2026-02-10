@@ -1828,3 +1828,17 @@ body {
     .hourly-temp { font-size: 0.8rem !important; }
     .hourly-icon { font-size: 1.2rem !important; margin: 2px 0 !important; }
 }
+
+/* Mobile Fixes Step 1604 */
+@media screen and (max-width: 768px) {
+    .header-content { align-items: center; text-align: center; }
+    .nav { justify-content: center; }
+    .weekly-grid { grid-template-columns: repeat(5, minmax(0, 1fr)) !important; gap: 3px !important; }
+    .weekly-item { padding: 6px 0 !important; width: 100% !important; min-width: 0 !important; }
+    .weekly-day { font-size: 0.7rem !important; }
+    .weekly-icon { font-size: 1.2rem !important; margin: 2px 0 !important; }
+    .weekly-temps { font-size: 0.8rem !important; display: flex; flex-direction: column; gap: 2px; }
+    .temp-high { font-size: 0.8rem !important; }
+    .temp-low { font-size: 0.7rem !important; opacity: 0.8; }
+    .weekly-precip { font-size: 0.7rem !important; margin-top: 2px; }
+}
