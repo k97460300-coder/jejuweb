@@ -517,12 +517,10 @@ async function loadHallasanInfo() {
 
 // 공항 운항 정보 API
 async function initFlightData() {
-    // 테스트: 어제 날짜 사용 (2/9)
     const now = new Date();
-    now.setDate(now.getDate() - 1); // 어제로 변경
     const todayStr = getFormatDate(now);
 
-    log(`테스트 날짜: ${todayStr} (어제)`);
+    log(`항공편 조회 날짜: ${todayStr} (오늘)`);
 
     const createFlightHTML = (flight, type) => {
         const rmk = flight.rmk || '';
@@ -604,7 +602,7 @@ async function initFlightData() {
 
             allFlights.push({
                 airline: airline,
-                flightId: item.querySelector("flightId")?.textContent || '',
+                flightId: item.querySelector("flightid")?.textContent || '',
                 depAirport: depAirport,
                 arrAirport: item.querySelector("arrAirport")?.textContent || '',
                 scheduledatetime: scheduledatetime,
