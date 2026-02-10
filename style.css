@@ -1812,3 +1812,19 @@ body {
 /* Status Badge Colors */
 .status-live { background-color: #ff4444; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; }
 .status-updated { background-color: #4CAF50; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; }
+
+/* Fix Hourly Grid Overflow */
+@media screen and (max-width: 768px) {
+    .hourly-scroll {
+        grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+        gap: 3px !important;
+    }
+    .hourly-item {
+        padding: 6px 0 !important;
+        min-width: 0 !important;
+        width: 100% !important;
+    }
+    .hourly-time { font-size: 0.7rem !important; }
+    .hourly-temp { font-size: 0.8rem !important; }
+    .hourly-icon { font-size: 1.2rem !important; margin: 2px 0 !important; }
+}
