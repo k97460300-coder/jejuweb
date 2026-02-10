@@ -788,7 +788,7 @@ function initCCTV() {
             const cctvCards = document.querySelectorAll('.cctv-card');
             const streams = [
                 { url: 'http://211.114.96.121:1935/jejusi7/11-24.stream/playlist.m3u8', name: '牛岛 (天津港)' },
-                { url: 'http://119.65.216.155:1935/live/cctv03.stream_360p/playlist.m3u8', name: '汉拿山 (御势岳)' },
+                { url: 'http://119.65.216.155:1935/live/cctv03.stream_360p/playlist.m3u8', name: '汉拿山' },
                 { url: 'http://119.65.216.155:1935/live/cctv05.stream_360p/playlist.m3u8', name: '1100高地' },
                 { url: 'http://211.114.96.121:1935/jejusi7/11-24.stream/playlist.m3u8', name: '城山日出峰' }
             ];
