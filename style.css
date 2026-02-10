@@ -806,24 +806,27 @@ body {
 
 /* Status Badges in Headers */
 .status-badge-header {
-    font-size: 11px;
-    padding: 4px 10px;
+    font-size: 12px;
+    padding: 3px 8px;
     border-radius: 12px;
     font-weight: bold;
     margin-left: 10px;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     vertical-align: middle;
+    color: #ffffff !important;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    line-height: 1;
 }
 
 .status-badge-header.status-live {
-    background: #ff5252;
-    color: white;
+    background: #ff4444 !important;
     animation: pulse 2s ease-in-out infinite;
 }
 
 .status-badge-header.status-updated {
-    background: #e8f5e9;
-    color: #2e7d32;
+    background: #4CAF50 !important;
 }
 
 /* Location Subtitle */
@@ -1893,28 +1896,7 @@ body {
     }
 }
 
-/* Status Badge Colors - White Text for Visibility */
-.status-live {
-    background-color: #ff4444;
-    color: #ffffff;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    font-weight: bold;
-}
-
-.status-updated {
-    background-color: #4CAF50;
-    color: #ffffff;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    font-weight: bold;
-}
-
-.status-badge-header {
-    color: #ffffff !important;
-}
+/* Status Badge styles moved to main section (line 808) to avoid redundancy */
 
 /* Ensure header badges are black */
 
