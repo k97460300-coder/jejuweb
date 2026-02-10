@@ -1842,3 +1842,9 @@ body {
     .temp-low { font-size: 0.7rem !important; opacity: 0.8; }
     .weekly-precip { font-size: 0.7rem !important; margin-top: 2px; }
 }
+
+/* Fix CCTV Mobile Visibility */
+@media screen and (max-width: 768px) {
+    .cctv-card img { width: 100%; height: auto; display: block; object-fit: cover; aspect-ratio: 16/9; }
+    .cctv-grid { min-height: 200px; }
+}
