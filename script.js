@@ -218,19 +218,11 @@ function updateHourlyWeather(locationKey, hourly) {
     if (!hourlyScroll) return;
 
     let html = '';
-    // 5개씩 3줄 = 15개 아이템
-    // 현재 시간부터 15시간 표시 (또는 데이터가 있는 범위 내)
-    const startHour = new Date().getHours();
-
-    // 데이터가 있는 시간대만 필터링 (9~22시는 예시였음, 실제론 API 데이터에 따라 다름)
-    // 여기서는 기존 로직(9~22)을 15개로 확장하거나 조정
-
-    // 사용자의 요청: 5개씩 3줄 = 15개
-    // API 데이터는 보통 3시간 단위 혹은 1시간 단위이나, 여기서는 hourly 객체에 있는 것 중 
-    // 현재 시간 이후 15개를 가져오도록 수정
-
-    const availableHours = Object.keys(hourly).map(Number).sort((a, b) => a - b);
-    const displayHours = availableHours.slice(0, 15); // 최대 15개
+    // 8시~22시 = 15개 (5개씩 3줄)
+    const displayHours = [];
+    for (let h = 8; h <= 22; h++) {
+        if (hourly[h]) displayHours.push(h);
+    }
 
     displayHours.forEach(h => {
         const d = hourly[h] || {};

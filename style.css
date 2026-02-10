@@ -458,6 +458,7 @@ body {
 .subsection-title {
     font-size: 1.5rem;
     margin-bottom: var(--spacing-md);
+    text-align: center;
 }
 
 .hourly-weather {
@@ -1815,6 +1816,80 @@ body {
     .footer {
         padding-bottom: 80px;
         /* Extra space at bottom */
+    }
+
+    /* 모바일 현재 날씨 - 컴팩트 가로 레이아웃 */
+    .current-weather {
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 12px;
+        padding: 12px !important;
+    }
+
+    .weather-main {
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 8px;
+        min-width: 0;
+        flex-shrink: 0;
+    }
+
+    .weather-icon {
+        font-size: 2rem !important;
+    }
+
+    .weather-temp {
+        white-space: nowrap;
+    }
+
+    .temp-value {
+        font-size: 1.8rem !important;
+    }
+
+    .weather-desc {
+        font-size: 0.8rem !important;
+        white-space: nowrap;
+    }
+
+    .weather-details {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 6px !important;
+        flex: 1;
+    }
+
+    .weather-detail-item {
+        flex-direction: row !important;
+        gap: 4px !important;
+        padding: 4px 6px !important;
+        font-size: 0.75rem;
+    }
+
+    .detail-icon {
+        font-size: 0.9rem !important;
+    }
+
+    .detail-label {
+        font-size: 0.65rem !important;
+    }
+
+    .detail-value {
+        font-size: 0.75rem !important;
+        font-weight: 600;
+    }
+
+    /* CCTV 모바일 - 1열 표시 */
+    .cctv-grid {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+
+    .cctv-card {
+        display: block !important;
+    }
+
+    .cctv-video {
+        aspect-ratio: 16/9 !important;
     }
 }
 
