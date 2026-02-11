@@ -193,9 +193,7 @@ function updateCurrentWeather(locationKey, hourly, currentHour, tempDays, todayS
         const now = new Date();
         const month = now.getMonth() + 1;
         const day = now.getDate();
-        const weekDays = ['日', '一', '二', '三', '四', '五', '六'];
-        const weekDay = weekDays[now.getDay()];
-        const dateStr = `${month}月${day}日 周${weekDay}`;
+        const dateStr = `${month}月${day}日`;
 
         currentWeatherDiv.innerHTML = `
             <div class="weather-main">
