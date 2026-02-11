@@ -786,8 +786,8 @@ function initCCTV() {
             if (index < streams.length) {
                 const videoBox = card.querySelector('.cctv-video');
                 if (videoBox) {
-                    const img = videoBox.querySelector('img');
-                    if (img) {
+                    const placeholder = videoBox.querySelector('.cctv-placeholder') || videoBox.querySelector('img');
+                    if (placeholder) {
                         const video = document.createElement('video');
                         video.autoplay = true;
                         video.muted = true;
@@ -796,12 +796,12 @@ function initCCTV() {
                         video.style.height = '100%';
                         video.style.objectFit = 'cover';
 
-                        img.replaceWith(video);
+                        placeholder.replaceWith(video);
 
                         const streamUrl = streams[index].url;
 
-                        // 모든 스트림에 프록시 서버 사용 (CORS 및 Mixed Content 해결)
-                        const proxiedUrl = `${WORKER_URL}/?url=${encodeURIComponent(streamUrl)}`;
+                        // HTTPS 스트림은 직접 접근, HTTP만 워커 프록시 사용 (403 및 Mixed Content 대응)
+                        const proxiedUrl = streamUrl.startsWith('https') ? streamUrl : `${WORKER_URL}/?url=${encodeURIComponent(streamUrl)}`;
 
                         // 1. hls.js 지원 여부 확인 (대부분의 PC 브라우저 및 Android)
                         if (Hls.isSupported()) {
