@@ -809,18 +809,22 @@ body {
 
 /* Status Badges in Headers */
 .status-badge-header {
-    font-size: 12px;
-    padding: 3px 8px;
+    font-size: 11px;
+    padding: 2px 8px;
     border-radius: 12px;
-    font-weight: bold;
-    margin-left: 10px;
+    font-weight: 800;
+    margin-left: 8px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     vertical-align: middle;
     color: #ffffff !important;
-    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
     line-height: 1;
+    position: relative;
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .status-badge-header.status-live {
