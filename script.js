@@ -457,13 +457,13 @@ async function loadHallasanInfo() {
         const trailsGrid = document.querySelector('.trails-grid');
 
         if (trailsGrid) {
-            let html = '';
+            let trailsHtml = '';
             let statusCounts = { 정상: 0, 부분: 0, 통제: 0 };
 
             // HTML에서 dl.main-visit-list 요소들을 찾아서 파싱
             const dlElements = doc.querySelectorAll('dl.main-visit-list');
 
-            trails.forEach(t => {
+            trails.forEach((t, index) => {
                 let st = '정상';  // 기본값
                 let statusText = '';
 
@@ -492,28 +492,21 @@ async function loadHallasanInfo() {
                 statusCounts[st]++;
 
                 const info = getStatusCN(st);
+                const isLast = index === trails.length - 1;
 
-                // 상태 텍스트 간결화
-                let displayStatus = '';
-                if (statusText.includes('전면통제') || statusText.includes('통제')) {
-                    displayStatus = '全面管制';
-                } else if (statusText.includes('부분')) {
-                    displayStatus = '部分管制';
-                } else if (st === '정상') {
-                    displayStatus = '正常开放';
-                } else {
-                    displayStatus = '确认中';
-                }
-
-                html += `
-                    <div class="trail-card">
-                        <div class="trail-header" style="justify-content: flex-start; gap: 8px;">
-                            <h4 style="font-size: 1rem; margin: 0;">${t.name}</h4>
-                            <span class="trail-status open" style="margin-left: auto; background: ${info.c}; color: white; font-size: 0.75rem; padding: 4px 8px; border-radius: 4px; white-space: nowrap;">${info.t}</span>
-                        </div>
+                trailsHtml += `
+                    <div class="trail-item" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; ${isLast ? '' : 'border-bottom: 1px solid rgba(255,255,255,0.05);'}">
+                        <span style="font-size: 1rem; font-weight: 500;">${t.name}</span>
+                        <span class="trail-status" style="background: ${info.c}; color: white; font-size: 0.75rem; padding: 4px 10px; border-radius: 4px; white-space: nowrap;">${info.t}</span>
                     </div>`;
             });
-            trailsGrid.innerHTML = html;
+
+            trailsGrid.innerHTML = `
+                <div class="trail-card consolidated-card" style="width: 100%; max-width: 600px; margin: 0 auto;">
+                    <div class="trail-list">
+                        ${trailsHtml}
+                    </div>
+                </div>`;
 
             // 전체 상태 요약 업데이트
             const statusCard = document.querySelector('.status-card');
