@@ -766,44 +766,57 @@ function initCCTV() {
     const script = document.createElement('script');
     script.src = 'https://cdn.jsdelivr.net/npm/hls.js@latest';
     script.onload = function () {
-        if (Hls.isSupported()) {
-            const cctvCards = document.querySelectorAll('.cctv-card');
-            const streams = [
-                { url: 'http://211.114.96.121:1935/jejusi7/11-24.stream/playlist.m3u8', name: '牛岛 (天津港)' },
-                { url: 'http://119.65.216.155:1935/live/cctv03.stream_360p/playlist.m3u8', name: '汉拿山' },
-                { url: 'http://119.65.216.155:1935/live/cctv05.stream_360p/playlist.m3u8', name: '1100高地' },
-                { url: 'http://211.114.96.121:1935/jejusi7/15-32.stream/playlist.m3u8', name: '城山日出峰' }
-            ];
+        const cctvCards = document.querySelectorAll('.cctv-card');
+        const streams = [
+            { url: 'http://211.114.96.121:1935/jejusi7/11-24.stream/playlist.m3u8', name: '牛岛 (天津港)' },
+            { url: 'http://119.65.216.155:1935/live/cctv03.stream_360p/playlist.m3u8', name: '汉拿山' },
+            { url: 'http://119.65.216.155:1935/live/cctv05.stream_360p/playlist.m3u8', name: '1100高地' },
+            { url: 'http://211.114.96.121:1935/jejusi7/15-32.stream/playlist.m3u8', name: '城山日出峰' }
+        ];
 
-            cctvCards.forEach((card, index) => {
-                if (index < streams.length) {
-                    const videoBox = card.querySelector('.cctv-video');
-                    if (videoBox) {
-                        const img = videoBox.querySelector('img');
-                        if (img) {
-                            const video = document.createElement('video');
-                            video.autoplay = true;
-                            video.muted = true;
-                            video.playsInline = true;
-                            video.style.width = '100%';
-                            video.style.height = '100%';
-                            video.style.objectFit = 'cover';
+        cctvCards.forEach((card, index) => {
+            if (index < streams.length) {
+                const videoBox = card.querySelector('.cctv-video');
+                if (videoBox) {
+                    const img = videoBox.querySelector('img');
+                    if (img) {
+                        const video = document.createElement('video');
+                        video.autoplay = true;
+                        video.muted = true;
+                        video.playsInline = true;
+                        video.style.width = '100%';
+                        video.style.height = '100%';
+                        video.style.objectFit = 'cover';
 
-                            img.replaceWith(video);
+                        img.replaceWith(video);
 
+                        const streamUrl = streams[index].url;
+
+                        // 1. hls.js 지원 여부 확인 (대부분의 PC 브라우저 및 Android)
+                        if (Hls.isSupported()) {
                             const hls = new Hls();
-                            hls.loadSource(streams[index].url);
+                            hls.loadSource(streamUrl);
                             hls.attachMedia(video);
-
-                            const label = card.querySelector('.cctv-info h3');
-                            if (label) label.textContent = streams[index].name;
+                            hls.on(Hls.Events.MANIFEST_PARSED, function () {
+                                video.play().catch(e => console.log("Auto-play prevented:", e));
+                            });
                         }
+                        // 2. 네이티브 HLS 지원 확인 (iOS Safari 등)
+                        else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                            video.src = streamUrl;
+                            video.addEventListener('loadedmetadata', function () {
+                                video.play().catch(e => console.log("Auto-play prevented:", e));
+                            });
+                        }
+
+                        const label = card.querySelector('.cctv-info h3');
+                        if (label) label.textContent = streams[index].name;
                     }
                 }
-            });
+            }
+        });
 
-            log('CCTV 스트리밍 초기화 완료');
-        }
+        log('CCTV 스트리밍 초기화 완료');
     };
     document.head.appendChild(script);
 }
