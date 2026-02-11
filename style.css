@@ -1542,349 +1542,102 @@ body {
     }
 }
 
-/* Mobile Card Grid Layout */
+/* ==================== Mobile Optimization (Merged & Light Theme) ==================== */
 @media screen and (max-width: 768px) {
 
-    /* Main Container for Grid */
+    /* Base Layout */
     body {
-        background-color: #0f0f23;
-        /* Ensure dark background */
+        background-color: var(--bg-dark);
+        font-size: 14px;
     }
 
-    /* Hide Hero Section on Mobile to save space */
+    .container {
+        padding: 8px;
+        max-width: 100%;
+    }
+
+    /* Hide Hero on Mobile to save space */
     .hero {
         display: none;
     }
 
-    /* Adjust container for grid */
-    .container {
-        padding: 10px;
-        max-width: 100%;
-    }
-
-    /* Create a grid layout for main sections */
-    /* We need to wrap sections in a grid container if possible, 
-       but since they are siblings, we can simulate it or just style each section as a compact card */
-
-    /* Make each section look like a card */
+    /* Sections as Cards */
     section {
-        background: #1a1a2e;
+        background: var(--bg-card) !important;
         border-radius: 16px;
-        padding: 15px !important;
-        margin-bottom: 15px;
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 12px !important;
+        margin-bottom: 12px;
+        border: 1px solid rgba(0, 0, 0, 0.05) !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04) !important;
     }
 
     .section-header {
         margin-bottom: 10px;
         text-align: center;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        display: block;
     }
 
     .section-title {
-        font-size: 1.2rem;
-        margin-bottom: 0;
+        font-size: 1.25rem !important;
+        margin-bottom: 4px;
         display: flex;
         align-items: center;
-        gap: 8px;
-    }
-
-    .section-subtitle {
-        display: none;
-        /* Hide subtitle to save space */
-    }
-
-    /* CCTV Section - Horizontal Scroll */
-    .cctv-grid {
-        display: flex;
-        overflow-x: auto;
-        gap: 10px;
-        padding-bottom: 5px;
-        -webkit-overflow-scrolling: touch;
-        scroll-snap-type: x mandatory;
-    }
-
-    .cctv-card {
-        min-width: 280px;
-        /* Fixed width for horizontal scroll */
-        scroll-snap-align: start;
-        background: rgba(255, 255, 255, 0.03);
-        margin-bottom: 0;
-    }
-
-    /* Weather Section - Compact */
-    .location-tabs {
-        flex-wrap: nowrap;
         justify-content: center;
-        gap: 6px;
-        padding-bottom: 5px;
-        margin-bottom: 10px;
-    }
-
-    .location-tab {
-        padding: 6px 8px;
-        font-size: 0.75rem;
-        white-space: nowrap;
-        min-width: 0;
-        flex: 1;
-    }
-
-    .current-weather {
-        padding: 12px;
-        flex-direction: row;
-        /* Side by side */
-        align-items: center;
-    }
-
-    .weather-main {
-        gap: 10px;
-    }
-
-    .weather-icon {
-        font-size: 2.5rem;
-    }
-
-    .temp-value {
-        font-size: 2rem;
-    }
-
-    .weather-desc {
-        font-size: 1rem;
-    }
-
-    /* Hallasan Section */
-    .hallasan-status {
-        display: grid;
-        gap: 10px;
-    }
-
-    .status-card {
-        padding: 12px;
-        margin-bottom: 0;
-    }
-
-    .trails-grid {
-        grid-template-columns: 1fr;
-        /* Stack vertically for legibility or 2 col if space permits */
         gap: 8px;
-    }
-
-    .trail-card {
-        padding: 10px;
-        margin-bottom: 0;
-    }
-
-    /* Airport Section */
-    .flight-tabs {
-        margin-bottom: 10px;
-    }
-
-    .flight-table {
-        max-height: 300px;
-        /* Limit height */
-        overflow-y: auto;
-    }
-
-    /* Footer */
-    .footer {
-        padding-bottom: 80px;
-        /* Extra space at bottom */
-    }
-
-    /* Bottom Navigation Bar (Optional - strictly for app-like feel) */
-    /* We can implement a sticky bottom nav if desired, but user asked for "cards layout" first */
-}
-
-/* Mobile Card Grid Layout */
-@media screen and (max-width: 768px) {
-
-    /* Main Container for Grid */
-    body {
-        background-color: #0f0f23;
-        /* Ensure dark background */
-    }
-
-    /* Hide Hero Section on Mobile to save space */
-    .hero {
-        display: none;
-    }
-
-    /* Adjust container for grid */
-    .container {
-        padding: 10px;
-        max-width: 100%;
-    }
-
-    /* Create a grid layout for main sections */
-    section {
-        background: #1a1a2e;
-        border-radius: 16px;
-        padding: 15px !important;
-        margin-bottom: 15px;
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .section-header {
-        margin-bottom: 10px;
+        width: 100%;
         text-align: center;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .section-title {
-        font-size: 1.2rem;
-        margin-bottom: 0;
-        display: flex;
-        align-items: center;
-        gap: 8px;
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
 
     .section-subtitle {
         display: none;
-        /* Hide subtitle to save space */
     }
 
-    /* CCTV Section - Horizontal Scroll */
+    /* CCTV Horizontal Scroll */
     .cctv-grid {
-        display: flex;
+        display: flex !important;
         overflow-x: auto;
-        gap: 10px;
-        padding-bottom: 5px;
+        gap: 12px;
+        padding: 5px 2px 10px;
         -webkit-overflow-scrolling: touch;
         scroll-snap-type: x mandatory;
+        grid-template-columns: none !important;
     }
 
     .cctv-card {
+        flex: 0 0 280px;
         min-width: 280px;
-        /* Fixed width for horizontal scroll */
         scroll-snap-align: start;
-        background: rgba(255, 255, 255, 0.03);
-        margin-bottom: 0;
+        background: #ffffff !important;
+        border: 1px solid rgba(0, 0, 0, 0.05) !important;
+        margin-bottom: 0 !important;
+        padding: 0 !important;
+        display: block !important;
     }
 
-    /* Weather Section - Compact */
-    .location-tabs {
-        flex-wrap: nowrap;
-        justify-content: center;
-        gap: 6px;
-        padding-bottom: 5px;
-        margin-bottom: 10px;
+    .cctv-video {
+        aspect-ratio: 16/9 !important;
     }
 
-    .location-tab {
-        padding: 6px 8px;
-        font-size: 0.75rem;
-        white-space: nowrap;
-        min-width: 0;
-        flex: 1;
+    .cctv-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover !important;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.03);
     }
 
-    .current-weather {
-        padding: 12px;
-        flex-direction: row;
-        /* Side by side */
-        align-items: center;
-    }
-
-    .weather-main {
-        gap: 10px;
-    }
-
-    .weather-icon {
-        font-size: 2.5rem;
-    }
-
-    .temp-value {
-        font-size: 2rem;
-    }
-
-    .weather-desc {
-        font-size: 1rem;
-    }
-
-    /* Hourly Forecast - Grid Layout (5x3) */
-    .hourly-scroll {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 8px;
-        overflow-x: visible;
-        /* Disable horizontal scroll */
-        padding: 0;
-    }
-
-    .hourly-item {
-        min-width: auto;
-        padding: 8px 4px;
-        border: none;
-        background: rgba(255, 255, 255, 0.03);
-    }
-
-    .hourly-time {
-        font-size: 0.8rem;
-    }
-
-    .hourly-icon {
-        font-size: 1.5rem;
-        margin: 4px 0;
-    }
-
-    .hourly-temp {
-        font-size: 0.9rem;
-    }
-
-    /* Limit to 15 items via JS or CSS logic if possible, otherwise it just grids all */
-    /* JS limits to 24 usually, so it will be 5 columns x 5 rows approx */
-
-    /* Hallasan Section */
-    .hallasan-status {
-        display: grid;
-        gap: 10px;
-    }
-
-    .status-card {
-        padding: 12px;
-        margin-bottom: 0;
-    }
-
-    .trails-grid {
-        grid-template-columns: 1fr;
-        /* Stack vertically for legibility or 2 col if space permits */
-        gap: 8px;
-    }
-
-    .trail-card {
-        padding: 10px;
-        margin-bottom: 0;
-    }
-
-    /* Airport Section */
-    .flight-tabs {
-        margin-bottom: 10px;
-    }
-
-    .flight-table {
-        max-height: 300px;
-        /* Limit height */
-        overflow-y: auto;
-    }
-
-    /* Footer */
-    .footer {
-        padding-bottom: 80px;
-        /* Extra space at bottom */
-    }
-
-    /* 모바일 현재 날씨 - 컴팩트 가로 레이아웃 */
+    /* Weather Section Compact */
     .current-weather {
         flex-direction: row !important;
         align-items: center !important;
         gap: 12px;
         padding: 12px !important;
+        background: #f8fafc !important;
+        border: 1px solid rgba(0, 0, 0, 0.03) !important;
+        border-radius: 12px !important;
     }
 
     .weather-main {
@@ -1896,11 +1649,7 @@ body {
     }
 
     .weather-icon {
-        font-size: 2rem !important;
-    }
-
-    .weather-temp {
-        white-space: nowrap;
+        font-size: 2.2rem !important;
     }
 
     .temp-value {
@@ -1908,14 +1657,14 @@ body {
     }
 
     .weather-desc {
-        font-size: 0.8rem !important;
-        white-space: nowrap;
+        font-size: 0.85rem !important;
+        color: var(--text-secondary);
     }
 
     .weather-details {
         display: grid !important;
         grid-template-columns: 1fr 1fr !important;
-        gap: 6px !important;
+        gap: 4px !important;
         flex: 1;
     }
 
@@ -1923,7 +1672,9 @@ body {
         flex-direction: row !important;
         gap: 4px !important;
         padding: 4px 6px !important;
-        font-size: 0.75rem;
+        background: #ffffff !important;
+        border: 1px solid rgba(0, 0, 0, 0.03) !important;
+        font-size: 0.75rem !important;
     }
 
     .detail-icon {
@@ -1932,123 +1683,158 @@ body {
 
     .detail-label {
         font-size: 0.65rem !important;
+        color: #94a3b8;
     }
 
     .detail-value {
         font-size: 0.75rem !important;
-        font-weight: 600;
+        font-weight: 700 !important;
+        color: #1e293b !important;
     }
 
-    /* CCTV 모바일 - 1열 표시 */
-    .cctv-grid {
-        grid-template-columns: 1fr !important;
-        gap: 12px !important;
-    }
-
-    .cctv-card {
-        display: block !important;
-    }
-
-    .cctv-video {
-        aspect-ratio: 16/9 !important;
-    }
-}
-
-/* Status Badge styles moved to main section (line 808) to avoid redundancy */
-
-/* Status Badge styles Consolidated and Updated */
-
-/* Fix Hourly Grid Overflow */
-@media screen and (max-width: 768px) {
-    .hourly-scroll {
+    /* Hourly & Weekly Grids */
+    .hourly-scroll,
+    .weekly-grid {
+        display: grid !important;
         grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
-        gap: 3px !important;
+        gap: 4px !important;
+        padding: 0 !important;
+        overflow-x: visible !important;
     }
 
-    .hourly-item {
-        padding: 6px 0 !important;
-        min-width: 0 !important;
+    .hourly-item,
+    .weekly-item {
+        padding: 6px 2px !important;
+        background: #f8fafc !important;
+        border: 1px solid rgba(0, 0, 0, 0.03) !important;
         width: 100% !important;
-    }
-
-    .hourly-time {
-        font-size: 0.7rem !important;
-    }
-
-    .hourly-temp {
-        font-size: 0.8rem !important;
-    }
-
-    .hourly-icon {
-        font-size: 1.2rem !important;
-        margin: 2px 0 !important;
-    }
-}
-
-/* Mobile Fixes Step 1604 */
-@media screen and (max-width: 768px) {
-    .header-content {
-        align-items: center;
+        min-width: 0 !important;
         text-align: center;
     }
 
-    .nav {
-        justify-content: center;
-    }
-
-    .weekly-grid {
-        grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
-        gap: 3px !important;
-    }
-
-    .weekly-item {
-        padding: 6px 0 !important;
-        width: 100% !important;
-        min-width: 0 !important;
-    }
-
+    .hourly-time,
     .weekly-day {
-        font-size: 0.7rem !important;
+        font-size: 0.65rem !important;
+        color: #64748b !important;
     }
 
+    .hourly-icon,
     .weekly-icon {
         font-size: 1.2rem !important;
         margin: 2px 0 !important;
     }
 
-    .weekly-temps {
-        font-size: 0.8rem !important;
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-    }
-
-    .temp-high {
-        font-size: 0.8rem !important;
-    }
-
+    .hourly-temp,
+    .temp-high,
     .temp-low {
-        font-size: 0.7rem !important;
-        opacity: 0.8;
+        font-size: 0.8rem !important;
+        font-weight: 700 !important;
     }
 
-    .weekly-precip {
-        font-size: 0.7rem !important;
-        margin-top: 2px;
-    }
-}
-
-/* Fix CCTV Mobile Visibility */
-@media screen and (max-width: 768px) {
-    .cctv-card img {
-        width: 100%;
-        height: auto;
-        display: block;
-        object-fit: cover;
-        aspect-ratio: 16/9;
+    /* Hallasan */
+    .status-card {
+        padding: 12px !important;
+        gap: 10px !important;
+        background: #f8fafc !important;
+        border: 1px solid rgba(0, 0, 0, 0.05) !important;
+        margin-bottom: 10px !important;
     }
 
-    .cctv-grid {
-        min-height: 200px;
+    .status-icon {
+        font-size: 1.8rem !important;
+    }
+
+    .status-content h3 {
+        font-size: 1.15rem !important;
+        text-align: center;
+    }
+
+    .trails-grid {
+        grid-template-columns: 1fr !important;
+        gap: 8px !important;
+        width: 100% !important;
+    }
+
+    .trail-card {
+        padding: 10px !important;
+        background: #ffffff !important;
+        border: 1px solid rgba(0, 0, 0, 0.05) !important;
+    }
+
+    /* Airport */
+    .flight-tabs {
+        gap: 5px !important;
+        margin-bottom: 10px !important;
+        justify-content: center;
+    }
+
+    .flight-tab {
+        padding: 8px 10px !important;
+        font-size: 0.8rem !important;
+        min-width: 0 !important;
+        flex: 1;
+        background: #f1f5f9 !important;
+        border: 1px solid rgba(0, 0, 0, 0.05) !important;
+    }
+
+    .flight-tab.active {
+        background: var(--primary-gradient) !important;
+        color: white !important;
+    }
+
+    .flight-table {
+        max-height: 350px !important;
+        border: 1px solid rgba(0, 0, 0, 0.05) !important;
+    }
+
+    .flight-row {
+        grid-template-columns: 1fr 1.5fr 1fr 1fr !important;
+        padding: 10px 5px !important;
+        font-size: 0.75rem !important;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.03) !important;
+    }
+
+    .flight-header {
+        background: #f8fafc !important;
+        font-weight: 700;
+    }
+
+    /* Header & Nav */
+    .header-content {
+        flex-direction: column !important;
+        gap: 8px !important;
+        padding: 10px 0 !important;
+    }
+
+    .nav {
+        gap: 6px !important;
+        width: 100% !important;
+        justify-content: center !important;
+    }
+
+    .nav-link {
+        font-size: 0.85rem !important;
+        min-width: 0 !important;
+        padding: 4px 6px !important;
+        color: var(--text-secondary) !important;
+    }
+
+    /* Footer */
+    .footer {
+        padding: 24px 0 100px !important;
+        margin-top: 15px !important;
+        background: #f1f5f9 !important;
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr !important;
+        text-align: center !important;
+        gap: 20px !important;
+    }
+
+    .xhs-footer-card {
+        margin: 0 auto !important;
+        padding: 15px !important;
+        max-width: 100% !important;
     }
 }
