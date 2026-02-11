@@ -258,6 +258,7 @@ body {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    text-align: center;
 }
 
 .section-subtitle {
@@ -335,6 +336,7 @@ body {
 .cctv-info h3 {
     font-size: 1.3rem;
     margin-bottom: var(--spacing-xs);
+    text-align: center;
 }
 
 .cctv-info p {
@@ -439,6 +441,7 @@ body {
     font-size: 1.5rem;
     margin-bottom: var(--spacing-md);
     text-align: center;
+    width: 100%;
 }
 
 .hourly-weather {
@@ -559,6 +562,7 @@ body {
 .status-content h3 {
     font-size: 1.8rem;
     margin-bottom: var(--spacing-xs);
+    text-align: center;
 }
 
 .status-time {
@@ -745,6 +749,7 @@ body {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    text-align: center;
 }
 
 .footer-links {
@@ -768,80 +773,57 @@ body {
     color: var(--text-muted);
 }
 
-/* XHS Footer Card */
+/* XHS Footer Card - Simplified */
 .xhs-footer-card {
     background: linear-gradient(135deg, #ff2442 0%, #ff5c7c 100%);
-    border-radius: 24px;
-    padding: 24px;
-    max-width: 500px;
+    border-radius: 20px;
+    padding: 20px;
+    max-width: 400px;
     margin: 0 auto 30px;
     position: relative;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(255, 36, 66, 0.3);
-    text-align: left;
-}
-
-.xhs-header {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 20px;
-}
-
-.xhs-avatar {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    border: 2px solid rgba(255, 255, 255, 0.8);
-    object-fit: cover;
-}
-
-.xhs-info h4 {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: #fff;
-    margin: 0;
-}
-
-.xhs-info .xhs-id {
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.9);
-}
-
-.xhs-bio {
-    color: #fff;
-    font-size: 0.95rem;
-    line-height: 1.5;
-    margin-bottom: 20px;
+    box-shadow: 0 10px 25px rgba(255, 36, 66, 0.25);
 }
 
 .xhs-qr-row {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
-    padding-top: 15px;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    align-items: center;
+    gap: 20px;
+}
+
+.xhs-info-section h4 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 4px;
+    text-align: left;
+}
+
+.xhs-info-section .xhs-id {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 12px;
 }
 
 .xhs-logo-section img {
-    height: 30px;
-    margin-bottom: 8px;
+    height: 24px;
+    margin-bottom: 4px;
     display: block;
 }
 
 .xhs-logo-section p {
-    font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.8);
     margin: 0;
-    line-height: 1.4;
 }
 
 .xhs-qr-code {
-    width: 80px;
-    height: 80px;
+    width: 90px;
+    height: 90px;
     background: #fff;
-    padding: 5px;
-    border-radius: 12px;
+    padding: 6px;
+    border-radius: 10px;
+    flex-shrink: 0;
 }
 
 .xhs-qr-code img {
