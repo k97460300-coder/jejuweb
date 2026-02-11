@@ -179,37 +179,6 @@ body {
     }
 }
 
-.hero-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(circle at 50% 50%, transparent 0%, rgba(15, 15, 35, 0.5) 100%);
-}
-
-.hero-content {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-    padding: var(--spacing-xxl) 0;
-}
-
-.hero-title {
-    font-size: 3.5rem;
-    font-weight: 700;
-    margin-bottom: var(--spacing-md);
-    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    animation: fadeInUp 0.8s ease;
-}
-
-.hero-subtitle {
-    font-size: 1.5rem;
-    color: rgba(255, 255, 255, 0.9);
-    margin-bottom: var(--spacing-xl);
-    animation: fadeInUp 1s ease;
-}
-
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -807,6 +776,35 @@ body {
 
     .flight-row {
         grid-template-columns: 1fr;
+    }
+
+    /* 위치 탭 한 줄 표시 및 가로 스크롤 */
+    .location-tabs {
+        display: flex;
+        flex-wrap: nowrap !important;
+        overflow-x: auto;
+        padding-bottom: 8px;
+        -webkit-overflow-scrolling: touch;
+        justify-content: flex-start !important;
+        gap: 8px;
+    }
+
+    .location-tab {
+        flex: 0 0 auto;
+        min-width: 100px;
+    }
+
+    /* 제목 중앙 정렬 */
+    .cctv-info h3,
+    .trail-header h4,
+    .subsection-title,
+    .section-title {
+        text-align: center !important;
+        width: 100%;
+    }
+
+    .trail-header {
+        justify-content: center !important;
     }
 }
 

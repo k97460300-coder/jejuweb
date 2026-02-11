@@ -508,7 +508,7 @@ async function loadHallasanInfo() {
                 html += `
                     <div class="trail-card">
                         <div class="trail-header" style="justify-content: flex-start; gap: 8px;">
-                            <h4 style="font-size: 1rem; margin: 0;">${t.name} <span style="font-size: 0.8rem; color: #aaa; font-weight: normal;">${t.sub}</span></h4>
+                            <h4 style="font-size: 1rem; margin: 0;">${t.name}</h4>
                             <span class="trail-status open" style="margin-left: auto; background: ${info.c}; color: white; font-size: 0.75rem; padding: 4px 8px; border-radius: 4px; white-space: nowrap;">${info.t}</span>
                         </div>
                     </div>`;
@@ -779,7 +779,7 @@ function initCCTV() {
                 { url: 'http://211.114.96.121:1935/jejusi7/11-24.stream/playlist.m3u8', name: '牛岛 (天津港)' },
                 { url: 'http://119.65.216.155:1935/live/cctv03.stream_360p/playlist.m3u8', name: '汉拿山' },
                 { url: 'http://119.65.216.155:1935/live/cctv05.stream_360p/playlist.m3u8', name: '1100高地' },
-                { url: 'http://211.114.96.121:1935/jejusi7/11-24.stream/playlist.m3u8', name: '城山日出峰' }
+                { url: 'http://211.114.96.121:1935/jejusi7/15-32.stream/playlist.m3u8', name: '城山日出峰' }
             ];
 
             cctvCards.forEach((card, index) => {
