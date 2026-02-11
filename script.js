@@ -800,15 +800,19 @@ function initCCTV() {
 
                         const streamUrl = streams[index].url;
 
-                        // http인 경우에만 프록시 서버 사용 (Mixed Content 해결)
-                        const proxiedUrl = streamUrl.startsWith('https') ? streamUrl : `${WORKER_URL}/?url=${encodeURIComponent(streamUrl)}`;
+                        // 모든 스트림에 프록시 서버 사용 (CORS 및 Mixed Content 해결)
+                        const proxiedUrl = `${WORKER_URL}/?url=${encodeURIComponent(streamUrl)}`;
 
                         // 1. hls.js 지원 여부 확인 (대부분의 PC 브라우저 및 Android)
                         if (Hls.isSupported()) {
                             const hls = new Hls({
-                                fragLoadingMaxRetry: 5,
-                                manifestLoadingMaxRetry: 5,
-                                enableWorker: true
+                                fragLoadingMaxRetry: 10,
+                                manifestLoadingMaxRetry: 10,
+                                levelLoadingMaxRetry: 10,
+                                enableWorker: true,
+                                xhrSetup: function (xhr, url) {
+                                    xhr.withCredentials = false; // CORS 정책에 따라 설정
+                                }
                             });
                             hls.loadSource(proxiedUrl);
                             hls.attachMedia(video);
