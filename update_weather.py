@@ -13,7 +13,7 @@ new_weather_section = '''    <!-- Weather Section -->
     <section id="weather" class="section section-alt">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">🌤️ 天气预报 <span class="status-badge-header status-updated">已更新</span></h2>
+                <h2 class="section-title">🌤️ 天气预报</h2>
                 <p class="section-subtitle">4大主要旅游区实时天气与未来10天预报</p>
             </div>
 

@@ -121,6 +121,11 @@ body {
     border-radius: var(--radius-sm);
     transition: all var(--transition-fast);
     position: relative;
+    min-width: 100px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .nav-link::after {
@@ -364,7 +369,8 @@ body {
 
 .weather-temp {
     display: flex;
-    align-items: flex-start;
+    align-items: baseline;
+    gap: 4px;
 }
 
 .temp-value {
@@ -377,9 +383,9 @@ body {
 }
 
 .temp-unit {
-    font-size: 2rem;
+    font-size: 1.8rem;
     color: var(--text-secondary);
-    margin-top: 0.5rem;
+    margin-top: 0;
 }
 
 .weather-desc {
@@ -762,6 +768,88 @@ body {
     color: var(--text-muted);
 }
 
+/* XHS Footer Card */
+.xhs-footer-card {
+    background: linear-gradient(135deg, #ff2442 0%, #ff5c7c 100%);
+    border-radius: 24px;
+    padding: 24px;
+    max-width: 500px;
+    margin: 0 auto 30px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(255, 36, 66, 0.3);
+    text-align: left;
+}
+
+.xhs-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.xhs-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    object-fit: cover;
+}
+
+.xhs-info h4 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+}
+
+.xhs-info .xhs-id {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.xhs-bio {
+    color: #fff;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.xhs-qr-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.xhs-logo-section img {
+    height: 30px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.xhs-logo-section p {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+    line-height: 1.4;
+}
+
+.xhs-qr-code {
+    width: 80px;
+    height: 80px;
+    background: #fff;
+    padding: 5px;
+    border-radius: 12px;
+}
+
+.xhs-qr-code img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
 @media (max-width: 768px) {
     .hero-title {
         font-size: 2.5rem;
@@ -806,37 +894,6 @@ body {
 }
 
 /* ==================== Mobile.html Style Additions ==================== */
-
-/* Status Badges in Headers */
-.status-badge-header {
-    font-size: 13px;
-    padding: 3px 10px;
-    border-radius: 4px;
-    font-weight: 900;
-    margin-left: 10px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    vertical-align: middle;
-    color: #ffffff !important;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
-    line-height: normal;
-    position: relative;
-    top: -2px;
-    z-index: 100;
-    box-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    white-space: nowrap;
-}
-
-.status-badge-header.status-live {
-    background: #ff4444 !important;
-    animation: pulse 2s ease-in-out infinite;
-}
-
-.status-badge-header.status-updated {
-    background: #4CAF50 !important;
-}
 
 /* Location Subtitle */
 .loc-sub {
@@ -1010,6 +1067,10 @@ body {
 /* �µ� ǥ�� ũ�� ���� */
 .temp-value {
     font-size: 3rem !important;
+}
+
+.temp-unit {
+    font-size: 1.5rem !important;
 }
 
 /* �ð��뺰 �µ� ũ�� ���� */
