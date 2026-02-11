@@ -800,23 +800,32 @@ function initCCTV() {
 
                         const streamUrl = streams[index].url;
 
-                        // Mixed Content 문제 해결을 위해 프록시 서버 사용
+                        // Mixed Content 문제 해결을 위해 리라이팅 프록시 사용
                         const proxiedUrl = `${WORKER_URL}/?url=${encodeURIComponent(streamUrl)}`;
 
                         // 1. hls.js 지원 여부 확인 (대부분의 PC 브라우저 및 Android)
                         if (Hls.isSupported()) {
-                            const hls = new Hls();
+                            const hls = new Hls({
+                                // 세그먼트 로딩 시 프록시 서버 부하 분산을 위해 설정 추가 가능
+                                fragLoadingMaxRetry: 3,
+                                manifestLoadingMaxRetry: 3
+                            });
                             hls.loadSource(proxiedUrl);
                             hls.attachMedia(video);
                             hls.on(Hls.Events.MANIFEST_PARSED, function () {
-                                video.play().catch(e => console.log("Auto-play prevented:", e));
+                                video.play().catch(e => console.log("Auto-play prevented (HLS):", e));
+                            });
+                            hls.on(Hls.Events.ERROR, function (event, data) {
+                                if (data.fatal) {
+                                    console.log("HLS fatal error:", data.type);
+                                }
                             });
                         }
                         // 2. 네이티브 HLS 지원 확인 (iOS Safari 등)
                         else if (video.canPlayType('application/vnd.apple.mpegurl')) {
                             video.src = proxiedUrl;
                             video.addEventListener('loadedmetadata', function () {
-                                video.play().catch(e => console.log("Auto-play prevented:", e));
+                                video.play().catch(e => console.log("Auto-play prevented (Native):", e));
                             });
                         }
 
