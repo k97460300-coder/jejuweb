@@ -777,9 +777,9 @@ function initCCTV() {
         const cctvCards = document.querySelectorAll('.cctv-card');
         const streams = [
             { url: 'http://211.114.96.121:1935/jejusi7/11-24.stream/playlist.m3u8', name: '牛岛 (天津港)' },
-            { url: 'http://119.65.216.155:1935/live/cctv03.stream_360p/playlist.m3u8', name: '汉拿山' },
-            { url: 'http://119.65.216.155:1935/live/cctv05.stream_360p/playlist.m3u8', name: '1100高地' },
-            { url: 'http://211.114.96.121:1935/jejusi7/15-32.stream/playlist.m3u8', name: '城山日出峰' }
+            { url: 'https://www.jeju.go.kr/live/hallasan_baengnokdam.m3u8', name: '汉拿山 (百鹿潭)' },
+            { url: 'https://www.jeju.go.kr/live/1100.m3u8', name: '1100高地' },
+            { url: 'https://www.jeju.go.kr/live/seongsan.m3u8', name: '城山日出峰' }
         ];
 
         cctvCards.forEach((card, index) => {
