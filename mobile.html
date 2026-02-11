@@ -298,12 +298,15 @@
                     </div>
                     <div class="video-box">
                         <div class="live-tag">LIVE</div>
-                        <div class="vid-label">🏔️ 汉拿山 (御势岳)</div><video id="v2" autoplay muted playsinline></video>
+                        <div class="vid-label">🏔️ 汉拿山</div><video id="v2" autoplay muted playsinline></video>
                     </div>
                     <div class="video-box">
                         <div class="live-tag">LIVE</div>
-                        <div class="vid-label">🛣️ 1100高地 (1100公路)</div><video id="v3" autoplay muted
-                            playsinline></video>
+                        <div class="vid-label">🛣️ 1100高地</div><video id="v3" autoplay muted playsinline></video>
+                    </div>
+                    <div class="video-box">
+                        <div class="live-tag">LIVE</div>
+                        <div class="vid-label">🌅 城山日出峰</div><video id="v4" autoplay muted playsinline></video>
                     </div>
                 </div>
             </div>
@@ -355,7 +358,6 @@
                 <div class="card-content" id="hallasan-list">
                     <div style="padding:20px; text-align:center; color:#999; font-size:12px;">正在获取实时管制信息...</div>
                 </div>
-                <footer>Data provided by Korea Meteorological Administration</footer>
             </div>
         </div>
 
@@ -367,7 +369,6 @@
                 <div class="card-content" id="flight-list-dep">
                     <div style="padding:40px; text-align:center; color:#999; font-size:12px;">正在获取出发信息...</div>
                 </div>
-                <footer>Data provided by Korea Airports Corporation</footer>
             </div>
         </div>
 
@@ -379,7 +380,6 @@
                 <div class="card-content" id="flight-list-arr">
                     <div style="padding:40px; text-align:center; color:#999; font-size:12px;">正在获取到达信息...</div>
                 </div>
-                <footer>Data provided by Korea Airports Corporation</footer>
             </div>
         </div>
     </div>
@@ -635,21 +635,34 @@
         }
 
         function initCCTV() {
-            if (Hls.isSupported()) {
-                const streams = [
-                    { id: 'v1', url: 'http://211.114.96.121:1935/jejusi7/11-24.stream/playlist.m3u8' }, // 우도
-                    { id: 'v2', url: 'http://119.65.216.155:1935/live/cctv03.stream_360p/playlist.m3u8' }, // 윗세오름
-                    { id: 'v3', url: 'http://119.65.216.155:1935/live/cctv05.stream_360p/playlist.m3u8' }
-                ];
-                streams.forEach(s => {
-                    const video = document.getElementById(s.id);
-                    if (video) {
-                        const hls = new Hls();
-                        hls.loadSource(s.url);
-                        hls.attachMedia(video);
-                    }
-                });
-            }
+            const streams = [
+                { id: 'v1', url: 'http://211.114.96.121:1935/jejusi7/11-24.stream/playlist.m3u8' }, // 우도
+                { id: 'v2', url: 'http://119.65.216.155:1935/live/cctv03.stream_360p/playlist.m3u8' }, // 한라산
+                { id: 'v3', url: 'http://119.65.216.155:1935/live/cctv05.stream_360p/playlist.m3u8' }, // 1100고지
+                { id: 'v4', url: 'http://211.114.96.121:1935/jejusi7/15-32.stream/playlist.m3u8' }  // 성산일출봉
+            ];
+
+            streams.forEach(s => {
+                const video = document.getElementById(s.id);
+                if (!video) return;
+
+                // 1. hls.js 지원 여부 확인 (대부분의 Android 및 PC 브라우저)
+                if (Hls.isSupported()) {
+                    const hls = new Hls();
+                    hls.loadSource(s.url);
+                    hls.attachMedia(video);
+                    hls.on(Hls.Events.MANIFEST_PARSED, function () {
+                        video.play().catch(e => console.log("Auto-play prevented (HLS.js):", e));
+                    });
+                }
+                // 2. 네이티브 HLS 지원 확인 (iOS Safari 등)
+                else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                    video.src = s.url;
+                    video.addEventListener('loadedmetadata', function () {
+                        video.play().catch(e => console.log("Auto-play prevented (Native):", e));
+                    });
+                }
+            });
         }
 
         async function initHallasan() {
@@ -874,6 +887,43 @@
             initArrivalFlights();
         }
     </script>
+    <!-- Footer -->
+    <footer class="footer"
+        style="background: #f1f5f9; padding: 40px 0 100px; margin-top: 20px; border-top: 1px solid rgba(0,0,0,0.02);">
+        <div class="container">
+            <!-- XHS Profile Card -->
+            <div class="xhs-footer-card"
+                style="background: linear-gradient(135deg, #ff2442 0%, #ff5c7c 100%); border-radius: 20px; padding: 20px; margin: 0 auto 30px; position: relative; box-shadow: 0 10px 25px rgba(255, 36, 66, 0.25);">
+                <div class="xhs-qr-row"
+                    style="display: flex; justify-content: space-between; align-items: center; gap: 20px;">
+                    <div class="xhs-info-section">
+                        <h4
+                            style="font-size: 1.3rem; font-weight: 700; color: #fff; margin-bottom: 4px; text-align: left;">
+                            济州本地人_正敬</h4>
+                        <p class="xhs-id"
+                            style="font-size: 0.85rem; color: rgba(255, 255, 255, 0.9); margin-bottom: 12px;">小红书 ID:
+                            jeju_jk</p>
+                        <div class="xhs-logo-section">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Xiaohongshu_logo.svg/512px-Xiaohongshu_logo.svg.png"
+                                alt="Xiaohongshu"
+                                style="filter: brightness(0) invert(1); height: 24px; margin-bottom: 4px; display: block;">
+                            <p style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.8); margin: 0;">扫描二维码关注</p>
+                        </div>
+                    </div>
+                    <div class="xhs-qr-code"
+                        style="width: 90px; height: 90px; background: #fff; padding: 6px; border-radius: 10px; flex-shrink: 0;">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://www.xiaohongshu.com/user/profile/jeju_jk"
+                            alt="QR Code" style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.05);">
+                <p style="font-size: 0.85rem; color: #6b6b8c;">&copy; 2026 济州旅行秘书 · 保留所有权利</p>
+                <p style="font-size: 0.75rem; color: #8e8eaf; margin-top: 8px;">数据来源：韩国气象厅、韩国机场公社、济州特别自治道</p>
+            </div>
+        </div>
+    </footer>
 </body>
 
 </html>

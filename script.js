@@ -548,6 +548,16 @@ async function loadHallasanInfo() {
         log('한라산 정보 로드 완료');
     } catch (e) {
         log('한라산 API 오류: ' + e.message);
+        const statusCard = document.querySelector('.status-card');
+        if (statusCard) {
+            statusCard.innerHTML = `
+                <div class="status-icon">⚠️</div>
+                <div class="status-content">
+                    <h3>获取状态失败</h3>
+                    <p>暂时无法加载登山信息，请稍后再试</p>
+                    <div class="status-time">错误: ${e.message}</div>
+                </div>`;
+        }
     }
 }
 
