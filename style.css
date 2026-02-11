@@ -406,11 +406,8 @@ body {
 }
 
 .weather-detail-item .detail-label {
-    min-width: 80px;
-}
-
-.weather-detail-item .detail-value {
-    margin-left: auto;
+    min-width: 60px;
+    margin-right: var(--spacing-xs);
 }
 
 .weather-detail-item:hover {
