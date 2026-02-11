@@ -253,7 +253,8 @@ async function updateWeeklyWeather(locationKey, tempDays, now) {
     if (!weeklyGrid) return;
 
     const yyyy = now.getFullYear();
-    const dayNames = ['今天', '周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+    // getDay() 인덱스에 맞춤: 0=일, 1=월, 2=화, 3=수, 4=목, 5=금, 6=토
+    const dayNames = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
 
     // 중기예보 데이터 가져오기 (3~9일)
     const midTermData = await fetchMidTermForecast(locationKey);
@@ -263,7 +264,8 @@ async function updateWeeklyWeather(locationKey, tempDays, now) {
     for (let i = 0; i <= 9; i++) {
         const d = new Date(yyyy, now.getMonth(), now.getDate() + i);
         const dStr = getFormatDate(d);
-        const dayName = i === 0 ? dayNames[0] : dayNames[d.getDay()];
+        // 오늘은 '今天', 나머지는 요일 표시
+        const dayName = i === 0 ? '今天' : dayNames[d.getDay()];
 
         let icon = '☀️';
         let minT = '-';
@@ -320,6 +322,15 @@ async function updateWeeklyWeather(locationKey, tempDays, now) {
                 minT = midDay.minTemp;
                 maxT = midDay.maxTemp;
                 maxPop = midDay.rainProb;
+            }
+
+            // 중기예보에서 온도 데이터가 없으면 단기예보 fallback 시도
+            if ((minT === '-' || maxT === '-') && tempDays[dStr]) {
+                const t = tempDays[dStr];
+                if (t.min === 100 && t.temps.length > 0) t.min = Math.min(...t.temps);
+                if (t.max === -100 && t.temps.length > 0) t.max = Math.max(...t.temps);
+                if (minT === '-' && t.min !== undefined && t.min !== 100) minT = Math.round(t.min);
+                if (maxT === '-' && t.max !== undefined && t.max !== -100) maxT = Math.round(t.max);
             }
         }
 

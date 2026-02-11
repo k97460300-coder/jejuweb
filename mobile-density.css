@@ -1,0 +1,154 @@
+/* Mobile Layout Density Optimization */
+@media screen and (max-width: 768px) {
+
+    /* Redefine global spacing variables for mobile */
+    :root {
+        --spacing-xs: 0.25rem;
+        --spacing-sm: 0.5rem;
+        --spacing-md: 1rem;
+        --spacing-lg: 1.5rem;
+        --spacing-xl: 2rem;
+        --spacing-xxl: 3rem;
+    }
+
+    /* Container adjustments */
+    .container {
+        padding: 0 12px;
+        /* Tighter side margins */
+    }
+
+    /* Section vertical spacing */
+    section {
+        padding: var(--spacing-lg) 0;
+    }
+
+    /* Hero compacting */
+    .hero {
+        min-height: auto;
+        padding: var(--spacing-xl) 0;
+    }
+
+    .hero h1 {
+        font-size: 1.8rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .hero p {
+        font-size: 0.95rem;
+    }
+
+    .hero-stats {
+        gap: var(--spacing-sm);
+        margin-top: var(--spacing-lg);
+    }
+
+    .stat-card {
+        padding: 0.5rem;
+        min-width: 80px;
+    }
+
+    /* Current Weather compacting */
+    .current-weather {
+        padding: var(--spacing-md);
+        gap: var(--spacing-md);
+        margin-bottom: var(--spacing-md);
+    }
+
+    .weather-icon {
+        font-size: 3.5rem;
+    }
+
+    .temp-value {
+        font-size: 3rem;
+    }
+
+    .weather-desc {
+        font-size: 1.2rem;
+        margin-top: 0;
+    }
+
+    .weather-details {
+        gap: 8px;
+    }
+
+    .weather-detail-item {
+        padding: 6px;
+    }
+
+    /* Weekly Grid compacting */
+    .weekly-grid {
+        gap: 8px;
+        /* Tighter grid */
+        /* Currently 2 columns from previous edit, keep it but make items smaller */
+    }
+
+    .weekly-item {
+        padding: 8px;
+    }
+
+    .weekly-icon {
+        font-size: 1.8rem;
+        margin: 4px 0;
+    }
+
+    .weekly-day {
+        font-size: 0.9rem;
+        margin-bottom: 2px;
+    }
+
+    /* Flight Table compacting */
+    .flight-row {
+        padding: 8px 4px;
+        gap: 4px;
+    }
+
+    .flight-col {
+        padding: 0 2px;
+        font-size: 0.8rem;
+    }
+
+    .status-badge {
+        padding: 2px 6px;
+        font-size: 0.7rem;
+    }
+
+    /* Hallasan Status compacting */
+    .status-card {
+        padding: var(--spacing-md);
+        gap: var(--spacing-md);
+    }
+
+    .status-icon {
+        font-size: 2rem;
+    }
+
+    .status-content h3 {
+        font-size: 1.4rem;
+    }
+
+    /* Cards generic */
+    .card {
+        padding: var(--spacing-md);
+        margin-bottom: var(--spacing-md);
+    }
+
+    /* CCTV grid */
+    .cctv-card {
+        padding: 8px;
+    }
+
+    .cctv-info {
+        padding: 8px;
+    }
+
+    .cctv-info h3 {
+        font-size: 1.1rem;
+        margin-bottom: 2px;
+    }
+
+    /* Footer */
+    .footer {
+        padding: var(--spacing-lg) 0;
+        margin-top: var(--spacing-lg);
+    }
+}

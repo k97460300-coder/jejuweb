@@ -421,19 +421,27 @@ body {
 
 .weather-details {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: var(--spacing-md);
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
 }
 
 .weather-detail-item {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    gap: var(--spacing-xs);
-    padding: var(--spacing-sm);
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
     background: rgba(255, 255, 255, 0.03);
     border-radius: var(--radius-md);
     transition: all var(--transition-fast);
+}
+
+.weather-detail-item .detail-label {
+    min-width: 80px;
+}
+
+.weather-detail-item .detail-value {
+    margin-left: auto;
 }
 
 .weather-detail-item:hover {
