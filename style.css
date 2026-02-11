@@ -6,23 +6,23 @@
 }
 
 :root {
-    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    --success-gradient: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-    --warning-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    --primary-gradient: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+    --secondary-gradient: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    --accent-gradient: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+    --success-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    --warning-gradient: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
 
-    --bg-dark: #0f0f23;
-    --bg-card: #1a1a2e;
-    --bg-card-hover: #252540;
-    --text-primary: #ffffff;
-    --text-secondary: #b8b8d1;
-    --text-muted: #6b6b8c;
+    --bg-dark: #f8fafc;
+    --bg-card: #ffffff;
+    --bg-card-hover: #f1f5f9;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #94a3b8;
 
-    --accent-blue: #4facfe;
-    --accent-purple: #667eea;
-    --accent-green: #43e97b;
-    --accent-orange: #fee140;
+    --accent-blue: #3b82f6;
+    --accent-purple: #6366f1;
+    --accent-green: #10b981;
+    --accent-orange: #f59e0b;
 
     --spacing-xs: 0.5rem;
     --spacing-sm: 1rem;
@@ -36,8 +36,8 @@
     --radius-lg: 16px;
     --radius-xl: 24px;
 
-    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.2);
-    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.05);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.08);
 
     --transition-fast: 0.2s ease;
     --transition-normal: 0.3s ease;
@@ -242,7 +242,7 @@ body {
 }
 
 .section-alt {
-    background: linear-gradient(180deg, var(--bg-dark) 0%, var(--bg-card) 100%);
+    background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
 }
 
 .section-header {
@@ -350,12 +350,13 @@ body {
     border-radius: var(--radius-xl);
     padding: var(--spacing-md);
     margin-bottom: var(--spacing-lg);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.03);
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
     gap: var(--spacing-lg);
+    box-shadow: var(--shadow-md);
 }
 
 .weather-main {
@@ -580,7 +581,7 @@ body {
     background: var(--bg-card);
     border-radius: var(--radius-md);
     padding: var(--spacing-md);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
     transition: all var(--transition-normal);
 }
 
@@ -729,8 +730,8 @@ body {
 
 /* Footer */
 .footer {
-    background: var(--bg-card);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: #f1f5f9;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
     padding: var(--spacing-xl) 0 var(--spacing-md);
     margin-top: var(--spacing-xxl);
 }
