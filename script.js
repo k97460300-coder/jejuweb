@@ -850,12 +850,92 @@ function initCCTV() {
 
                     const label = card.querySelector('.cctv-info h3');
                     if (label) label.textContent = streams[index].name;
+
+                    // 클릭 시 모달 열기 이벤트 추가
+                    card.addEventListener('click', () => {
+                        openVideoModal(proxiedUrl, streams[index].name);
+                    });
                 }
             }
         }
     });
-
     log('CCTV 스트리밍 초기화 완료');
+}
+
+/**
+ * 비디오 모달 열기
+ */
+function openVideoModal(url, title) {
+    const modal = document.getElementById('videoModal');
+    const modalTitle = document.getElementById('modalVideoTitle');
+    const container = document.querySelector('.modal-video-container');
+    const placeholder = document.getElementById('modalVideoPlaceholder');
+
+    modalTitle.textContent = title;
+    modal.style.display = 'block';
+    document.body.style.overflow = 'hidden'; // 스크롤 방지
+
+    // 기존 HLS 정리
+    if (modalHls) {
+        modalHls.destroy();
+        modalHls = null;
+    }
+
+    const video = document.createElement('video');
+    video.autoplay = true;
+    video.controls = true;
+    video.style.width = '100%';
+    video.style.height = '100%';
+
+    placeholder.style.display = 'none';
+    container.innerHTML = '';
+    container.appendChild(video);
+
+    if (Hls.isSupported()) {
+        modalHls = new Hls({
+            fragLoadingMaxRetry: 10,
+            manifestLoadingMaxRetry: 10,
+            xhrSetup: function (xhr) {
+                xhr.withCredentials = false;
+            }
+        });
+        modalHls.loadSource(url);
+        modalHls.attachMedia(video);
+        modalHls.on(Hls.Events.MANIFEST_PARSED, () => {
+            video.play();
+        });
+    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = url;
+    }
+}
+
+/**
+ * 모달 닫기 초기화
+ */
+function initModalControls() {
+    const modal = document.getElementById('videoModal');
+    const closeBtn = document.querySelector('.close-modal');
+
+    const closeModal = () => {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto'; // 스크롤 복구
+        if (modalHls) {
+            modalHls.destroy();
+            modalHls = null;
+        }
+        const container = document.querySelector('.modal-video-container');
+        container.innerHTML = '<div id="modalVideoPlaceholder" class="modal-placeholder">正在初始化...</div>';
+    };
+
+    if (closeBtn) closeBtn.onclick = closeModal;
+
+    window.onclick = (event) => {
+        if (event.target == modal) closeModal();
+    };
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.style.display === 'block') closeModal();
+    });
 }
 
 // 페이지 로드 시 모든 데이터 초기화
