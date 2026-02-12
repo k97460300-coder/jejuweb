@@ -769,6 +769,8 @@ async function initFlightData() {
     }
 }
 
+let modalHls = null;
+
 // CCTV 스트리밍 초기화
 function initCCTV() {
     // index.html에서 hls.js를 이미 로드했으므로 전역 Hls 객체를 바로 사용합니다.
@@ -907,6 +909,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // CCTV 초기화
     initCCTV();
+    initModalControls();
 
     // 4개 지역 날씨 데이터 로드
     setTimeout(() => loadWeatherForLocation('jeju'), 500);
