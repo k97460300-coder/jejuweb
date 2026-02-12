@@ -778,12 +778,12 @@ function initCCTV() {
     }
 
     const cctvCards = document.querySelectorAll('.cctv-card');
-    // 검증된 HTTPS 포털 URL을 사용합니다 (v10 봇 우회 프록시 적용)
+    // mobile.html에서 작동하는 IP 기반 직결 주소를 사용합니다.
     const streams = [
-        { url: 'https://www.jeju.go.kr/live/seongsan.m3u8', name: '城山日出峰' },
-        { url: 'https://www.jeju.go.kr/live/hallasan_baengnokdam.m3u8', name: '汉拿山 (百鹿潭)' },
-        { url: 'https://www.jeju.go.kr/live/udo.m3u8', name: '牛岛 (天津港)' },
-        { url: 'https://www.jeju.go.kr/live/1100.m3u8', name: '1100高地' }
+        { url: 'http://119.65.216.155:1935/live/cctv04.stream_360p/playlist.m3u8', name: '城山日出峰' },
+        { url: 'http://119.65.216.155:1935/live/cctv03.stream_360p/playlist.m3u8', name: '汉拿山 (御势岳)' },
+        { url: 'http://211.114.96.121:1935/jejusi7/11-24.stream/playlist.m3u8', name: '牛岛 (天津港)' },
+        { url: 'http://119.65.216.155:1935/live/cctv05.stream_360p/playlist.m3u8', name: '1100高地' }
     ];
 
     cctvCards.forEach((card, index) => {
@@ -804,8 +804,8 @@ function initCCTV() {
 
                     const streamUrl = streams[index].url;
 
-                    // 모든 스트림에 대해 워커 프록시 사용 (CORS 및 403 대응)
-                    const proxiedUrl = `${WORKER_URL}/?url=${encodeURIComponent(streamUrl)}`;
+                    // PC 브라우저에서 직접 연결 시도 (CORS가 허용되어 있을 경우)
+                    const proxiedUrl = streamUrl;
                     console.log(`[CCTV] ${streams[index].name}: ${proxiedUrl}`);
 
                     // 1. hls.js 사용
