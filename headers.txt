@@ -1,0 +1,8 @@
+HTTP/1.1 200 OK
+Date: Thu, 12 Feb 2026 10:52:33 GMT
+Content-Type: text/html; charset=UTF-8
+Transfer-Encoding: chunked
+Connection: keep-alive
+Set-Cookie: JSESSIONID=MeKIfD295ko1aRhYaMExJFqafc98lsQwrQGN1vITyST6zz5NtSgiXwuO83HWbn3v.jeus_domain/was1_www06; Domain=.jeju.go.kr; Path=/; Secure; HttpOnly; SameSite=None
+Set-Cookie: WMONID=MsIu25YEuwX; Expires=Fri, 12-Feb-2027 19:53:14 GMT; Path=/
+

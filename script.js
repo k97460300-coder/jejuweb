@@ -778,7 +778,7 @@ function initCCTV() {
     }
 
     const cctvCards = document.querySelectorAll('.cctv-card');
-    // 검증된 HTTPS 포털 URL을 사용합니다 (v9 프록시를 통해 403 에러 우회)
+    // 검증된 HTTPS 포털 URL을 사용합니다 (v10 봇 우회 프록시 적용)
     const streams = [
         { url: 'https://www.jeju.go.kr/live/seongsan.m3u8', name: '城山日出峰' },
         { url: 'https://www.jeju.go.kr/live/hallasan_baengnokdam.m3u8', name: '汉拿山 (百鹿潭)' },
