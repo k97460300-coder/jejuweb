@@ -1880,4 +1880,97 @@ body {
         border-radius: 16px !important;
         box-shadow: var(--shadow-md) !important;
     }
-}$css
+}
+/* Video Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(8px);
+}
+
+.modal-content {
+    position: relative;
+    background-color: #1a1a2e;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 90%;
+    max-width: 1000px;
+    border-radius: var(--radius-xl);
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+    animation: modalScale 0.3s ease-out;
+}
+
+@keyframes modalScale {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.close-modal {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    color: #fff;
+    font-size: 35px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 2001;
+    transition: color 0.3s;
+}
+
+.close-modal:hover {
+    color: #ff4757;
+}
+
+.modal-video-container {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: #000;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    position: relative;
+}
+
+.modal-placeholder {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.modal-info {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-info h3 {
+    margin: 0;
+    color: #fff;
+}
+
+/* CCTV Hover/Grid Optimization */
+.cctv-card {
+    cursor: pointer;
+}
+
+.cctv-video video {
+    pointer-events: none;
+}
+
+@media (min-width: 769px) {
+    .cctv-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+}
