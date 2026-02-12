@@ -7,6 +7,5 @@ routes = [
   { pattern = "jejuweb.k97460300.workers.dev", zone_name = "" }
 ]
 
-# 환경 변수 (필요시)
 [vars]
-# EXAMPLE_VAR = "value"
+# 필요한 환경 변수가 있다면 여기에 추가
