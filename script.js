@@ -769,80 +769,71 @@ async function initFlightData() {
     }
 }
 
-// CCTV 스트리밍 초기화 (4개: 우도, 한라산, 1100도로, 성산일출봉)
+// CCTV 스트리밍 초기화
 function initCCTV() {
-    const script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/hls.js@latest';
-    script.onload = function () {
-        const cctvCards = document.querySelectorAll('.cctv-card');
-        const streams = [
-            { url: 'http://211.114.96.121:1935/jejusi7/11-24.stream/playlist.m3u8', name: '牛岛 (天津港)' },
-            { url: 'https://www.jeju.go.kr/live/hallasan_baengnokdam.m3u8', name: '汉拿山 (百鹿潭)' },
-            { url: 'https://www.jeju.go.kr/live/1100.m3u8', name: '1100高地' },
-            { url: 'https://www.jeju.go.kr/live/seongsan.m3u8', name: '城山日出峰' }
-        ];
+    // index.html에서 hls.js를 이미 로드했으므로 전역 Hls 객체를 바로 사용합니다.
+    if (typeof Hls === 'undefined') {
+        console.error("hls.js is not loaded. Please check index.html.");
+        return;
+    }
 
-        cctvCards.forEach((card, index) => {
-            if (index < streams.length) {
-                const videoBox = card.querySelector('.cctv-video');
-                if (videoBox) {
-                    const placeholder = videoBox.querySelector('.cctv-placeholder') || videoBox.querySelector('img');
-                    if (placeholder) {
-                        const video = document.createElement('video');
-                        video.autoplay = true;
-                        video.muted = true;
-                        video.playsInline = true;
-                        video.style.width = '100%';
-                        video.style.height = '100%';
-                        video.style.objectFit = 'cover';
+    const cctvCards = document.querySelectorAll('.cctv-card');
+    const streams = [
+        { url: 'https://www.jeju.go.kr/live/seongsan.m3u8', name: '城山日出峰' },
+        { url: 'https://www.jeju.go.kr/live/hallasan_baengnokdam.m3u8', name: '汉拿山 (百鹿潭)' },
+        { url: 'http://211.114.96.121:1935/jejusi7/11-24.stream/playlist.m3u8', name: '牛岛 (天津港)' },
+        { url: 'https://www.jeju.go.kr/live/1100.m3u8', name: '1100高地' }
+    ];
 
-                        placeholder.replaceWith(video);
+    cctvCards.forEach((card, index) => {
+        if (index < streams.length) {
+            const videoBox = card.querySelector('.cctv-video');
+            if (videoBox) {
+                const placeholder = videoBox.querySelector('.cctv-placeholder') || videoBox.querySelector('img');
+                if (placeholder) {
+                    const video = document.createElement('video');
+                    video.autoplay = true;
+                    video.muted = true;
+                    video.playsInline = true;
+                    video.style.width = '100%';
+                    video.style.height = '100%';
+                    video.style.objectFit = 'cover';
 
-                        const streamUrl = streams[index].url;
+                    placeholder.replaceWith(video);
 
-                        // HTTPS 스트림은 직접 접근, HTTP만 워커 프록시 사용 (403 및 Mixed Content 대응)
-                        const proxiedUrl = streamUrl.startsWith('https') ? streamUrl : `${WORKER_URL}/?url=${encodeURIComponent(streamUrl)}`;
+                    const streamUrl = streams[index].url;
 
-                        // 1. hls.js 지원 여부 확인 (대부분의 PC 브라우저 및 Android)
-                        if (Hls.isSupported()) {
-                            const hls = new Hls({
-                                fragLoadingMaxRetry: 10,
-                                manifestLoadingMaxRetry: 10,
-                                levelLoadingMaxRetry: 10,
-                                enableWorker: true,
-                                xhrSetup: function (xhr, url) {
-                                    xhr.withCredentials = false; // CORS 정책에 따라 설정
-                                }
-                            });
-                            hls.loadSource(proxiedUrl);
-                            hls.attachMedia(video);
-                            hls.on(Hls.Events.MANIFEST_PARSED, function () {
-                                video.play().catch(e => console.log("Auto-play prevented (HLS):", e));
-                            });
-                            hls.on(Hls.Events.ERROR, function (event, data) {
-                                if (data.fatal) {
-                                    console.log("HLS fatal error:", data.type);
-                                }
-                            });
-                        }
-                        // 2. 네이티브 HLS 지원 확인 (iOS Safari 등)
-                        else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                            video.src = proxiedUrl;
-                            video.addEventListener('loadedmetadata', function () {
-                                video.play().catch(e => console.log("Auto-play prevented (Native):", e));
-                            });
-                        }
+                    // 모든 스트림에 대해 워커 프록시 사용 (CORS 및 403 대응)
+                    const proxiedUrl = `${WORKER_URL}/?url=${encodeURIComponent(streamUrl)}`;
+                    console.log(`[CCTV] ${streams[index].name}: ${proxiedUrl}`);
 
-                        const label = card.querySelector('.cctv-info h3');
-                        if (label) label.textContent = streams[index].name;
+                    // 1. hls.js 지원 여부 확인
+                    if (Hls.isSupported()) {
+                        const hls = new Hls({
+                            fragLoadingMaxRetry: 10,
+                            manifestLoadingMaxRetry: 10,
+                            levelLoadingMaxRetry: 10,
+                            enableWorker: true,
+                        });
+                        hls.loadSource(proxiedUrl);
+                        hls.attachMedia(video);
+                        hls.on(Hls.Events.MANIFEST_PARSED, function () {
+                            video.play().catch(e => console.log("Auto-play prevented (HLS):", e));
+                        });
                     }
+                    // 2. 네이티브 HLS 지원 확인 (iOS Safari 등)
+                    else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                        video.src = proxiedUrl;
+                    }
+
+                    const label = card.querySelector('.cctv-info h3');
+                    if (label) label.textContent = streams[index].name;
                 }
             }
-        });
+        }
+    });
 
-        log('CCTV 스트리밍 초기화 완료');
-    };
-    document.head.appendChild(script);
+    log('CCTV 스트리밍 초기화 완료');
 }
 
 // 페이지 로드 시 모든 데이터 초기화
