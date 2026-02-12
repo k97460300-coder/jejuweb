@@ -1,10 +1,10 @@
-name = "cors-proxy"
+name = "jejuweb"
 main = "cloudflare-worker.js"
 compatibility_date = "2024-01-01"
 
 # Workers 라우트 설정
 routes = [
-  { pattern = "cors-proxy.k97460300.workers.dev", zone_name = "" }
+  { pattern = "jejuweb.k97460300.workers.dev", zone_name = "" }
 ]
 
 # 환경 변수 (필요시)

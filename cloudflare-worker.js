@@ -1,15 +1,16 @@
 /**
- * Cloudflare Worker: HLS Proxy & Rewriter (Final Unified)
- * ----------------------------------------------------
- * - 403 Forbidden 및 CORS 에러를 완전히 해결합니다.
- * - wrangler.toml에서 참조하는 메인 파일(cloudflare-worker.js)입니다.
+ * Cloudflare Worker: HLS Proxy & Rewriter (Ultra Robust V8)
+ * --------------------------------------------------------
+ * - 403 Forbidden 해결을 위해 멀티플 헤더 시도 (Wowza 등 특수 서버 대응)
+ * - wrangler.toml 설정과 일치하도록 jejuweb 이름 사용
+ * - 모든 응답에 강력한 CORS 헤더 및 캐시 제어 적용
  */
 
 export default {
     async fetch(request, env, ctx) {
         const url = new URL(request.url);
 
-        // 1. OPTIONS 요청(사전 검사) 처리
+        // 1. OPTIONS 사전 검사(Preflight) 처리
         if (request.method === 'OPTIONS') {
             return new Response(null, {
                 headers: {
@@ -32,8 +33,11 @@ export default {
         try {
             const targetObj = new URL(targetUrl);
 
-            // 2. 대상 서버 요청 (Referer를 대상 도메인으로 변조하여 403 방지)
-            const response = await fetch(targetUrl, {
+            // 2. 대상 서버 요청 전략 (멀티 시도)
+            let response;
+
+            // 전략 1: 표준 헤더 + Referer 변조 (가장 일반적인 해결책)
+            response = await fetch(targetUrl, {
                 headers: {
                     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
                     'Accept': '*/*',
@@ -41,6 +45,16 @@ export default {
                     'Referer': targetObj.origin + '/',
                 },
             });
+
+            // 전략 2: 만약 403이 발생하면, 헤더를 최소화하여 재시도 (Wowza 특성 고려)
+            if (response.status === 403) {
+                console.log(`[Proxy] 403 detected for ${targetUrl}, retrying with minimal headers...`);
+                response = await fetch(targetUrl, {
+                    headers: {
+                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                    },
+                });
+            }
 
             const contentType = (response.headers.get('Content-Type') || '').toLowerCase();
             const isM3U8 = targetUrl.includes('.m3u8') ||
@@ -72,16 +86,16 @@ export default {
                     headers: {
                         'Content-Type': 'application/vnd.apple.mpegurl',
                         'Access-Control-Allow-Origin': '*',
-                        'X-Proxy-Status': 'active-m3u8',
+                        'X-Proxy-Status': 'active-m3u8-v8',
                         'Cache-Control': 'no-cache'
                     }
                 });
             }
 
-            // 4. 비디오 조각(.ts) 등 기타 파일은 그대로 스트리밍
+            // 4. 기타 파일(.ts) 스트리밍
             const newResponse = new Response(response.body, response);
             newResponse.headers.set('Access-Control-Allow-Origin', '*');
-            newResponse.headers.set('X-Proxy-Status', 'active-segment');
+            newResponse.headers.set('X-Proxy-Status', 'active-segment-v8');
             return newResponse;
 
         } catch (error) {
