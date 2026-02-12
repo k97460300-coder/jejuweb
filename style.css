@@ -1245,14 +1245,6 @@ body {
         padding: var(--spacing-sm);
     }
 
-    /* CCTV */
-    .cctv-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .cctv-card {
-        padding: var(--spacing-sm);
-    }
 
     /* ?怨밴묶 獄쏄퀣? */
     .status-badge {
@@ -1621,29 +1613,6 @@ body {
         display: none;
     }
 
-    /* CCTV Horizontal Scroll */
-    .cctv-grid {
-        display: flex !important;
-        overflow-x: auto;
-        gap: 12px;
-        padding: 5px 2px 10px;
-        -webkit-overflow-scrolling: touch;
-        scroll-snap-type: x mandatory;
-        grid-template-columns: none !important;
-    }
-
-    .cctv-card {
-        flex: 0 0 280px;
-        min-width: 280px;
-        scroll-snap-align: start;
-        background: #ffffff !important;
-        border: 1px solid rgba(226, 232, 240, 0.8) !important;
-        margin-bottom: 0 !important;
-        padding: 0 !important;
-        display: block !important;
-        box-shadow: var(--shadow-sm) !important;
-    }
-
     .cctv-video {
         aspect-ratio: 16/9 !important;
     }
@@ -1881,6 +1850,7 @@ body {
         box-shadow: var(--shadow-md) !important;
     }
 }
+
 /* Video Modal Styles */
 .modal {
     display: none;
@@ -1909,8 +1879,15 @@ body {
 }
 
 @keyframes modalScale {
-    from { transform: scale(0.9); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 .close-modal {
