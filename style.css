@@ -1,4 +1,4 @@
-﻿/* ==================== Reset & Base Styles ==================== */
+/* ==================== Reset & Base Styles ==================== */
 * {
     margin: 0;
     padding: 0;
@@ -854,7 +854,7 @@ body {
         grid-template-columns: 1fr;
     }
 
-    /* 위치 탭 한 줄 표시 및 가로 스크롤 */
+    /* ��ġ �� �� �� ǥ�� �� ���� ��ũ�� */
     .location-tabs {
         display: flex;
         flex-wrap: nowrap !important;
@@ -891,7 +891,7 @@ body {
         font-size: 0.7rem !important;
     }
 
-    /* 제목 중앙 정렬 */
+    /* ���� �߾� ���� */
     .cctv-info h3,
     .trail-header h4,
     .subsection-title,
@@ -1038,45 +1038,45 @@ body {
 
 /* ==================== Icon Size Adjustments ==================== */
 
-/* ���� ���� ������ ũ�� ��� */
+/* ???? ???? ?????? ??? ??? */
 .weather-icon {
     font-size: 3.5rem !important;
 }
 
-/* �ð��뺰 ���� ������ ũ�� ��� */
+/* ?��??�� ???? ?????? ??? ??? */
 .hourly-icon {
     font-size: 1.5rem !important;
     margin: 6px 0 !important;
 }
 
-/* �ְ� ���� ������ ũ�� ��� */
+/* ??? ???? ?????? ??? ??? */
 .weekly-icon {
     font-size: 2rem !important;
     margin: 8px 0 !important;
 }
 
-/* ���� �� ������ ũ�� ��� */
+/* ???? ?? ?????? ??? ??? */
 .tab-icon {
     font-size: 1.5rem !important;
 }
 
-/* �� ���� ������ ũ�� ��� */
+/* ?? ???? ?????? ??? ??? */
 .detail-icon {
     font-size: 1.2rem !important;
 }
 
-/* �ð��뺰 ���� ī�� ũ�� ���� */
+/* ?��??�� ???? ??? ??? ???? */
 .hourly-item {
     min-width: 80px !important;
     padding: 12px 8px !important;
 }
 
-/* �ְ� ���� ī�� ���� ���� */
+/* ??? ???? ??? ???? ???? */
 .weekly-item {
     padding: 12px !important;
 }
 
-/* �µ� ǥ�� ũ�� ���� */
+/* ?��? ??? ??? ???? */
 .temp-value {
     font-size: 3rem !important;
 }
@@ -1085,13 +1085,13 @@ body {
     font-size: 1.5rem !important;
 }
 
-/* �ð��뺰 �µ� ũ�� ���� */
+/* ?��??�� ?��? ??? ???? */
 .hourly-temp {
     font-size: 1rem !important;
     font-weight: 600;
 }
 
-/* �ְ� �µ� ũ�� ���� */
+/* ??? ?��? ??? ???? */
 .temp-high {
     font-size: 1.1rem !important;
 }
@@ -1100,9 +1100,9 @@ body {
     font-size: 1.1rem !important;
 }
 
-/* ==================== 紐⑤컮??諛섏쓳???붿옄??==================== */
+/* ==================== 모바??반응???�자??==================== */
 
-/* ?쒕툝由?(769px - 1024px) */
+/* ?�블�?(769px - 1024px) */
 @media screen and (max-width: 1024px) {
     .container {
         padding: var(--spacing-md);
@@ -1126,10 +1126,10 @@ body {
     }
 }
 
-/* 紐⑤컮??(0 - 768px) */
+/* 모바??(0 - 768px) */
 @media screen and (max-width: 768px) {
 
-    /* 湲곕낯 ?덉씠?꾩썐 */
+    /* 기본 ?�이?�웃 */
     body {
         font-size: 14px;
     }
@@ -1139,7 +1139,7 @@ body {
         max-width: 100%;
     }
 
-    /* ?덉뼱濡??뱀뀡 */
+    /* ?�어�??�션 */
     .hero {
         padding: var(--spacing-xl) var(--spacing-sm);
         min-height: auto;
@@ -1154,7 +1154,7 @@ body {
         font-size: 1rem;
     }
 
-    /* 洹몃━???덉씠?꾩썐 */
+    /* 그리???�이?�웃 */
     .grid {
         grid-template-columns: 1fr;
         gap: var(--spacing-sm);
@@ -1165,7 +1165,7 @@ body {
         gap: var(--spacing-sm);
     }
 
-    /* 移대뱶 */
+    /* 카드 */
     .card {
         padding: var(--spacing-sm);
     }
@@ -1178,7 +1178,7 @@ body {
         font-size: 1.1rem;
     }
 
-    /* ?좎뵪 移대뱶 */
+    /* ?�씨 카드 */
     .weather-card {
         padding: var(--spacing-sm);
     }
@@ -1196,7 +1196,7 @@ body {
         gap: var(--spacing-xs);
     }
 
-    /* ??났???뚯씠釉?*/
+    /* ??��???�이�?*/
     .flight-table {
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
@@ -1227,15 +1227,15 @@ body {
         min-width: 100px;
     }
 
-    /* 踰꾪듉 - ?곗튂 移쒗솕???ш린 */
+    /* 버튼 - ?�치 친화???�기 */
     .btn {
         padding: 12px 20px;
         font-size: 1rem;
         min-height: 44px;
-        /* iOS 沅뚯옣 理쒖냼 ?곗튂 ?곸뿭 */
+        /* iOS 권장 최소 ?�치 ?�역 */
     }
 
-    /* ?쒕씪???뺣낫 */
+    /* ?�라???�보 */
     .trail-grid {
         grid-template-columns: 1fr;
         gap: var(--spacing-sm);
@@ -1254,34 +1254,34 @@ body {
         padding: var(--spacing-sm);
     }
 
-    /* ?곹깭 諛곗? */
+    /* ?�태 배�? */
     .status-badge {
         padding: 4px 8px;
         font-size: 0.75rem;
     }
 
-    /* ?ㅽ럹?댁떛 議곗젙 */
+    /* ?�페?�싱 조정 */
     section {
         padding: var(--spacing-lg) 0;
     }
 
-    /* ?ㅻ퉬寃뚯씠??(?덈뒗 寃쎌슦) */
+    /* ?�비게이??(?�는 경우) */
     nav {
         padding: var(--spacing-sm);
     }
 
-    /* ?명꽣 */
+    /* ?�터 */
     footer {
         padding: var(--spacing-md) var(--spacing-sm);
         font-size: 0.85rem;
     }
 
-    /* ?ㅽ겕濡ㅻ컮 ?④린湲?(紐⑤컮?? */
+    /* ?�크롤바 ?�기�?(모바?? */
     .flight-table::-webkit-scrollbar {
         height: 4px;
     }
 
-    /* ?곗튂 ?곸뿭 媛쒖꽑 */
+    /* ?�치 ?�역 개선 */
     a,
     button,
     .clickable {
@@ -1289,19 +1289,19 @@ body {
         min-width: 44px;
     }
 
-    /* ?띿뒪??媛?낆꽦 */
+    /* ?�스??가?�성 */
     p {
         line-height: 1.6;
     }
 
-    /* ?대?吏 諛섏쓳??*/
+    /* ?��?지 반응??*/
     img {
         max-width: 100%;
         height: auto;
     }
 }
 
-/* 珥덉냼??紐⑤컮??(0 - 375px) */
+/* 초소??모바??(0 - 375px) */
 @media screen and (max-width: 375px) {
     .hero h1 {
         font-size: 1.75rem;
@@ -1327,7 +1327,7 @@ body {
     }
 }
 
-/* 媛濡?紐⑤뱶 理쒖쟻??*/
+/* 가�?모드 최적??*/
 @media screen and (max-width: 768px) and (orientation: landscape) {
     .hero {
         padding: var(--spacing-md) var(--spacing-sm);
