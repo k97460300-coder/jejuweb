@@ -404,7 +404,6 @@ body {
 
 .weather-details {
     display: grid;
-    grid-template-columns: 1fr;
     gap: var(--spacing-sm);
 }
 
@@ -851,10 +850,9 @@ body {
     }
 
     .flight-row {
-        grid-template-columns: 1fr;
     }
 
-    /* ?꾩튂 ????以??쒖떆 諛?媛濡??ㅽ겕濡?*/
+    /* ?袁⑺뒄 ????餓???뽯뻻 獄?揶쎛嚥???쎄쾿嚥?*/
     .location-tabs {
         display: flex;
         flex-wrap: nowrap !important;
@@ -891,7 +889,7 @@ body {
         font-size: 0.7rem !important;
     }
 
-    /* ?쒕ぉ 以묒븰 ?뺣젹 */
+    /* ??뺛걠 餓λ쵐釉??類ｌ졊 */
     .cctv-info h3,
     .trail-header h4,
     .subsection-title,
@@ -1043,7 +1041,7 @@ body {
     font-size: 3.5rem !important;
 }
 
-/* ?챨??類????? ?????? ??? ??? */
+/* ?梨??筌????? ?????? ??? ??? */
 .hourly-icon {
     font-size: 1.5rem !important;
     margin: 6px 0 !important;
@@ -1065,7 +1063,7 @@ body {
     font-size: 1.2rem !important;
 }
 
-/* ?챨??類????? ??? ??? ???? */
+/* ?梨??筌????? ??? ??? ???? */
 .hourly-item {
     min-width: 80px !important;
     padding: 12px 8px !important;
@@ -1076,7 +1074,7 @@ body {
     padding: 12px !important;
 }
 
-/* ?關? ??? ??? ???? */
+/* ??? ??? ??? ???? */
 .temp-value {
     font-size: 3rem !important;
 }
@@ -1085,13 +1083,13 @@ body {
     font-size: 1.5rem !important;
 }
 
-/* ?챨??類??關? ??? ???? */
+/* ?梨??筌???? ??? ???? */
 .hourly-temp {
     font-size: 1rem !important;
     font-weight: 600;
 }
 
-/* ??? ?關? ??? ???? */
+/* ??? ??? ??? ???? */
 .temp-high {
     font-size: 1.1rem !important;
 }
@@ -1100,16 +1098,15 @@ body {
     font-size: 1.1rem !important;
 }
 
-/* ==================== 筌뤴뫀而??獄쏆꼷????遺우쁽??==================== */
+/* ==================== 嶺뚮ㅄ維????꾩룇瑗?????븐슦???==================== */
 
-/* ??뺥닜??(769px - 1024px) */
+/* ??類λ떆??(769px - 1024px) */
 @media screen and (max-width: 1024px) {
     .container {
         padding: var(--spacing-md);
     }
 
     .grid {
-        grid-template-columns: 1fr;
         gap: var(--spacing-md);
     }
 
@@ -1126,10 +1123,10 @@ body {
     }
 }
 
-/* 筌뤴뫀而??(0 - 768px) */
+/* 嶺뚮ㅄ維???(0 - 768px) */
 @media screen and (max-width: 768px) {
 
-    /* 疫꿸퀡????됱뵠?袁⑹뜍 */
+    /* ?リ옇??????깅턄?熬곣뫗??*/
     body {
         font-size: 14px;
     }
@@ -1139,7 +1136,7 @@ body {
         max-width: 100%;
     }
 
-    /* ??됰선嚥??諭??*/
+    /* ???곗꽑???獄???*/
     .hero {
         padding: var(--spacing-xl) var(--spacing-sm);
         min-height: auto;
@@ -1154,18 +1151,16 @@ body {
         font-size: 1rem;
     }
 
-    /* 域밸챶?????됱뵠?袁⑹뜍 */
+    /* ?잙갭梨??????깅턄?熬곣뫗??*/
     .grid {
-        grid-template-columns: 1fr;
         gap: var(--spacing-sm);
     }
 
     .weather-grid {
-        grid-template-columns: 1fr;
         gap: var(--spacing-sm);
     }
 
-    /* 燁삳?諭?*/
+    /* ?곸궠?獄?*/
     .card {
         padding: var(--spacing-sm);
     }
@@ -1178,7 +1173,7 @@ body {
         font-size: 1.1rem;
     }
 
-    /* ?醫롫뎁 燁삳?諭?*/
+    /* ??ル∥???곸궠?獄?*/
     .weather-card {
         padding: var(--spacing-sm);
     }
@@ -1192,11 +1187,10 @@ body {
     }
 
     .weather-details {
-        grid-template-columns: 1fr;
         gap: var(--spacing-xs);
     }
 
-    /* ????????뵠??*/
+    /* ????????逾??*/
     .flight-table {
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
@@ -1227,17 +1221,16 @@ body {
         min-width: 100px;
     }
 
-    /* 甕곌쑵??- ?怨쀭뒄 燁살뮉?????由?*/
+    /* ?뺢퀗???- ??⑥?뭵 ?곸궡裕???????*/
     .btn {
         padding: 12px 20px;
         font-size: 1rem;
         min-height: 44px;
-        /* iOS 亦낅슣??筌ㅼ뮇???怨쀭뒄 ?怨몃열 */
+        /* iOS 雅?굝???嶺뚣끉裕????⑥?뭵 ??⑤챶??*/
     }
 
-    /* ??뺤뵬???類ｋ궖 */
+    /* ??類ㅻ뎄???筌먲퐢沅?*/
     .trail-grid {
-        grid-template-columns: 1fr;
         gap: var(--spacing-sm);
     }
 
@@ -1246,34 +1239,34 @@ body {
     }
 
 
-    /* ?怨밴묶 獄쏄퀣? */
+    /* ??⑤객臾??꾩룄?? */
     .status-badge {
         padding: 4px 8px;
         font-size: 0.75rem;
     }
 
-    /* ??쎈읂??곷뼓 鈺곌퀣??*/
+    /* ???덉쓡??怨룸폆 ?브퀗???*/
     section {
         padding: var(--spacing-lg) 0;
     }
 
-    /* ??삵돩野껊슣???(??덈뮉 野껋럩?? */
+    /* ???듬룴?롪퍓????(???덈츎 ?롪퍔??? */
     nav {
         padding: var(--spacing-sm);
     }
 
-    /* ?紐낃숲 */
+    /* ?筌뤿굛??*/
     footer {
         padding: var(--spacing-md) var(--spacing-sm);
         font-size: 0.85rem;
     }
 
-    /* ??쎄쾿嚥▲끇而???ｋ┛疫?(筌뤴뫀而?? */
+    /* ???꾩씩?β뼯?뉓???節뗢뵛??(嶺뚮ㅄ維??? */
     .flight-table::-webkit-scrollbar {
         height: 4px;
     }
 
-    /* ?怨쀭뒄 ?怨몃열 揶쏆뮇苑?*/
+    /* ??⑥?뭵 ??⑤챶???띠룇裕뉓땻?*/
     a,
     button,
     .clickable {
@@ -1281,19 +1274,19 @@ body {
         min-width: 44px;
     }
 
-    /* ??용뮞??揶쎛??녾쉐 */
+    /* ???⑸츩???띠럾????얠뎽 */
     p {
         line-height: 1.6;
     }
 
-    /* ???筌왖 獄쏆꼷???*/
+    /* ????嶺뚯솘? ?꾩룇瑗???*/
     img {
         max-width: 100%;
         height: auto;
     }
 }
 
-/* ?λ뜆???筌뤴뫀而??(0 - 375px) */
+/* ?貫????嶺뚮ㅄ維???(0 - 375px) */
 @media screen and (max-width: 375px) {
     .hero h1 {
         font-size: 1.75rem;
@@ -1319,7 +1312,7 @@ body {
     }
 }
 
-/* 揶쎛嚥?筌뤴뫀諭?筌ㅼ뮇???*/
+/* ?띠럾???嶺뚮ㅄ維獄?嶺뚣끉裕???*/
 @media screen and (max-width: 768px) and (orientation: landscape) {
     .hero {
         padding: var(--spacing-md) var(--spacing-sm);
@@ -1749,7 +1742,6 @@ body {
     }
 
     .trails-grid {
-        grid-template-columns: 1fr !important;
         gap: 8px !important;
         width: 100% !important;
     }
@@ -1837,7 +1829,6 @@ body {
     }
 
     .footer-content {
-        grid-template-columns: 1fr !important;
         text-align: center !important;
         gap: 20px !important;
     }

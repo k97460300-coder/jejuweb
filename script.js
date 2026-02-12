@@ -806,8 +806,8 @@ function initCCTV() {
 
                     const streamUrl = streams[index].url;
 
-                    // PC 브라우저에서 직접 연결 시도 (CORS가 허용되어 있을 경우)
-                    const proxiedUrl = streamUrl;
+                    // Cloudflare Worker를 통한 프록시 주소 사용 (모바일 재생 및 403 우회용)
+                    const proxiedUrl = `${WORKER_URL}/?url=${encodeURIComponent(streamUrl)}`;
                     console.log(`[CCTV] ${streams[index].name}: ${proxiedUrl}`);
 
                     // 1. hls.js 사용
