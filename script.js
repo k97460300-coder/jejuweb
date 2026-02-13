@@ -494,7 +494,7 @@ async function loadHallasanInfo() {
 
                 trailsHtml += `
                     <div class="trail-item" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; ${isLast ? '' : 'border-bottom: 1px solid rgba(255,255,255,0.05);'}">
-                        <span style="font-size: 1rem; font-weight: 500;">${t.name}</span>
+                        <span style="font-size: 1rem; font-weight: 500;">${t.name} (${t.sub})</span>
                         <span class="trail-status" style="background: ${info.c}; color: white; font-size: 0.75rem; padding: 4px 10px; border-radius: 4px; white-space: nowrap;">${info.t}</span>
                     </div>`;
             });
@@ -782,10 +782,10 @@ function initCCTV() {
     const cctvCards = document.querySelectorAll('.cctv-card');
     // mobile.html에서 작동하는 IP 기반 직결 주소를 사용합니다.
     const streams = [
-        { url: 'http://119.65.216.155:1935/live/cctv04.stream_360p/playlist.m3u8', youtubeId: 'GiGAeyesLiveTV', name: '城山日出峰' },
-        { url: 'http://119.65.216.155:1935/live/cctv03.stream_360p/playlist.m3u8', youtubeId: 'dhtv9918', name: '汉拿山 (御势岳)' },
+        { url: 'http://119.65.216.155:1935/live/cctv04.stream_360p/playlist.m3u8', youtubeId: 'UCkHh-G_V-I4yG6t-H9f6Fw', name: '城山日出峰' },
+        { url: 'http://119.65.216.155:1935/live/cctv03.stream_360p/playlist.m3u8', name: '汉拿山 (御势岳)' },
         { url: 'http://211.114.96.121:1935/jejusi7/11-24.stream/playlist.m3u8', name: '牛岛 (天津港)' },
-        { url: 'http://119.65.216.155:1935/live/cctv05.stream_360p/playlist.m3u8', name: '1100高지' }
+        { url: 'http://119.65.216.155:1935/live/cctv05.stream_360p/playlist.m3u8', name: '1100高地' }
     ];
 
     cctvCards.forEach((card, index) => {
@@ -819,7 +819,9 @@ function initCCTV() {
 
                     const streamUrl = streams[index].url;
                     const proxiedUrl = `${WORKER_URL}/?url=${encodeURIComponent(streamUrl)}`;
-                    console.log(`[CCTV] ${streams[index].name}: ${proxiedUrl}`);
+
+                    // 우선 직결 주소(Direct) 시도, 실패 시 프록시 사용
+                    console.log(`[CCTV] ${streams[index].name} 시도 (Direct): ${streamUrl}`);
 
                     // 1. hls.js 사용
                     if (Hls.isSupported()) {
@@ -831,32 +833,44 @@ function initCCTV() {
                                 xhr.withCredentials = false;
                             }
                         });
-                        hls.loadSource(proxiedUrl);
+                        hls.loadSource(streamUrl); // Direct 우선 시도
                         hls.attachMedia(video);
                         hls.on(Hls.Events.MANIFEST_PARSED, function () {
                             video.play().catch(e => console.log("Auto-play blocked:", e));
                         });
 
-                        // 에러 시 복구 시도
+                        // 에러 시 프록시로 전환
                         hls.on(Hls.Events.ERROR, function (event, data) {
                             if (data.fatal) {
-                                switch (data.type) {
-                                    case Hls.ErrorTypes.NETWORK_ERROR:
-                                        hls.startLoad();
-                                        break;
-                                    case Hls.ErrorTypes.MEDIA_ERROR:
-                                        hls.recoverMediaError();
-                                        break;
-                                    default:
-                                        hls.destroy();
-                                        break;
+                                if (data.type === Hls.ErrorTypes.NETWORK_ERROR && hls.url === streamUrl) {
+                                    console.warn(`[CCTV] Direct failed, switching to Proxy for ${streams[index].name}`);
+                                    hls.loadSource(proxiedUrl);
+                                    hls.startLoad();
+                                } else {
+                                    switch (data.type) {
+                                        case Hls.ErrorTypes.NETWORK_ERROR:
+                                            hls.startLoad();
+                                            break;
+                                        case Hls.ErrorTypes.MEDIA_ERROR:
+                                            hls.recoverMediaError();
+                                            break;
+                                        default:
+                                            hls.destroy();
+                                            break;
+                                    }
                                 }
                             }
                         });
                     }
-                    // 2. iOS Safari 등 네이티브 지원
+                    // 2. iOS Safari 등 네이티브 지원 (Direct 시도 후 실패 감지 어려우므로 여기서는 Worker 우선 권장했으나 사용자 요청으로 Direct 시도)
                     else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                        video.src = proxiedUrl;
+                        video.src = streamUrl;
+                        video.onerror = () => {
+                            if (video.src !== proxiedUrl) {
+                                console.warn(`[CCTV] Native Direct failed, switching to Proxy`);
+                                video.src = proxiedUrl;
+                            }
+                        };
                     }
 
                     const label = card.querySelector('.cctv-info h3');
@@ -920,17 +934,32 @@ function openVideoModal(stream) {
     container.appendChild(video);
     placeholder.style.display = 'none';
 
-    const proxiedUrl = `${WORKER_URL}/?url=${encodeURIComponent(stream.url)}`;
+    const streamUrl = stream.url;
+    const proxiedUrl = `${WORKER_URL}/?url=${encodeURIComponent(streamUrl)}`;
 
     if (Hls.isSupported()) {
         modalHls = new Hls();
-        modalHls.loadSource(proxiedUrl);
+        modalHls.loadSource(streamUrl); // Direct 우선 시도
         modalHls.attachMedia(video);
+
         modalHls.on(Hls.Events.MANIFEST_PARSED, () => {
             video.play();
         });
+
+        modalHls.on(Hls.Events.ERROR, (event, data) => {
+            if (data.fatal && data.type === Hls.ErrorTypes.NETWORK_ERROR && modalHls.url === streamUrl) {
+                console.warn("[Modal] Direct failed, switching to Proxy");
+                modalHls.loadSource(proxiedUrl);
+                modalHls.startLoad();
+            }
+        });
     } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        video.src = proxiedUrl;
+        video.src = streamUrl;
+        video.onerror = () => {
+            if (video.src !== proxiedUrl) {
+                video.src = proxiedUrl;
+            }
+        };
     }
 }
 
