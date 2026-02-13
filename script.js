@@ -494,7 +494,9 @@ async function loadHallasanInfo() {
 
                 trailsHtml += `
                     <div class="trail-item" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; ${isLast ? '' : 'border-bottom: 1px solid rgba(255,255,255,0.05);'}">
-                        <span style="font-size: 1rem; font-weight: 500;">${t.name} (${t.sub})</span>
+                        <span style="font-size: 1rem; font-weight: 500;">
+                            ${t.name} <span style="font-size: 0.8rem; color: #aaa; margin-left: 4px;">${t.sub}</span>
+                        </span>
                         <span class="trail-status" style="background: ${info.c}; color: white; font-size: 0.75rem; padding: 4px 10px; border-radius: 4px; white-space: nowrap;">${info.t}</span>
                     </div>`;
             });
