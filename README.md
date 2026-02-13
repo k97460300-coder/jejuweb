@@ -1,80 +1,72 @@
-# 济州岛旅游信息网站
+# 🏝️ 济州岛旅游信息助手 (Jeju Travel Assistant)
 
-## 🚨 重要提示：CORS 错误解决方法
-
-由于浏览器安全限制，直接打开 `index.html` 文件会出现 CORS 错误，导致 API 数据无法加载。
-
-### 解决方法 1：使用 Python 本地服务器（推荐）
-
-1. **检查是否安装 Python**
-   ```bash
-   python --version
-   ```
-
-2. **运行本地服务器**
-   - 双击 `start_server.bat` 文件
-   - 或在命令行中运行：
-     ```bash
-     python -m http.server 8000
-     ```
-
-3. **打开浏览器访问**
-   ```
-   http://localhost:8000
-   ```
-
-### 解决方法 2：使用 Node.js 本地服务器
-
-如果您安装了 Node.js：
-
-```bash
-npx http-server -p 8000
-```
-
-然后访问 `http://localhost:8000`
-
-### 解决方法 3：使用 VS Code Live Server
-
-1. 安装 VS Code
-2. 安装 "Live Server" 扩展
-3. 右键点击 `index.html` → "Open with Live Server"
-
-### 解决方法 4：禁用浏览器 CORS 检查（临时，不推荐）
-
-**Chrome:**
-```bash
-chrome.exe --disable-web-security --user-data-dir="C:/ChromeDevSession"
-```
-
-**Edge:**
-```bash
-msedge.exe --disable-web-security --user-data-dir="C:/EdgeDevSession"
-```
-
-⚠️ **警告**: 此方法会降低浏览器安全性，仅用于开发测试！
+这是一个为前往济州岛旅游的游客提供实时信息的 Web 应用程序。它集成了天气、CCTV 监控、汉拿山状态及机场航班等核心功能。
 
 ---
 
-## 📋 功能列表
+## ✨ 核心功能
 
-- ✅ 4个地区实时天气（济州市、西归浦市、汉拿山、牛岛）
-- ✅ 10天天气预报
-- ✅ 逐时天气预报（9h-22h）
-- ✅ 4个CCTV实时监控
-- ✅ 汉拿山登山路线状态
-- ✅ 济州机场航班信息
+### 1. 📹 实时 CCTV 监控 (CCTV Streaming)
+*   **하이브리드 재생 (Hybrid Playback)**: 
+    *   성산일출봉, 한라산 등 주요 명소는 **YouTube Live**를 직접 연동하여 최상의 화질과 안정성을 제공합니다.
+    *   그 외 지역은 **IP 기반 HLS 스트리밍**을 사용합니다.
+*   **어댑티브 로직 (Adaptive Fetching)**: 
+    *   **직결 우선(Direct-First)**: 브라우저가 CCTV 서버에 직접 연결을 시도하여 빠른 속도를 보장합니다.
+    *   **프록시 백업(Proxy Fallback)**: 직접 연결이 실패할 경우 Cloudflare Worker 프록시를 통해 우회 재생을 시도합니다.
+*   **UX 최적화**: 2x2 격자 레이아웃 제공 및 클릭 시 전체 화면 모달 지원.
 
-## 🛠️ 技术栈
+### 2. 🌤️ 实时天气预报 (Weather Forecast)
+*   **다지역 정보**: 제주시, 서귀포시, 한라산(1100고지), 우도 4개 거점별 날씨.
+*   **상세 예보**: 
+    *   현재 날씨 (기온, 풍속, 강수량).
+    *   오늘의 시간별 예보 (09:00 ~ 22:00).
+    *   향후 10일간의 중기 예보.
 
-- HTML5 + CSS3 + JavaScript
-- 韩国气象厅 API
-- 机场公共数据 API
-- HLS.js 视频流
-- 济州道厅官网爬虫
+### 3. ⛰️ 汉拿山登山状态 (Hallasan Trail Status)
+*   **실시간 통제 정보**: 어리목, 영실, 성판악 등 7개 주요 코스의 입산 통제 상황 실시간 표시.
+*   **글로벌 대응**: 코스별 명칭을 한국어/중국어/영어로 병기하여 가독성 향상.
 
-## 📝 文件说明
+### 4. ✈️ 济州机场航班信息 (Jeju Airport Flights)
+*   **국제선 중심**: 국제선 도착/출발 항공편 실시간 리스트.
+*   **상태 강조**: 결항(Cancel) 및 지연(Delay) 항공편을 시각적으로 강조하여 정보 인지 속도 향상.
 
-- `index.html` - 主页面
-- `style.css` - 样式表
-- `script.js` - JavaScript 逻辑
-- `start_server.bat` - 本地服务器启动脚本
+---
+
+## 🛠️ 技术细节 (Technical Implementation)
+
+*   **Frontend**: Vanilla HTML5, CSS3 (Glassmorphism UI), JavaScript (ES6+).
+*   **Streaming**: `Hls.js` 라이브러리를 사용한 HLS 스트리밍 구현.
+*   **Proxy System**: Cloudflare Workers를 사용한 CORS 및 403 Forbidden 우회 프록시 구축.
+*   **Data Aggregation**: 
+    *   기상청 공공데이터 API (날씨).
+    *   공항 실시간 운항 정보 API (항공).
+    *   제주특별자치도청 데이터 크롤링 (한라산 상태).
+
+---
+
+## 🚀 运行与开发
+
+### CORS 해결 (로컬 실행 시 필수)
+브라우저 보안 정책상 API 데이터를 원활하게 로드하기 위해 로컬 서버 환경이 필요합니다.
+
+1.  **Python 사용 (추천)**:
+    ```bash
+    # start_server.bat 실행 또는 터미널에서 입력
+    python -m http.server 8000
+    ```
+2.  **접속**: `http://localhost:8000`
+
+---
+
+## 📂 파일 구조
+*   `index.html`: 메인 웹 페이지 구조 및 SEO 최적화.
+*   `style.css`: Modern Premium Soft 테마 및 반응형 디자인.
+*   `script.js`: 모든 API 연동 및 비즈니스 로직.
+*   `cloudflare-worker.js`: 백엔드 프록시 로직.
+
+---
+
+## 📝 업데이트 내역
+*   **v1.5**: 한라산 코스명 영문 병기 및 CCTV 직결 우선 로직 적용.
+*   **v1.4**: 성산일출봉 등 주요 거점 YouTube Live 하이브리드 재생 도입.
+*   **v1.3**: 2x2 CCTV 격자 레이아웃 및 모바일 반응형 디자인 최적화.
