@@ -782,10 +782,10 @@ function initCCTV() {
     const cctvCards = document.querySelectorAll('.cctv-card');
     // mobile.html에서 작동하는 IP 기반 직결 주소를 사용합니다.
     const streams = [
-        { url: 'http://119.65.216.155:1935/live/cctv04.stream_360p/playlist.m3u8', name: '城山日出峰' },
-        { url: 'http://119.65.216.155:1935/live/cctv03.stream_360p/playlist.m3u8', name: '汉拿山 (御势岳)' },
+        { url: 'http://119.65.216.155:1935/live/cctv04.stream_360p/playlist.m3u8', youtubeId: 'GiGAeyesLiveTV', name: '城山日出峰' },
+        { url: 'http://119.65.216.155:1935/live/cctv03.stream_360p/playlist.m3u8', youtubeId: 'dhtv9918', name: '汉拿山 (御势岳)' },
         { url: 'http://211.114.96.121:1935/jejusi7/11-24.stream/playlist.m3u8', name: '牛岛 (天津港)' },
-        { url: 'http://119.65.216.155:1935/live/cctv05.stream_360p/playlist.m3u8', name: '1100高地' }
+        { url: 'http://119.65.216.155:1935/live/cctv05.stream_360p/playlist.m3u8', name: '1100高지' }
     ];
 
     cctvCards.forEach((card, index) => {
@@ -794,6 +794,19 @@ function initCCTV() {
             if (videoBox) {
                 const placeholder = videoBox.querySelector('.cctv-placeholder') || videoBox.querySelector('img');
                 if (placeholder) {
+                    // 유튜브 라이브 우선 사용
+                    if (streams[index].youtubeId) {
+                        const iframe = document.createElement('iframe');
+                        iframe.src = `https://www.youtube.com/embed/live_stream?channel=${streams[index].youtubeId}&autoplay=1&mute=1`;
+                        iframe.style.width = '100%';
+                        iframe.style.height = '100%';
+                        iframe.style.border = 'none';
+                        iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+                        iframe.allowFullscreen = true;
+                        placeholder.replaceWith(iframe);
+                        return;
+                    }
+
                     const video = document.createElement('video');
                     video.autoplay = true;
                     video.muted = true;
@@ -805,8 +818,6 @@ function initCCTV() {
                     placeholder.replaceWith(video);
 
                     const streamUrl = streams[index].url;
-
-                    // Cloudflare Worker를 통한 프록시 주소 사용 (모바일 재생 및 403 우회용)
                     const proxiedUrl = `${WORKER_URL}/?url=${encodeURIComponent(streamUrl)}`;
                     console.log(`[CCTV] ${streams[index].name}: ${proxiedUrl}`);
 
@@ -853,7 +864,7 @@ function initCCTV() {
 
                     // 클릭 시 모달 열기 이벤트 추가
                     card.addEventListener('click', () => {
-                        openVideoModal(proxiedUrl, streams[index].name);
+                        openVideoModal(streams[index]);
                     });
                 }
             }
@@ -865,13 +876,13 @@ function initCCTV() {
 /**
  * 비디오 모달 열기
  */
-function openVideoModal(url, title) {
+function openVideoModal(stream) {
     const modal = document.getElementById('videoModal');
     const modalTitle = document.getElementById('modalVideoTitle');
     const container = document.querySelector('.modal-video-container');
     const placeholder = document.getElementById('modalVideoPlaceholder');
 
-    modalTitle.textContent = title;
+    modalTitle.textContent = stream.name;
     modal.style.display = 'block';
     document.body.style.overflow = 'hidden'; // 스크롤 방지
 
@@ -881,31 +892,45 @@ function openVideoModal(url, title) {
         modalHls = null;
     }
 
+    // 기존 비디오/아이프레임 제거
+    const oldMedia = container.querySelector('video, iframe');
+    if (oldMedia) oldMedia.remove();
+
+    // 유튜브 라이브인 경우
+    if (stream.youtubeId) {
+        const iframe = document.createElement('iframe');
+        iframe.src = `https://www.youtube.com/embed/live_stream?channel=${stream.youtubeId}&autoplay=1&mute=0`;
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+        iframe.style.border = 'none';
+        iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+        iframe.allowFullscreen = true;
+        placeholder.style.display = 'none';
+        container.appendChild(iframe);
+        return;
+    }
+
+    // 일반 HLS인 경우
     const video = document.createElement('video');
-    video.autoplay = true;
     video.controls = true;
+    video.autoplay = true;
+    video.playsInline = true;
     video.style.width = '100%';
     video.style.height = '100%';
-
-    placeholder.style.display = 'none';
-    container.innerHTML = '';
     container.appendChild(video);
+    placeholder.style.display = 'none';
+
+    const proxiedUrl = `${WORKER_URL}/?url=${encodeURIComponent(stream.url)}`;
 
     if (Hls.isSupported()) {
-        modalHls = new Hls({
-            fragLoadingMaxRetry: 10,
-            manifestLoadingMaxRetry: 10,
-            xhrSetup: function (xhr) {
-                xhr.withCredentials = false;
-            }
-        });
-        modalHls.loadSource(url);
+        modalHls = new Hls();
+        modalHls.loadSource(proxiedUrl);
         modalHls.attachMedia(video);
         modalHls.on(Hls.Events.MANIFEST_PARSED, () => {
             video.play();
         });
     } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        video.src = url;
+        video.src = proxiedUrl;
     }
 }
 
