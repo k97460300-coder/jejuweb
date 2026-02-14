@@ -41,33 +41,37 @@ export default {
             const targetHost = targetObj.hostname;
 
             // 타겟 서버별 맞춤형 Referer 설정
-            let referer = 'http://jejuits.go.kr/';
+            let referer = 'https://www.jeju.go.kr/';
             if (targetHost.includes('211.114.96.121')) {
-                referer = 'http://www.jejusi.go.kr/';
-            } else if (targetHost.includes('123.140.197.51')) {
-                referer = 'https://www.jeju.go.kr/';
+                referer = 'https://www.jejusi.go.kr/';
+            } else if (targetHost.includes('cctv.jejudoin.co.kr') || targetHost.includes('trendworld.kr')) {
+                referer = 'https://cctv.jejudoin.co.kr/';
             }
 
-            // 가장 안정적인 브라우저 헤더 세트 (불필요한 Sec- 헤더 제거)
+            // 고정된 데스크톱 User-Agent로 일관성 유지 (봇 감지 회피 핵심)
             headers.set('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
             headers.set('Accept', '*/*');
             headers.set('Accept-Language', 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7');
             headers.set('Referer', referer);
+            headers.set('Origin', new URL(referer).origin);
             headers.set('Cache-Control', 'no-cache');
             headers.set('Pragma', 'no-cache');
+            headers.set('Connection', 'keep-alive');
 
             try {
                 const response = await fetch(targetUrl, {
                     headers: headers,
+                    method: request.method,
+                    body: request.method !== 'GET' && request.method !== 'HEAD' ? await request.clone().blob() : null,
                     redirect: 'follow'
                 });
 
                 // 403 Forbidden 시도 횟수에 따라 재시도 (최대 2회)
                 if (response.status === 403 && attempt < 2) {
-                    console.log(`[v10] 403 detected. Retrying with minimal headers...`);
-                    const minimalHeaders = new Headers();
-                    minimalHeaders.set('User-Agent', 'Mozilla/5.0');
-                    return await fetch(targetUrl, { headers: minimalHeaders });
+                    console.log(`[v10] 403 detected at ${targetHost}. Retrying with alternate UA...`);
+                    const altHeaders = new Headers(headers);
+                    altHeaders.set('User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
+                    return await fetch(targetUrl, { headers: altHeaders });
                 }
 
                 return response;
