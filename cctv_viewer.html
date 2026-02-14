@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>제주 실시간 CCTV 뷰어</title>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <style>
+        body {
+            font-family: sans-serif;
+            background: #1a1a1a;
+            color: white;
+            padding: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: #2a2a2a;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        video {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: black;
+            border-radius: 4px;
+        }
+
+        h3 {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #aaa;
+        }
+
+        .active-url {
+            font-size: 12px;
+            word-break: break-all;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>제주 실시간 CCTV 대안 리스트</h1>
+    <p>아래 영상들을 보시고, 성산일출봉 대신 사용하고 싶은 번호나 이름을 알려주세요.</p>
+
+    <div class="grid" id="container"></div>
+
+    <script>
+        const streams = [
+            { name: "해안/시내 후보 1 (jejusi7 11-21)", url: "http://211.114.96.121:1935/jejusi7/11-21.stream/playlist.m3u8" },
+            { name: "해안/시내 후보 2 (jejusi7 11-22)", url: "http://211.114.96.121:1935/jejusi7/11-22.stream/playlist.m3u8" },
+            { name: "해안/시내 후보 3 (jejusi7 11-23)", url: "http://211.114.96.121:1935/jejusi7/11-23.stream/playlist.m3u8" },
+            { name: "우도 천진항 (jejusi7 11-24)", url: "http://211.114.96.121:1935/jejusi7/11-24.stream/playlist.m3u8" },
+            { name: "해안/시내 후보 4 (jejusi7 11-26)", url: "http://211.114.96.121:1935/jejusi7/11-26.stream/playlist.m3u8" },
+            { name: "해안/시내 후보 5 (jejusi7 11-27)", url: "http://211.114.96.121:1935/jejusi7/11-27.stream/playlist.m3u8" },
+            { name: "해안/시내 후보 6 (jejusi7 11-28)", url: "http://211.114.96.121:1935/jejusi7/11-28.stream/playlist.m3u8" },
+            { name: "해안/시내 후보 7 (jejusi7 11-29)", url: "http://211.114.96.121:1935/jejusi7/11-29.stream/playlist.m3u8" },
+            { name: "시외/산간 - 성판악 (cctv06)", url: "http://119.65.216.155:1935/live/cctv06.stream_360p/playlist.m3u8" },
+            { name: "시외/산간 - 관음사 (cctv07)", url: "http://119.65.216.155:1935/live/cctv07.stream_360p/playlist.m3u8" }
+        ];
+
+        const container = document.getElementById('container');
+
+        streams.forEach((s, idx) => {
+            const card = document.createElement('div');
+            card.className = 'card';
+
+            const title = document.createElement('h3');
+            title.textContent = `${idx + 1}. ${s.name}`;
+
+            const video = document.createElement('video');
+            video.controls = true;
+            video.muted = true;
+            video.autoplay = true;
+
+            const urlText = document.createElement('div');
+            urlText.className = 'active-url';
+            urlText.textContent = s.url;
+
+            card.appendChild(video);
+            card.appendChild(title);
+            card.appendChild(urlText);
+            container.appendChild(card);
+
+            if (Hls.isSupported()) {
+                const hls = new Hls();
+                hls.loadSource(s.url);
+                hls.attachMedia(video);
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = s.url;
+            }
+        });
+    </script>
+</body>
+
+</html>

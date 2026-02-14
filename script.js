@@ -784,10 +784,10 @@ function initCCTV() {
     const cctvCards = document.querySelectorAll('.cctv-card');
     // mobile.html에서 작동하는 IP 기반 직결 주소를 사용합니다.
     const streams = [
-        { url: 'http://119.65.216.155:1935/live/cctv04.stream_360p/playlist.m3u8', youtubeId: 'UCkHh-G_V-I4yG6t-H9f6Fw', name: '城山日出峰' },
-        { url: 'http://119.65.216.155:1935/live/cctv03.stream_360p/playlist.m3u8', name: '汉拿山 (御势岳)' },
-        { url: 'http://211.114.96.121:1935/jejusi7/11-24.stream/playlist.m3u8', name: '牛岛 (天津港)' },
-        { url: 'http://119.65.216.155:1935/live/cctv05.stream_360p/playlist.m3u8', name: '1100高地' }
+        { url: 'http://211.114.96.121:1935/jejusi6/11-14.stream/playlist.m3u8', name: '三阳海水浴场' },
+        { url: 'http://211.114.96.121:1935/jejusi6/11-19.stream/playlist.m3u8', name: '咸德海水浴场' },
+        { url: 'http://123.140.197.51/stream/34/play.m3u8', name: '城山日出峰' },
+        { url: 'http://211.114.96.121:1935/jejusi6/11-17.stream/playlist.m3u8', name: '挟才海水浴场' }
     ];
 
     cctvCards.forEach((card, index) => {
