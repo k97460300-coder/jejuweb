@@ -50,12 +50,7 @@ export default {
 
             // 고정된 데스크톱 User-Agent로 일관성 유지 (봇 감지 회피 핵심)
             headers.set('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
-            headers.set('Accept', '*/*');
-            headers.set('Accept-Language', 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7');
             headers.set('Referer', referer);
-            headers.set('Origin', new URL(referer).origin);
-            headers.set('Cache-Control', 'no-cache');
-            headers.set('Pragma', 'no-cache');
             headers.set('Connection', 'keep-alive');
 
             try {
