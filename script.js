@@ -812,17 +812,6 @@ function initCCTV() {
                     const label = card.querySelector('.cctv-info h3');
                     if (label) {
                         label.textContent = streams[index].name;
-                        // 직접 재생 링크 추가 (사용자 요청 반영)
-                        const directBtn = document.createElement('a');
-                        directBtn.href = streams[index].url;
-                        directBtn.target = '_blank';
-                        directBtn.className = 'direct-link';
-                        directBtn.textContent = ' [Direct ↗]';
-                        directBtn.style.fontSize = '0.7em';
-                        directBtn.style.color = 'var(--accent-color)';
-                        directBtn.style.marginLeft = '8px';
-                        directBtn.onclick = (e) => e.stopPropagation(); // 카드 클릭(모달) 방지
-                        label.appendChild(directBtn);
                     }
 
                     card.addEventListener('click', () => {
