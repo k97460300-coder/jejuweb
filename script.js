@@ -58,11 +58,36 @@ function getFormatDate(date) {
     return y + '' + m + '' + d;
 }
 
+const DEBUG_MODE = true; // 모바일 디버깅을 위해 활성화
+
 function log(msg) {
-    if (typeof msg === 'object') {
-        console.log(JSON.stringify(msg, null, 2));
-    } else {
-        console.log(msg);
+    const message = typeof msg === 'object' ? JSON.stringify(msg, null, 2) : msg;
+    console.log(message);
+
+    if (DEBUG_MODE) {
+        let debugContainer = document.getElementById('debug-console');
+        if (!debugContainer) {
+            debugContainer = document.createElement('div');
+            debugContainer.id = 'debug-console';
+            debugContainer.style.position = 'fixed';
+            debugContainer.style.bottom = '10px';
+            debugContainer.style.left = '10px';
+            debugContainer.style.right = '10px';
+            debugContainer.style.height = '150px';
+            debugContainer.style.backgroundColor = 'rgba(0,0,0,0.8)';
+            debugContainer.style.color = '#fff';
+            debugContainer.style.fontSize = '12px';
+            debugContainer.style.overflowY = 'scroll';
+            debugContainer.style.zIndex = '9999';
+            debugContainer.style.padding = '5px';
+            debugContainer.style.pointerEvents = 'none'; // 클릭 통과
+            document.body.appendChild(debugContainer);
+        }
+        const line = document.createElement('div');
+        line.style.borderBottom = '1px solid #444';
+        line.style.padding = '2px 0';
+        line.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+        debugContainer.prepend(line); // 최신 메시지가 위로
     }
 }
 
