@@ -58,12 +58,6 @@ export default {
             headers.set('Pragma', 'no-cache');
             headers.set('Connection', 'keep-alive');
 
-            // Range 헤더 포워딩 (모바일/Safari 호환성 필수)
-            const range = request.headers.get('Range');
-            if (range) {
-                headers.set('Range', range);
-            }
-
             try {
                 const response = await fetch(targetUrl, {
                     headers: headers,
