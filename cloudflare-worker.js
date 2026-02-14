@@ -38,20 +38,23 @@ export default {
         // 2. 대상 서버 요청 함수 (브라우저 완벽 위장)
         async function fetchTarget(attempt = 1) {
             const headers = new Headers();
+            const targetHost = targetObj.hostname;
 
-            // 클라이언트의 원본 User-Agent 대신 검증된 데스크톱 헤더 사용 (403 우회)
-            headers.set('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36');
-            headers.set('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7');
+            // 타겟 서버별 맞춤형 Referer 설정
+            let referer = 'http://jejuits.go.kr/';
+            if (targetHost.includes('211.114.96.121')) {
+                referer = 'http://www.jejusi.go.kr/';
+            } else if (targetHost.includes('123.140.197.51')) {
+                referer = 'https://www.jeju.go.kr/';
+            }
+
+            // 가장 안정적인 브라우저 헤더 세트 (불필요한 Sec- 헤더 제거)
+            headers.set('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
+            headers.set('Accept', '*/*');
             headers.set('Accept-Language', 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7');
+            headers.set('Referer', referer);
             headers.set('Cache-Control', 'no-cache');
             headers.set('Pragma', 'no-cache');
-            headers.set('Referer', 'https://www.jeju.go.kr/');
-            headers.set('Sec-Ch-Ua', '"Not A(Brand";v="99", "Google Chrome";v="121", "Chromium";v="121"');
-            headers.set('Sec-Ch-Ua-Mobile', '?0');
-            headers.set('Sec-Ch-Ua-Platform', '"Windows"');
-            headers.set('Sec-Fetch-Dest', isM3U8 ? 'empty' : 'video');
-            headers.set('Sec-Fetch-Mode', 'cors');
-            headers.set('Sec-Fetch-Site', 'cross-site');
 
             try {
                 const response = await fetch(targetUrl, {
