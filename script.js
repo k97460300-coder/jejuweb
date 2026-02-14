@@ -836,57 +836,62 @@ function initCCTV() {
 }
 
 /**
- * 비디오 재생 설정 (Direct vs Proxy 지능형 전환)
+ * 비디오 재생 설정 (무조건 즉시 실행 모드)
  */
 function setupVideoPlayback(videoElement, streamUrl, name) {
     const isHttps = window.location.protocol === 'https:';
     const isStreamHttp = streamUrl.startsWith('http:');
 
-    // HTTPS 페이지에서 HTTP 스트림을 요청하면 브라우저가 차단하므로 즉시 프록시 사용
-    const initialUrl = (isHttps && isStreamHttp)
+    // HTTPS 환경에서는 브라우저 보안 정책상 HTTP 스트림 차단이 엄격하므로,
+    // 처음부터 프록시를 통해 HTTPS 주소로 변환하여 요청합니다. (즉시 실행 보장)
+    const secureStreamUrl = (isHttps && isStreamHttp)
         ? `${WORKER_URL}/?url=${encodeURIComponent(streamUrl)}`
         : streamUrl;
 
     const proxiedUrl = `${WORKER_URL}/?url=${encodeURIComponent(streamUrl)}`;
 
-    console.log(`[CCTV] ${name} 재생 시도: ${initialUrl}`);
+    // 비디오 속성 최적화
+    videoElement.muted = true;
+    videoElement.autoplay = true;
+    videoElement.setAttribute('muted', '');
+    videoElement.setAttribute('autoplay', '');
+    videoElement.setAttribute('preload', 'auto');
+    videoElement.setAttribute('playsinline', '');
+    videoElement.setAttribute('webkit-playsinline', '');
 
-    // 1. iOS Safari 등 네이티브 HLS 지원 우선 (모바일 안정성)
+    console.log(`[CCTV] ${name} 즉시 재생 시도: ${secureStreamUrl}`);
+
+    // 1. 네이티브 HLS 지원 (Safari, 모바일 등)
     if (videoElement.canPlayType('application/vnd.apple.mpegurl')) {
-        videoElement.src = initialUrl;
-        videoElement.addEventListener('loadedmetadata', () => {
-            videoElement.play().catch(e => console.warn(`[CCTV] Native play failed: ${e.message}`));
-        });
-
-        videoElement.onerror = () => {
+        videoElement.src = secureStreamUrl;
+        videoElement.load();
+        videoElement.play().catch(() => {
+            // 실패 시 프록시 재시도
             if (videoElement.src !== proxiedUrl) {
-                console.warn(`[CCTV] Native direct failed, switching to Proxy`);
                 videoElement.src = proxiedUrl;
                 videoElement.play();
             }
-        };
+        });
     }
-    // 2. hls.js 사용 (데스크톱 등)
+    // 2. hls.js 사용 (데스크톱 Chrome, Edge 등)
     else if (Hls.isSupported()) {
         const hls = new Hls({
-            fragLoadingMaxRetry: 5,
-            manifestLoadingMaxRetry: 5,
-            enableWorker: true
+            fragLoadingMaxRetry: 10,
+            manifestLoadingMaxRetry: 10,
+            xhrSetup: (xhr) => xhr.withCredentials = false,
+            enableWorker: true,
+            lowLatencyMode: true // 지연 시간 최소화
         });
 
-        hls.loadSource(initialUrl);
+        hls.loadSource(secureStreamUrl);
         hls.attachMedia(videoElement);
 
         hls.on(Hls.Events.MANIFEST_PARSED, () => {
-            videoElement.play().catch(e => console.warn(`[CCTV] HLS.js play failed: ${e.message}`));
-        });
-
-        hls.on(Hls.Events.ERROR, (event, data) => {
-            if (data.fatal && data.type === Hls.ErrorTypes.NETWORK_ERROR && hls.url === streamUrl) {
-                console.warn(`[CCTV] HLS.js direct failed, switching to Proxy`);
+            videoElement.play().catch(e => {
+                console.warn("[CCTV] Autoplay blocked, retrying with Proxy...");
                 hls.loadSource(proxiedUrl);
                 hls.startLoad();
-            }
+            });
         });
     }
 }
