@@ -809,40 +809,101 @@ function initCCTV() {
 
     const cctvCards = document.querySelectorAll('.cctv-card');
     const streams = [
-        { url: 'http://211.114.96.121:1935/jejusi6/11-14.stream/playlist.m3u8', name: '三阳海水浴场' },
-        { url: 'http://211.114.96.121:1935/jejusi6/11-19.stream/playlist.m3u8', name: '咸德海水浴场' },
-        { url: 'http://123.140.197.51/stream/34/play.m3u8', name: '城山日出峰' },
-        { url: 'http://211.114.96.121:1935/jejusi6/11-17.stream/playlist.m3u8', name: '挟才海水浴场' }
+        {
+            url: 'http://211.114.96.121:1935/jejusi6/11-14.stream/playlist.m3u8',
+            name: '三阳海水浴场',
+            portal: 'https://cctv.jejudoin.co.kr/north_cctv/23'
+        },
+        {
+            url: 'http://211.114.96.121:1935/jejusi6/11-19.stream/playlist.m3u8',
+            name: '咸德海水浴场',
+            portal: 'https://cctv.jejudoin.co.kr/east_cctv/4'
+        },
+        {
+            url: 'http://123.140.197.51/stream/34/play.m3u8',
+            name: '城山日出峰',
+            youtubeId: 'A8w1H4x_yS8',
+            portal: 'https://cctv.jejudoin.co.kr/east_cctv/9'
+        },
+        {
+            url: 'http://211.114.96.121:1935/jejusi6/11-17.stream/playlist.m3u8',
+            name: '挟才海水浴场',
+            portal: 'https://cctv.jejudoin.co.kr/west_cctv/2'
+        }
     ];
 
     cctvCards.forEach((card, index) => {
         if (index < streams.length) {
+            const stream = streams[index];
             const videoBox = card.querySelector('.cctv-video');
+
+            // "원본 사이트 보기" 버튼 추가
+            if (!card.querySelector('.cctv-external-link')) {
+                const linkIcon = document.createElement('a');
+                linkIcon.href = stream.portal;
+                linkIcon.target = '_blank';
+                linkIcon.className = 'cctv-external-link';
+                linkIcon.innerHTML = '🔗';
+                linkIcon.style.position = 'absolute';
+                linkIcon.style.top = '10px';
+                linkIcon.style.right = '40px'; // LIVE 배지 옆
+                linkIcon.style.zIndex = '100';
+                linkIcon.style.fontSize = '14px';
+                linkIcon.style.color = '#fff';
+                linkIcon.style.backgroundColor = 'rgba(0,0,0,0.5)';
+                linkIcon.style.width = '24px';
+                linkIcon.style.height = '24px';
+                linkIcon.style.display = 'flex';
+                linkIcon.style.alignItems = 'center';
+                linkIcon.style.justifyContent = 'center';
+                linkIcon.style.borderRadius = '50%';
+                linkIcon.title = '원본 사이트에서 보기';
+                card.style.position = 'relative';
+                card.appendChild(linkIcon);
+            }
+
             if (videoBox) {
                 const placeholder = videoBox.querySelector('.cctv-placeholder') || videoBox.querySelector('img');
-                if (placeholder) {
-                    const video = document.createElement('video');
-                    video.autoplay = true;
-                    video.muted = true;
-                    video.playsInline = true;
-                    video.setAttribute('playsinline', ''); // iOS 호환성 강화
-                    video.setAttribute('webkit-playsinline', '');
-                    video.style.width = '100%';
-                    video.style.height = '100%';
-                    video.style.objectFit = 'cover';
 
-                    placeholder.replaceWith(video);
-                    setupVideoPlayback(video, streams[index].url, streams[index].name);
+                // YouTube ID가 있는 경우 iframe 우선 사용
+                if (stream.youtubeId) {
+                    const iframe = document.createElement('iframe');
+                    iframe.src = `https://www.youtube.com/embed/${stream.youtubeId}?autoplay=1&mute=1&playsinline=1&rel=0`;
+                    iframe.style.width = '100%';
+                    iframe.style.height = '100%';
+                    iframe.style.border = 'none';
+                    iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+                    iframe.allowFullscreen = true;
 
-                    const label = card.querySelector('.cctv-info h3');
-                    if (label) {
-                        label.textContent = streams[index].name;
+                    if (placeholder) placeholder.replaceWith(iframe);
+                    else videoBox.appendChild(iframe);
+                } else {
+                    // 일반 m3u8 재생
+                    if (placeholder) {
+                        const video = document.createElement('video');
+                        video.autoplay = true;
+                        video.muted = true;
+                        video.playsInline = true;
+                        video.setAttribute('playsinline', '');
+                        video.setAttribute('webkit-playsinline', '');
+                        video.style.width = '100%';
+                        video.style.height = '100%';
+                        video.style.objectFit = 'cover';
+
+                        placeholder.replaceWith(video);
+                        setupVideoPlayback(video, stream.url, stream.name);
                     }
-
-                    card.addEventListener('click', () => {
-                        openVideoModal(streams[index]);
-                    });
                 }
+
+                const label = card.querySelector('.cctv-info h3');
+                if (label) {
+                    label.textContent = stream.name;
+                }
+
+                card.addEventListener('click', (e) => {
+                    if (e.target.closest('.cctv-external-link')) return; // 외부 링크 클릭시 무시
+                    openVideoModal(stream);
+                });
             }
         }
     });
