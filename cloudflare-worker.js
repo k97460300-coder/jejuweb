@@ -44,6 +44,8 @@ export default {
             let referer = 'https://www.jeju.go.kr/';
             if (targetHost.includes('211.114.96.121')) {
                 referer = 'https://www.jejusi.go.kr/';
+            } else if (targetHost.includes('119.65.216.155') || targetHost.includes('123.140.197.51')) {
+                referer = 'https://www.jeju.go.kr/';
             } else if (targetHost.includes('cctv.jejudoin.co.kr') || targetHost.includes('trendworld.kr')) {
                 referer = 'https://cctv.jejudoin.co.kr/';
             }
