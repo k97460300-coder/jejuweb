@@ -773,16 +773,16 @@ async function initFlightData() {
 
 let modalHls = null;
 
-// CCTV 스트리밍 초기화
+/**
+ * CCTV 스트리밍 초기화
+ */
 function initCCTV() {
-    // index.html에서 hls.js를 이미 로드했으므로 전역 Hls 객체를 바로 사용합니다.
     if (typeof Hls === 'undefined') {
         console.error("hls.js is not loaded. Please check index.html.");
         return;
     }
 
     const cctvCards = document.querySelectorAll('.cctv-card');
-    // mobile.html에서 작동하는 IP 기반 직결 주소를 사용합니다.
     const streams = [
         { url: 'http://211.114.96.121:1935/jejusi6/11-14.stream/playlist.m3u8', name: '三阳海水浴场' },
         { url: 'http://211.114.96.121:1935/jejusi6/11-19.stream/playlist.m3u8', name: '咸德海水浴场' },
@@ -796,89 +796,22 @@ function initCCTV() {
             if (videoBox) {
                 const placeholder = videoBox.querySelector('.cctv-placeholder') || videoBox.querySelector('img');
                 if (placeholder) {
-                    // 유튜브 라이브 우선 사용
-                    if (streams[index].youtubeId) {
-                        const iframe = document.createElement('iframe');
-                        iframe.src = `https://www.youtube.com/embed/live_stream?channel=${streams[index].youtubeId}&autoplay=1&mute=1`;
-                        iframe.style.width = '100%';
-                        iframe.style.height = '100%';
-                        iframe.style.border = 'none';
-                        iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
-                        iframe.allowFullscreen = true;
-                        placeholder.replaceWith(iframe);
-                        return;
-                    }
-
                     const video = document.createElement('video');
                     video.autoplay = true;
                     video.muted = true;
                     video.playsInline = true;
+                    video.setAttribute('playsinline', ''); // iOS 호환성 강화
+                    video.setAttribute('webkit-playsinline', '');
                     video.style.width = '100%';
                     video.style.height = '100%';
                     video.style.objectFit = 'cover';
 
                     placeholder.replaceWith(video);
-
-                    const streamUrl = streams[index].url;
-                    const proxiedUrl = `${WORKER_URL}/?url=${encodeURIComponent(streamUrl)}`;
-
-                    // 우선 직결 주소(Direct) 시도, 실패 시 프록시 사용
-                    console.log(`[CCTV] ${streams[index].name} 시도 (Direct): ${streamUrl}`);
-
-                    // 1. hls.js 사용
-                    if (Hls.isSupported()) {
-                        const hls = new Hls({
-                            fragLoadingMaxRetry: 10,
-                            manifestLoadingMaxRetry: 10,
-                            levelLoadingMaxRetry: 10,
-                            xhrSetup: function (xhr, url) {
-                                xhr.withCredentials = false;
-                            }
-                        });
-                        hls.loadSource(streamUrl); // Direct 우선 시도
-                        hls.attachMedia(video);
-                        hls.on(Hls.Events.MANIFEST_PARSED, function () {
-                            video.play().catch(e => console.log("Auto-play blocked:", e));
-                        });
-
-                        // 에러 시 프록시로 전환
-                        hls.on(Hls.Events.ERROR, function (event, data) {
-                            if (data.fatal) {
-                                if (data.type === Hls.ErrorTypes.NETWORK_ERROR && hls.url === streamUrl) {
-                                    console.warn(`[CCTV] Direct failed, switching to Proxy for ${streams[index].name}`);
-                                    hls.loadSource(proxiedUrl);
-                                    hls.startLoad();
-                                } else {
-                                    switch (data.type) {
-                                        case Hls.ErrorTypes.NETWORK_ERROR:
-                                            hls.startLoad();
-                                            break;
-                                        case Hls.ErrorTypes.MEDIA_ERROR:
-                                            hls.recoverMediaError();
-                                            break;
-                                        default:
-                                            hls.destroy();
-                                            break;
-                                    }
-                                }
-                            }
-                        });
-                    }
-                    // 2. iOS Safari 등 네이티브 지원 (Direct 시도 후 실패 감지 어려우므로 여기서는 Worker 우선 권장했으나 사용자 요청으로 Direct 시도)
-                    else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                        video.src = streamUrl;
-                        video.onerror = () => {
-                            if (video.src !== proxiedUrl) {
-                                console.warn(`[CCTV] Native Direct failed, switching to Proxy`);
-                                video.src = proxiedUrl;
-                            }
-                        };
-                    }
+                    setupVideoPlayback(video, streams[index].url, streams[index].name);
 
                     const label = card.querySelector('.cctv-info h3');
                     if (label) label.textContent = streams[index].name;
 
-                    // 클릭 시 모달 열기 이벤트 추가
                     card.addEventListener('click', () => {
                         openVideoModal(streams[index]);
                     });
@@ -886,7 +819,63 @@ function initCCTV() {
             }
         }
     });
-    log('CCTV 스트리밍 및 모달 초기화 완료 (모바일 최적화 적용)');
+    log('CCTV 스트리밍 초기화 완료 (모바일 최적화 적용)');
+}
+
+/**
+ * 비디오 재생 설정 (Direct vs Proxy 지능형 전환)
+ */
+function setupVideoPlayback(videoElement, streamUrl, name) {
+    const isHttps = window.location.protocol === 'https:';
+    const isStreamHttp = streamUrl.startsWith('http:');
+
+    // HTTPS 페이지에서 HTTP 스트림을 요청하면 브라우저가 차단하므로 즉시 프록시 사용
+    const initialUrl = (isHttps && isStreamHttp)
+        ? `${WORKER_URL}/?url=${encodeURIComponent(streamUrl)}`
+        : streamUrl;
+
+    const proxiedUrl = `${WORKER_URL}/?url=${encodeURIComponent(streamUrl)}`;
+
+    console.log(`[CCTV] ${name} 재생 시도: ${initialUrl}`);
+
+    // 1. iOS Safari 등 네이티브 HLS 지원 우선 (모바일 안정성)
+    if (videoElement.canPlayType('application/vnd.apple.mpegurl')) {
+        videoElement.src = initialUrl;
+        videoElement.addEventListener('loadedmetadata', () => {
+            videoElement.play().catch(e => console.warn(`[CCTV] Native play failed: ${e.message}`));
+        });
+
+        videoElement.onerror = () => {
+            if (videoElement.src !== proxiedUrl) {
+                console.warn(`[CCTV] Native direct failed, switching to Proxy`);
+                videoElement.src = proxiedUrl;
+                videoElement.play();
+            }
+        };
+    }
+    // 2. hls.js 사용 (데스크톱 등)
+    else if (Hls.isSupported()) {
+        const hls = new Hls({
+            fragLoadingMaxRetry: 5,
+            manifestLoadingMaxRetry: 5,
+            enableWorker: true
+        });
+
+        hls.loadSource(initialUrl);
+        hls.attachMedia(videoElement);
+
+        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+            videoElement.play().catch(e => console.warn(`[CCTV] HLS.js play failed: ${e.message}`));
+        });
+
+        hls.on(Hls.Events.ERROR, (event, data) => {
+            if (data.fatal && data.type === Hls.ErrorTypes.NETWORK_ERROR && hls.url === streamUrl) {
+                console.warn(`[CCTV] HLS.js direct failed, switching to Proxy`);
+                hls.loadSource(proxiedUrl);
+                hls.startLoad();
+            }
+        });
+    }
 }
 
 /**
@@ -900,69 +889,29 @@ function openVideoModal(stream) {
 
     modalTitle.textContent = stream.name;
     modal.style.display = 'block';
-    document.body.style.overflow = 'hidden'; // 스크롤 방지
+    document.body.style.overflow = 'hidden';
 
-    // 기존 HLS 정리
     if (modalHls) {
         modalHls.destroy();
         modalHls = null;
     }
 
-    // 기존 비디오/아이프레임 제거
     const oldMedia = container.querySelector('video, iframe');
     if (oldMedia) oldMedia.remove();
 
-    // 유튜브 라이브인 경우
-    if (stream.youtubeId) {
-        const iframe = document.createElement('iframe');
-        iframe.src = `https://www.youtube.com/embed/live_stream?channel=${stream.youtubeId}&autoplay=1&mute=0`;
-        iframe.style.width = '100%';
-        iframe.style.height = '100%';
-        iframe.style.border = 'none';
-        iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
-        iframe.allowFullscreen = true;
-        placeholder.style.display = 'none';
-        container.appendChild(iframe);
-        return;
-    }
-
-    // 일반 HLS인 경우
     const video = document.createElement('video');
     video.controls = true;
     video.autoplay = true;
+    video.muted = false; // 모달에서는 소리 허용 (사용자 클릭 후이므로)
     video.playsInline = true;
+    video.setAttribute('playsinline', '');
     video.style.width = '100%';
     video.style.height = '100%';
+
     container.appendChild(video);
-    placeholder.style.display = 'none';
+    if (placeholder) placeholder.style.display = 'none';
 
-    const streamUrl = stream.url;
-    const proxiedUrl = `${WORKER_URL}/?url=${encodeURIComponent(streamUrl)}`;
-
-    if (Hls.isSupported()) {
-        modalHls = new Hls();
-        modalHls.loadSource(streamUrl); // Direct 우선 시도
-        modalHls.attachMedia(video);
-
-        modalHls.on(Hls.Events.MANIFEST_PARSED, () => {
-            video.play();
-        });
-
-        modalHls.on(Hls.Events.ERROR, (event, data) => {
-            if (data.fatal && data.type === Hls.ErrorTypes.NETWORK_ERROR && modalHls.url === streamUrl) {
-                console.warn("[Modal] Direct failed, switching to Proxy");
-                modalHls.loadSource(proxiedUrl);
-                modalHls.startLoad();
-            }
-        });
-    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        video.src = streamUrl;
-        video.onerror = () => {
-            if (video.src !== proxiedUrl) {
-                video.src = proxiedUrl;
-            }
-        };
-    }
+    setupVideoPlayback(video, stream.url, stream.name);
 }
 
 /**
